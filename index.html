@@ -331,82 +331,147 @@
       max-width: 860px; margin: 0 auto; padding: 0 24px 100px;
     }
 
-    /* ─── SECTION CARDS ─── */
-    .section-card {
-      margin-bottom: 16px; border-radius: 16px;
+    /* ─── CHAPTER CARDS (compact clickable grid) ─── */
+    .chapters-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 500px) { .chapters-grid { grid-template-columns: 1fr; } }
+
+    .chapter-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px; border-radius: 14px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.4s;
-      position: relative;
+      cursor: pointer; user-select: none;
+      transition: all 0.3s; position: relative;
     }
-    .section-card::before {
-      content: ''; position: absolute; inset: 0; border-radius: 16px;
-      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow), transparent 40%);
+    .chapter-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 14px;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow), transparent 40%);
       opacity: 0; transition: opacity 0.4s; pointer-events: none;
     }
-    .section-card:hover { border-color: var(--border-hover); }
-    .section-card:hover::before { opacity: 1; }
+    .chapter-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .chapter-card:hover::before { opacity: 1; }
+    .chapter-card.active-card { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
 
-    .section-header {
-      display: flex; align-items: center; gap: 14px;
-      padding: 20px 24px; cursor: pointer; user-select: none;
-    }
-    .section-header:hover { background: var(--bg-card-hover); }
-
-    .section-num {
-      width: 44px; height: 44px; border-radius: 12px;
+    .ch-num {
+      width: 40px; height: 40px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem; font-weight: 700;
+      font-size: 0.8rem; font-weight: 700;
       background: var(--bg-secondary); border: 1px solid var(--border);
-      color: var(--text-tertiary); flex-shrink: 0;
-      transition: all 0.4s;
+      color: var(--text-tertiary); flex-shrink: 0; transition: all 0.3s;
     }
-    .section-num.done {
+    .ch-num.done {
       background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3);
       color: var(--green);
     }
-
-    .section-title {
+    .ch-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.15rem; font-weight: 600;
-      letter-spacing: -0.01em; flex: 1;
-      color: var(--text-primary);
-      transition: color 0.3s;
+      font-size: 0.95rem; font-weight: 600; flex: 1;
+      color: var(--text-primary); letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    .ch-arrow {
+      width: 18px; height: 18px; color: var(--text-tertiary);
+      flex-shrink: 0; transition: transform 0.3s, color 0.3s;
+    }
+    .chapter-card:hover .ch-arrow { transform: translateX(3px); color: var(--accent-light); }
 
-    .section-check {
-      width: 28px; height: 28px; border-radius: 8px;
+    .ch-check {
+      width: 24px; height: 24px; border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
       background: transparent; border: 2px solid var(--border);
       color: transparent; cursor: pointer; flex-shrink: 0;
       transition: all 0.3s;
     }
-    .section-check:hover { border-color: var(--accent); }
-    .section-check.done {
-      background: var(--green); border-color: var(--green);
-      color: white;
-    }
+    .ch-check:hover { border-color: var(--accent); }
+    .ch-check.done { background: var(--green); border-color: var(--green); color: white; }
 
-    .section-chevron {
-      width: 20px; height: 20px; color: var(--text-tertiary);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ─── DETAIL PANEL (slides in from right) ─── */
+    .panel-backdrop {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .panel-backdrop.open { opacity: 1; pointer-events: all; }
+
+    .detail-panel {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 301;
+      width: min(680px, 100vw);
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: -20px 0 60px rgba(0,0,0,0.3);
+    }
+    .detail-panel.open { transform: translateX(0); }
+
+    .panel-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-    .section-chevron.open { transform: rotate(180deg); }
+    .panel-close {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s; font-size: 1rem;
+    }
+    .panel-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
 
-    .section-body {
-      display: grid; grid-template-rows: 0fr;
-      transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    .panel-title-area { flex: 1; min-width: 0; }
+    .panel-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--text-primary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .section-body.open { grid-template-rows: 1fr; }
-    .section-body-inner { overflow: hidden; }
-    .section-content {
-      padding: 0 24px 24px;
+    .panel-subtitle {
+      font-size: 0.75rem; color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace; margin-top: 2px;
+    }
+
+    .panel-nav-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s;
+    }
+    .panel-nav-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-hover); }
+    .panel-nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .panel-nav-btn:disabled:hover { background: var(--bg-card); color: var(--text-secondary); }
+
+    .panel-check-btn {
+      padding: 6px 14px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.3s; display: flex; align-items: center; gap: 6px;
+    }
+    .panel-check-btn.undone {
+      background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text-secondary);
-      font-size: 0.92rem; line-height: 1.75;
     }
+    .panel-check-btn.undone:hover { border-color: var(--green); color: var(--green); }
+    .panel-check-btn.is-done {
+      background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
+      color: var(--green);
+    }
+
+    .panel-body {
+      flex: 1; overflow-y: auto; padding: 28px 32px 60px;
+      color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8;
+    }
+    @media (max-width: 768px) {
+      .panel-body { padding: 20px 16px 60px; }
+      .panel-header { padding: 12px 16px; }
+    }
+
+    body.panel-open { overflow: hidden; }
 
     /* ─── CONTENT COMPONENTS ─── */
     /* Definition */
@@ -687,34 +752,58 @@
       </div>
     </div>
 
-    <!-- Content -->
+    <!-- Chapter Cards Grid -->
     <div class="content-area">
-      <template v-for="(sec, idx) in filteredSections" :key="sec.id">
-        <section :id="sec.id" class="section-card reveal" :ref="el => { if(el) revealEls[idx] = el }"
-          @mousemove="handleCardGlow($event, idx)">
-          <div class="section-header" @click="toggleSection(sec.id)">
-            <span class="section-num" :class="{ done: checked[sec.id] }">
+      <div class="chapters-grid">
+        <template v-for="(sec, idx) in filteredSections" :key="sec.id">
+          <div class="chapter-card reveal" :class="{ 'active-card': openSection && openSection.id === sec.id }"
+            :ref="el => { if(el) revealEls[idx] = el }"
+            @mousemove="handleCardGlow($event, idx)"
+            @click="openPanel(sec)">
+            <span class="ch-num" :class="{ done: checked[sec.id] }">
               <template v-if="checked[sec.id]">✓</template>
               <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
             </span>
-            <span class="section-title" v-html="highlight(sec.title)"></span>
-            <button class="section-check" :class="{ done: checked[sec.id] }" @click.stop="toggleCheck(sec.id)">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            <span class="ch-title" v-html="highlight(sec.title)"></span>
+            <button class="ch-check" :class="{ done: checked[sec.id] }" @click.stop="toggleCheck(sec.id)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </button>
-            <svg class="section-chevron" :class="{ open: !collapsed[sec.id] }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="ch-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </div>
-          <div class="section-body" :class="{ open: !collapsed[sec.id] }">
-            <div class="section-body-inner">
-              <div class="section-content" v-html="highlight(sec.html)"></div>
-            </div>
-          </div>
-        </section>
-      </template>
+        </template>
+      </div>
 
       <div v-if="filteredSections.length === 0" class="no-results">
         <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 16px; opacity: 0.3;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <p>Aucun résultat pour « {{ searchQuery }} »</p>
       </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <div class="panel-backdrop" :class="{ open: !!openSection }" @click="closePanel"></div>
+    <div class="detail-panel" :class="{ open: !!openSection }">
+      <template v-if="openSection">
+        <div class="panel-header">
+          <button class="panel-close" @click="closePanel" title="Fermer (Esc)">✕</button>
+          <div class="panel-title-area">
+            <div class="panel-title">{{ openSection.title }}</div>
+            <div class="panel-subtitle">Chapitre {{ String(openSection.num).padStart(2, '0') }} / {{ totalSections }}</div>
+          </div>
+          <button class="panel-check-btn" :class="checked[openSection.id] ? 'is-done' : 'undone'" @click="toggleCheck(openSection.id)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            {{ checked[openSection.id] ? 'Terminé' : 'Marquer' }}
+          </button>
+          <button class="panel-nav-btn" :disabled="!canGoPrev" @click="goPrev" title="Chapitre précédent">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="panel-nav-btn" :disabled="!canGoNext" @click="goNext" title="Chapitre suivant">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="panel-body" ref="panelBody">
+          <div v-html="openSection.html"></div>
+        </div>
+      </template>
     </div>
   </div>
 

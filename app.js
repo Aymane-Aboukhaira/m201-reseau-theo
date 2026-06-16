@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // APP.JS — Vue 3 Composition API
-// Awwwards-tier interactive platform
+// Awwwards-tier interactive platform with Detail Panel
 // ═══════════════════════════════════════════════════════════════
 
 const { createApp, ref, computed, onMounted, onUnmounted, watch, nextTick } = Vue;
@@ -14,6 +14,8 @@ createApp({
     const searchQuery = ref('');
     const showBackToTop = ref(false);
     const scrollProgress = ref(0);
+    const openSection = ref(null);
+    const panelBody = ref(null);
 
     const m201Checked = ref(JSON.parse(localStorage.getItem('m201-checked') || '{}'));
     const m201Collapsed = ref(JSON.parse(localStorage.getItem('m201-collapsed') || '{}'));
@@ -47,6 +49,38 @@ createApp({
       );
     });
 
+    // ─── Panel Navigation ───
+    const currentIndex = computed(() => {
+      if (!openSection.value) return -1;
+      return allSections.value.findIndex(s => s.id === openSection.value.id);
+    });
+    const canGoPrev = computed(() => currentIndex.value > 0);
+    const canGoNext = computed(() => currentIndex.value < allSections.value.length - 1);
+
+    function openPanel(sec) {
+      openSection.value = sec;
+      document.body.classList.add('panel-open');
+      nextTick(() => {
+        if (panelBody.value) panelBody.value.scrollTop = 0;
+      });
+    }
+    function closePanel() {
+      openSection.value = null;
+      document.body.classList.remove('panel-open');
+    }
+    function goPrev() {
+      if (canGoPrev.value) {
+        openSection.value = allSections.value[currentIndex.value - 1];
+        nextTick(() => { if (panelBody.value) panelBody.value.scrollTop = 0; });
+      }
+    }
+    function goNext() {
+      if (canGoNext.value) {
+        openSection.value = allSections.value[currentIndex.value + 1];
+        nextTick(() => { if (panelBody.value) panelBody.value.scrollTop = 0; });
+      }
+    }
+
     // ─── Actions ───
     function toggleCheck(id) {
       checked.value[id] = !checked.value[id];
@@ -67,21 +101,20 @@ createApp({
       return text.replace(new RegExp(`(${q})`, 'gi'), '<mark>$1</mark>');
     }
 
-    // ─── Card glow effect (mouse-following radial gradient) ───
+    // ─── Card glow effect ───
     function handleCardGlow(e, idx) {
       const el = revealEls.value[idx];
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      el.style.setProperty('--mouse-x', x + 'px');
-      el.style.setProperty('--mouse-y', y + 'px');
+      el.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+      el.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
     }
 
     // ─── Watchers ───
     watch(activeModule, (v) => {
       localStorage.setItem('m20x-activeModule', v);
       searchQuery.value = '';
+      closePanel();
       window.scrollTo(0, 0);
     });
     watch(lightMode, (v) => {
@@ -108,16 +141,24 @@ createApp({
         scrollProgress.value = docH > 0 ? (window.scrollY / docH) : 0;
       });
 
-      // Keyboard shortcut
+      // Keyboard shortcuts
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
           document.querySelector('.search-box input')?.focus();
         }
-        if (e.key === 'Escape') menuOpen.value = false;
+        if (e.key === 'Escape') {
+          if (openSection.value) closePanel();
+          else menuOpen.value = false;
+        }
+        // Arrow keys for panel navigation
+        if (openSection.value) {
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goPrev(); }
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goNext(); }
+        }
       });
 
-      // ─── Custom Cursor (spring physics) ───
+      // ─── Custom Cursor ───
       const dot = document.querySelector('.cursor-dot');
       const ring = document.querySelector('.cursor-ring');
       if (dot && ring && window.matchMedia('(hover: hover)').matches) {
@@ -125,36 +166,27 @@ createApp({
           mouseX = e.clientX;
           mouseY = e.clientY;
         });
-
         function animateCursor() {
-          // Dot follows quickly
           dotX += (mouseX - dotX) * 0.35;
           dotY += (mouseY - dotY) * 0.35;
           dot.style.left = (dotX - 4) + 'px';
           dot.style.top = (dotY - 4) + 'px';
-
-          // Ring follows with spring lag
           ringX += (mouseX - ringX) * 0.12;
           ringY += (mouseY - ringY) * 0.12;
           ring.style.left = (ringX - 18) + 'px';
           ring.style.top = (ringY - 18) + 'px';
-
           cursorRAF = requestAnimationFrame(animateCursor);
         }
         animateCursor();
       }
 
-      // ─── Scroll Reveal (IntersectionObserver) ───
+      // ─── Scroll Reveal ───
       nextTick(() => {
         revealObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
           });
         }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-
-        // Small delay so DOM is fully ready
         setTimeout(() => {
           document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
         }, 100);
@@ -180,9 +212,12 @@ createApp({
 
     return {
       activeModule, lightMode, menuOpen, searchQuery, showBackToTop, scrollProgress,
+      openSection, panelBody,
       checked, collapsed, revealEls,
       allSections, filteredSections, totalSections, completedSections, progressPercent,
-      toggleCheck, toggleSection, scrollToTop, highlight, handleCardGlow
+      canGoPrev, canGoNext,
+      toggleCheck, toggleSection, scrollToTop, highlight, handleCardGlow,
+      openPanel, closePanel, goPrev, goNext
     };
   }
 }).mount('#app');
