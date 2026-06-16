@@ -1,0 +1,2844 @@
+Version fusionnée en style **“Extraction structurée des notes”**, basée sur le support M202 théorique, la série Windows M202 EFF, les commandes PowerShell, et la synthèse “theo all”. Le module couvre Windows Server 2019, Hyper-V, Gestionnaire de serveur/WAC, AD DS, FSMO, RODC, DHCP, DNS, GPO, serveur de fichiers, DFS, PKI/EFS, WDS, Sysprep et commandes PowerShell d’examen.   
+
+# Windows M202 — Extraction structurée des notes
+
+## Version fusionnée complète — Administration Windows Server OFPPT
+
+# 1. Introduction Windows Server
+
+## Définition
+
+Windows Server est un système d’exploitation serveur Microsoft utilisé pour fournir et administrer des services réseau.
+
+## Rôle général
+
+Centraliser l’administration.
+Gérer les utilisateurs.
+Gérer les ordinateurs.
+Gérer les groupes.
+Fournir des services réseau.
+Héberger des rôles serveur.
+Assurer l’authentification.
+Partager des fichiers.
+Déployer des systèmes.
+Virtualiser des machines.
+Appliquer des stratégies.
+
+## Services principaux
+
+Active Directory Domain Services.
+DNS.
+DHCP.
+GPO.
+Serveur de fichiers.
+DFS.
+Hyper-V.
+WDS.
+PKI / AD CS.
+IPAM.
+Windows Admin Center.
+
+## Idée centrale
+
+**Installer → Configurer → Promouvoir → Administrer → Sécuriser → Superviser → Déployer**
+
+---
+
+# 2. Éditions Windows Server 2019
+
+## Standard
+
+Édition adaptée aux serveurs physiques.
+Adaptée aux environnements peu virtualisés.
+Permet un nombre limité de machines virtuelles selon licence.
+
+## Datacenter
+
+Édition adaptée aux datacenters.
+Adaptée au cloud privé.
+Adaptée aux environnements fortement virtualisés.
+Permet un nombre illimité de machines virtuelles selon le modèle de licence.
+
+## Essentials
+
+Édition destinée aux petites entreprises.
+Limite typique :
+
+25 utilisateurs ;
+50 appareils.
+
+## Hyper-V Server
+
+Hyperviseur seul.
+Utilisé pour virtualisation sans interface Windows Server complète.
+
+## Piège examen
+
+Standard = peu virtualisé.
+Datacenter = forte virtualisation.
+Essentials = petite entreprise.
+Hyper-V Server = hyperviseur seul.
+
+---
+
+# 3. Licence Windows Server 2019
+
+## Principe
+
+Le modèle de licence est basé principalement sur les cœurs processeur.
+
+## Choix de licence
+
+Standard si peu de VM.
+Datacenter si beaucoup de VM.
+Essentials si petite entreprise.
+Hyper-V Server si besoin d’hyperviseur uniquement.
+
+## Piège
+
+Le choix dépend surtout du niveau de virtualisation.
+
+---
+
+# 4. Types d’installation Windows Server
+
+## Expérience de bureau
+
+Installation complète avec interface graphique.
+Plus facile pour l’administration locale.
+Plus lourde.
+Consomme plus de ressources.
+Surface d’attaque plus grande.
+
+## Server Core
+
+Installation minimale.
+Pas d’interface graphique complète.
+Administration par PowerShell, RSAT, Server Manager ou WAC.
+Consomme moins de ressources.
+Surface d’attaque réduite.
+Plus sécurisé.
+
+## Point important
+
+Sous Windows Server 2019, le choix Core / GUI doit être fait avec prudence car le basculement après installation n’est pas prévu simplement. Le support insiste sur l’impossibilité de basculer entre installation complète et minimale après installation. 
+
+## Piège examen
+
+Server Core = plus sécurisé car moins de composants installés.
+Expérience de bureau = plus simple mais plus exposée.
+
+---
+
+# 5. Prérequis matériels Windows Server 2019
+
+## Minimum
+
+Processeur 64 bits.
+1,4 GHz minimum.
+2 Go de RAM minimum.
+15 Go disque minimum pour installation de base.
+
+## Recommandé pour virtualisation
+
+Plus de RAM.
+Au moins 8 Go selon le support.
+Espace disque suffisant pour les VHDX.
+CPU adapté au nombre de VM. 
+
+## Piège
+
+Le minimum permet l’installation.
+La virtualisation nécessite beaucoup plus.
+
+---
+
+# 6. Installation initiale du serveur
+
+## Étapes
+
+Démarrer sur ISO ou DVD.
+Choisir langue et clavier.
+Cliquer sur Installer maintenant.
+Choisir l’édition.
+Choisir Core ou Expérience de bureau.
+Accepter la licence.
+Choisir installation personnalisée.
+Partitionner le disque.
+Copier les fichiers.
+Redémarrer.
+Définir le mot de passe Administrateur.
+
+## Configurations après installation
+
+Renommer le serveur.
+Configurer une IP statique.
+Configurer DNS.
+Configurer date et heure.
+Activer Windows.
+Appliquer les mises à jour.
+Activer Bureau à distance si nécessaire.
+Configurer pare-feu.
+Joindre le domaine si nécessaire.
+
+## Pourquoi IP statique
+
+Les rôles d’infrastructure doivent rester joignables avec la même adresse.
+
+### Exemples
+
+Contrôleur de domaine.
+DNS.
+DHCP.
+Serveur de fichiers.
+WDS.
+
+---
+
+# 7. Configuration de base PowerShell
+
+## Redémarrer
+
+`Restart-Computer`
+
+## Arrêter
+
+`Stop-Computer`
+
+## Renommer le serveur
+
+`Rename-Computer -NewName "TRI-DC" -Restart`
+
+## Lister les interfaces
+
+`Get-NetIPInterface`
+
+## Configurer une IP statique
+
+`New-NetIPAddress -InterfaceIndex 12 -IPAddress 172.16.0.200 -PrefixLength 24 -DefaultGateway 172.16.0.1`
+
+## Configurer les DNS
+
+`Set-DnsClientServerAddress -InterfaceIndex 12 -ServerAddresses ("172.16.0.10","172.16.0.11")`
+
+## Joindre un domaine
+
+`Add-Computer -DomainName Adatum.com -Restart`
+
+## Piège pratique
+
+Toujours identifier l’InterfaceIndex avant de configurer l’adresse IP. Les commandes de base apparaissent dans le support PowerShell M202. 
+
+---
+
+# 8. System Insights
+
+## Définition
+
+System Insights est une fonctionnalité Windows Server 2019 d’analyse prédictive locale.
+
+## Rôle
+
+Prévoir l’utilisation future des ressources serveur.
+Aider à anticiper les problèmes de capacité.
+Traiter les données localement sans dépendance cloud.
+
+## Capacités par défaut
+
+Prévision CPU.
+Prévision réseau.
+Prévision du stockage total.
+Prévision de la consommation par volume.
+
+## États possibles
+
+OK.
+Avertissement.
+Critique.
+Erreur.
+Aucun si données insuffisantes.
+
+## Avantage
+
+Analyse locale.
+Confidentialité.
+Prévision de capacité.
+
+---
+
+# 9. Hyper-V
+
+## Définition
+
+Hyper-V est l’hyperviseur Microsoft intégré à Windows Server.
+
+## Type
+
+Hyperviseur de type 1.
+Il fonctionne directement au-dessus du matériel hôte.
+Il contrôle les machines virtuelles.
+
+## Rôle
+
+Créer des machines virtuelles.
+Isoler plusieurs systèmes sur un même serveur physique.
+Optimiser l’utilisation du matériel.
+Tester des environnements.
+Consolider les serveurs.
+
+## Composants d’une VM
+
+Processeurs virtuels.
+Mémoire.
+Disque virtuel VHD/VHDX.
+Carte réseau virtuelle.
+Firmware BIOS ou UEFI.
+Contrôleur IDE ou SCSI selon génération.
+Fichiers de configuration.
+Checkpoints.
+
+---
+
+# 10. VM Génération 1 et Génération 2
+
+## Génération 1
+
+BIOS classique.
+Contrôleur IDE possible.
+Compatible anciens systèmes.
+Maximum cité : 64 vCPU.
+RAM max citée : 1 To.
+
+## Génération 2
+
+UEFI.
+Secure Boot.
+SCSI uniquement.
+Matériel virtuel moderne.
+Ajout de RAM à chaud.
+Maximum cité : 240 vCPU.
+RAM max citée : 12 To.
+
+## Avantage UEFI
+
+Démarrage sécurisé.
+Meilleure sécurité.
+Support de fonctionnalités modernes.
+
+## Piège examen
+
+Génération 2 = UEFI + Secure Boot + RAM à chaud.
+Génération 1 = BIOS + compatibilité ancienne. 
+
+---
+
+# 11. Commutateurs virtuels Hyper-V
+
+## Externe
+
+Les VM communiquent avec le réseau physique.
+Utilise la carte réseau physique de l’hôte.
+Permet accès LAN/Internet.
+
+## Interne
+
+Communication entre VM et hôte.
+Pas d’accès direct au réseau physique.
+
+## Privé
+
+Communication uniquement entre VM.
+L’hôte ne communique pas avec les VM.
+Isolation maximale.
+
+## Piège classique
+
+Interne = VM ↔ hôte.
+Privé = VM ↔ VM seulement.
+Externe = VM ↔ réseau physique.
+
+---
+
+# 12. Disques virtuels Hyper-V
+
+## VHD
+
+Ancien format.
+Limité à environ 2 To.
+Format hérité.
+
+## VHDX
+
+Format moderne.
+Supporte jusqu’à 64 To.
+Plus résistant à la corruption.
+Recommandé.
+
+## Disque fixe
+
+Espace total réservé dès la création.
+Performances plus stables.
+Consomme immédiatement l’espace.
+
+## Disque dynamique
+
+Grandit selon les données.
+Économise l’espace.
+Performance moins prévisible.
+
+## Disque de différenciation
+
+Dépend d’un disque parent.
+Contient seulement les modifications.
+Si le parent est modifié ou supprimé, la VM peut devenir inutilisable.
+
+## Pass-Through Disk
+
+Accès direct à un disque physique.
+Utilisé pour performance ou besoin spécifique.
+Moins flexible que VHDX.
+
+---
+
+# 13. Mémoire dynamique Hyper-V
+
+## Définition
+
+Fonction qui ajuste la RAM d’une VM selon ses besoins.
+
+## Paramètres
+
+RAM minimale.
+RAM de démarrage.
+RAM maximale.
+
+## Avantage
+
+Optimise l’utilisation mémoire entre plusieurs VM.
+
+## Limite
+
+Pas recommandé pour certains rôles serveur qui exigent une mémoire stable.
+
+## Piège
+
+Serveurs critiques = mémoire prévisible préférable.
+
+---
+
+# 14. Checkpoints Hyper-V
+
+## Définition
+
+Point de contrôle d’une VM à un instant donné.
+
+## Rôle
+
+Revenir à un état précédent.
+Tester une modification.
+Faire des essais.
+
+## Limite
+
+Ce n’est pas une sauvegarde.
+Le checkpoint dépend du même stockage.
+Il peut poser problème pour certains rôles comme les contrôleurs de domaine.
+
+## Piège examen
+
+Checkpoint ≠ sauvegarde.
+
+---
+
+# 15. Live Migration
+
+## Définition
+
+Migration à chaud d’une VM d’un hôte Hyper-V vers un autre sans interruption de service.
+
+## Prérequis
+
+Deux hôtes Hyper-V compatibles.
+Réseau entre hôtes.
+Droits administratifs.
+Authentification configurée.
+VM compatible.
+Stockage adapté.
+
+## Authentification CredSSP
+
+Simple.
+Nécessite d’être connecté sur l’hôte source.
+
+## Authentification Kerberos
+
+Permet migration à distance.
+Nécessite délégation configurée.
+
+## Groupe Administrateurs Hyper-V
+
+Donne les droits nécessaires pour gérer Hyper-V et effectuer des migrations.
+
+---
+
+# 16. HGS et VM blindées
+
+## HGS
+
+Host Guardian Service.
+
+## Rôle
+
+Protège les machines virtuelles blindées.
+Empêche l’accès non autorisé par l’administrateur de l’hôte.
+
+## VM blindée
+
+VM protégée contre les accès non autorisés.
+Protège les données et l’état de la VM.
+
+## Mode Offline HGS
+
+Permet à certaines VM protégées de continuer à démarrer si HGS est temporairement indisponible selon configuration.
+
+---
+
+# 17. Gestionnaire de serveur
+
+## Définition
+
+Console Windows Server pour gérer le serveur local et les serveurs distants.
+
+## Rôle
+
+Afficher l’état des rôles.
+Gérer les services.
+Ajouter ou supprimer des rôles.
+Gérer plusieurs serveurs.
+Lancer des outils.
+Afficher événements et alertes.
+Exécuter BPA.
+
+## Tableau de bord
+
+Affiche :
+
+rôles ;
+services ;
+événements ;
+performances ;
+état des serveurs ;
+alertes.
+
+## Indicateurs
+
+Les alertes signalent :
+
+service arrêté ;
+problème critique ;
+événement important ;
+rôle en erreur.
+
+## Groupes de serveurs
+
+Permettent de regrouper plusieurs serveurs.
+Facilitent l’administration multi-serveurs.
+
+## Administration distante
+
+Depuis un serveur avec interface graphique, on peut administrer des serveurs Core ou distants.
+
+---
+
+# 18. Best Practice Analyzer
+
+## Définition
+
+BPA est un outil qui vérifie si les rôles installés respectent les bonnes pratiques Microsoft.
+
+## Vérifie
+
+Configuration.
+Sécurité.
+Disponibilité.
+Dépendances.
+Erreurs possibles.
+Écarts par rapport aux recommandations.
+
+## Après correction
+
+Relancer l’analyse BPA pour vérifier que l’erreur a disparu.
+
+---
+
+# 19. Windows Admin Center
+
+## Définition
+
+Windows Admin Center est une interface web moderne d’administration Windows Server.
+
+## Rôle
+
+Administrer localement ou à distance via navigateur.
+Gérer serveurs.
+Gérer rôles.
+Gérer services.
+Gérer stockage.
+Gérer Hyper-V.
+Gérer mises à jour.
+Utiliser PowerShell distant.
+
+## Mécanismes
+
+WinRM.
+Remote PowerShell.
+WMI.
+
+## Avantages
+
+Administration moderne.
+Interface web.
+Gestion multi-serveurs.
+Moins besoin de consoles MMC locales.
+Intégrations Azure possibles.
+
+## Comparaison
+
+Gestionnaire de serveur = console classique Windows Server.
+Windows Admin Center = interface web moderne.
+
+---
+
+# 20. Active Directory Domain Services
+
+## Définition
+
+AD DS est le service d’annuaire Microsoft.
+
+## Rôle
+
+Centraliser les identités.
+Gérer utilisateurs.
+Gérer ordinateurs.
+Gérer groupes.
+Gérer stratégies.
+Assurer authentification.
+Organiser les ressources.
+Appliquer la sécurité.
+
+## Base AD
+
+Stocke les objets du domaine.
+Utilise la base NTDS.DIT.
+
+## Contrôleur de domaine
+
+Serveur qui héberge AD DS.
+Authentifie les utilisateurs.
+Réplique avec les autres DC.
+Publie les services AD dans DNS.
+
+---
+
+# 21. Structure logique Active Directory
+
+## Forêt
+
+Niveau le plus haut.
+Frontière de sécurité maximale.
+Partage :
+
+schéma ;
+configuration ;
+catalogue global ;
+relations d’approbation internes.
+
+## Domaine
+
+Unité administrative.
+Partage une base d’annuaire.
+Possède une stratégie de sécurité.
+Contient au moins un contrôleur de domaine.
+Possède un nom DNS unique.
+
+## Arborescence
+
+Ensemble de domaines partageant un espace de noms DNS contigu.
+
+### Exemple
+
+formation.local.
+paris.formation.local.
+tanger.formation.local.
+
+## Domaine enfant
+
+Domaine créé sous un domaine parent.
+Relation parent-enfant bidirectionnelle et transitive.
+
+## OU
+
+Unité d’organisation.
+Conteneur logique dans un domaine.
+Sert à organiser les objets.
+Sert à déléguer l’administration.
+Sert à appliquer des GPO.
+
+## Piège
+
+Forêt = frontière de sécurité.
+Domaine = limite administrative.
+OU = organisation et délégation, pas frontière de sécurité.
+
+---
+
+# 22. Objets Active Directory
+
+## Objets courants
+
+Utilisateur.
+Groupe.
+Ordinateur.
+OU.
+Imprimante.
+Contact.
+Compte de service.
+
+## Compte utilisateur
+
+Représente une personne ou un service.
+Permet l’ouverture de session.
+Contient identifiant, mot de passe, UPN, groupes, profil.
+
+## Compte ordinateur
+
+Représente une machine jointe au domaine.
+Permet l’authentification de l’ordinateur dans le domaine.
+
+## Groupe
+
+Regroupe des utilisateurs, ordinateurs ou autres groupes.
+Sert à affecter des droits plus facilement.
+
+## OU
+
+Conteneur logique pour organiser et appliquer des GPO.
+
+---
+
+# 23. Partitions Active Directory
+
+## Définition
+
+La base Active Directory est divisée en partitions pour optimiser la réplication.
+
+## Partition de schéma
+
+Contient les définitions des objets et attributs.
+Répliquée dans toute la forêt.
+
+## Partition de configuration
+
+Contient la structure logique de la forêt.
+Répliquée dans toute la forêt.
+
+## Partition de domaine
+
+Contient les objets du domaine :
+
+utilisateurs ;
+groupes ;
+ordinateurs ;
+OU.
+
+Répliquée uniquement dans le domaine concerné.
+
+## Partition d’application
+
+Contient des données d’applications.
+Exemple : zones DNS intégrées à AD.
+Portée configurable.
+
+## Piège
+
+Schéma et configuration = forêt.
+Domaine = uniquement domaine.
+Application = selon configuration.
+
+---
+
+# 24. Rôles FSMO
+
+## Définition
+
+FSMO signifie Flexible Single Master Operation.
+Ce sont des rôles uniques nécessaires pour certaines opérations critiques.
+
+## Nombre
+
+5 rôles FSMO.
+
+## Rôles au niveau forêt
+
+### Maître de schéma
+
+Autorise les modifications du schéma AD.
+
+### Maître d’attribution de noms de domaine
+
+Contrôle l’ajout et la suppression de domaines dans la forêt.
+
+## Rôles au niveau domaine
+
+### Maître RID
+
+Distribue des blocs RID aux contrôleurs de domaine.
+Garantit l’unicité des SID.
+
+### Émulateur PDC
+
+Rôle très important au quotidien.
+Source de temps du domaine.
+Gère les changements de mot de passe en priorité.
+Compatible avec anciens clients.
+Participe au verrouillage de compte.
+
+### Maître infrastructure
+
+Met à jour les références d’objets inter-domaines.
+
+## Piège
+
+2 rôles forêt.
+3 rôles domaine.
+PDC Emulator est souvent le plus critique au quotidien. Le tableau de synthèse M202 rappelle la répartition FSMO : schéma + dénomination pour la forêt ; RID + infrastructure + PDC pour le domaine. 
+
+---
+
+# 25. Catalogue Global
+
+## Définition
+
+Le Catalogue Global est un contrôleur de domaine qui stocke :
+
+une copie complète des objets de son domaine ;
+une copie partielle des objets des autres domaines de la forêt.
+
+## Rôle
+
+Recherche dans toute la forêt.
+Authentification multi-domaines.
+Validation de l’appartenance aux groupes universels.
+
+## Si aucun GC disponible
+
+Problèmes d’ouverture de session possibles.
+Problèmes de recherche inter-domaines.
+Authentification affectée dans une forêt multi-domaines.
+
+## Modification des attributs GC
+
+Se fait via le schéma Active Directory.
+On coche l’option de réplication de l’attribut dans le catalogue global.
+
+---
+
+# 26. Sites Active Directory
+
+## Définition
+
+Un site AD représente la topologie physique du réseau.
+
+## Rôle
+
+Optimiser la réplication.
+Optimiser l’authentification.
+Associer les clients au DC le plus proche.
+Réduire le trafic WAN.
+
+## Intrasite
+
+Réplication fréquente.
+Rapide.
+Non compressée.
+Utilise RPC.
+
+## Intersite
+
+Réplication planifiée.
+Compressée.
+Optimisée pour WAN.
+Coût des liens pris en compte.
+
+## ISTG
+
+Intersite Topology Generator.
+DC élu dans un site.
+Calcule la topologie de réplication intersite.
+
+## Bridgehead Server
+
+Serveur tête de pont.
+Concentre le trafic de réplication entre sites.
+
+## Transport
+
+RPC sur IP recommandé.
+SMTP possible mais ne réplique pas toutes les partitions.
+
+---
+
+# 27. Niveaux fonctionnels
+
+## Définition
+
+Les niveaux fonctionnels déterminent les fonctionnalités AD disponibles et les versions de DC autorisées.
+
+## Niveau domaine
+
+Affecte les fonctionnalités d’un domaine.
+
+## Niveau forêt
+
+Affecte les fonctionnalités de toute la forêt.
+
+## Conséquence
+
+Une fois élevé, le niveau peut empêcher l’ajout de DC plus anciens.
+Le retour en arrière peut être impossible ou limité.
+
+## Exemple
+
+Windows Server 2008 R2 introduit la Corbeille Active Directory.
+
+## Piège
+
+Toujours vérifier les versions de tous les DC avant d’élever le niveau fonctionnel.
+
+---
+
+# 28. RODC
+
+## Définition
+
+RODC signifie Read-Only Domain Controller.
+C’est un contrôleur de domaine en lecture seule.
+
+## Rôle
+
+Fournir AD dans un site distant.
+Limiter les risques si le serveur est physiquement peu sécurisé.
+
+## Caractéristiques
+
+Base AD en lecture seule.
+Ne stocke pas les mots de passe par défaut.
+Peut utiliser une stratégie de réplication des mots de passe.
+Permet délégation locale sans donner les droits AD complets.
+
+## Cas d’usage
+
+Succursale.
+Agence distante.
+Site sans administrateur qualifié.
+Site avec sécurité physique faible.
+
+## Prérequis
+
+Forêt au moins Windows Server 2003.
+Au moins un DC en écriture disponible.
+RODC supporté à partir de Windows Server 2008.
+
+## Piège
+
+RODC ne remplace pas un DC en écriture dans le site principal.
+
+---
+
+# 29. Clonage d’un contrôleur de domaine virtualisé
+
+## Définition
+
+Le clonage permet de créer rapidement un nouveau DC virtuel à partir d’un DC existant.
+
+## Fichier requis
+
+DCCloneConfig.xml.
+
+## Emplacement
+
+Répertoire de la base AD.
+Souvent `C:\Windows\NTDS`.
+
+## Rôle FSMO nécessaire
+
+Émulateur PDC disponible.
+Doit supporter le clonage.
+
+## Groupe requis
+
+Contrôleurs de domaine clonables.
+
+## Commandes importantes
+
+`Get-ADDCCloningExcludedApplicationList`
+Analyse les applications non compatibles avec le clonage.
+
+`New-ADDCCloneConfigFile`
+Génère le fichier DCCloneConfig.xml.
+
+## Piège
+
+Un DC n’est pas clonable par défaut.
+Il faut l’autoriser explicitement.
+
+---
+
+# 30. Azure Active Directory
+
+## Définition
+
+Azure AD est le service d’identité cloud de Microsoft.
+
+## Rôle
+
+Gestion des identités cloud.
+Authentification pour Microsoft 365 et services cloud.
+SSO.
+MFA.
+Accès conditionnel.
+
+## Différence avec AD DS
+
+AD DS = annuaire local basé domaine, LDAP, Kerberos, GPO.
+Azure AD = identité cloud, OAuth, SAML, OpenID Connect, accès aux applications SaaS.
+
+## Piège
+
+Azure AD ne remplace pas exactement AD DS local.
+Les deux peuvent être synchronisés.
+
+---
+
+# 31. Prérequis de promotion d’un contrôleur de domaine
+
+## Prérequis
+
+Adresse IP statique.
+Nom serveur définitif.
+DNS fonctionnel.
+Partition NTFS.
+Mot de passe administrateur.
+Espace disque suffisant.
+Bonne configuration réseau.
+
+## Pourquoi NTFS
+
+AD DS et SYSVOL nécessitent NTFS.
+
+## DNS
+
+Indispensable pour localiser les contrôleurs de domaine via enregistrements SRV.
+
+## DSRM
+
+Directory Services Restore Mode.
+Mot de passe de restauration AD.
+Utilisé en mode de dépannage, pas pour administration quotidienne.
+
+---
+
+# 32. Installation et promotion AD DS
+
+## Étapes générales
+
+Installer rôle AD DS.
+Ajouter DNS si nécessaire.
+Promouvoir le serveur.
+Choisir nouvelle forêt, domaine enfant, arbre ou DC additionnel.
+Configurer DSRM.
+Vérifier prérequis.
+Redémarrer.
+Vérifier DNS et AD.
+
+## Nouvelle forêt
+
+Crée une nouvelle forêt AD.
+Crée un domaine racine.
+
+## DC additionnel
+
+Ajoute un contrôleur dans un domaine existant.
+
+## Domaine enfant
+
+Crée un domaine sous un parent.
+
+## Nouvelle arborescence
+
+Crée un nouvel espace de noms DNS dans la même forêt.
+
+---
+
+# 33. Commandes AD DS PowerShell
+
+## Installer AD DS
+
+`Install-WindowsFeature AD-Domain-Services -IncludeManagementTools`
+
+## Nouvelle forêt
+
+`Install-ADDSForest`
+
+## Contrôleur additionnel
+
+`Install-ADDSDomainController`
+
+## Domaine enfant
+
+`Install-ADDSDomain`
+
+## Nouvelle arborescence
+
+`Install-ADDSDomain`
+
+## Désinstaller / rétrograder
+
+`Uninstall-ADDSDomainController`
+
+## Module AD
+
+`Import-Module ActiveDirectory`
+
+## Piège pratique
+
+Installer le rôle ne suffit pas.
+Il faut ensuite promouvoir le serveur.
+
+---
+
+# 34. Vérification après promotion
+
+## Consoles
+
+Utilisateurs et ordinateurs Active Directory.
+DNS.
+Sites et services Active Directory.
+Observateur d’événements.
+
+## Commandes
+
+`dcdiag`
+Diagnostic du contrôleur de domaine.
+
+`repadmin /showrepl`
+Vérifie la réplication.
+
+## Vérifier
+
+Présence des enregistrements SRV.
+Réplication.
+SYSVOL.
+DNS.
+Événements Directory Service.
+Connexion au domaine.
+
+---
+
+# 35. Rétrogradation d’un contrôleur de domaine
+
+## Définition
+
+La rétrogradation retire le rôle AD DS d’un serveur.
+
+## Précautions
+
+Vérifier qu’il ne détient pas des rôles FSMO critiques.
+Transférer les rôles FSMO avant suppression si nécessaire.
+Vérifier qu’il reste d’autres DC.
+Vérifier réplication.
+Définir un mot de passe administrateur local.
+
+## Piège
+
+Si c’est le dernier DC d’un domaine, la suppression peut détruire le domaine.
+
+---
+
+# 36. Gestion des objets AD
+
+## Utilisateur
+
+Compte permettant à une personne de s’authentifier.
+
+## Propriétés importantes
+
+Nom.
+Prénom.
+Nom d’ouverture de session.
+UPN.
+Mot de passe.
+Département.
+Adresse mail.
+Profil.
+Groupes.
+
+## Ordinateur
+
+Compte représentant une machine membre du domaine.
+
+## Groupe
+
+Regroupe des utilisateurs ou ordinateurs.
+
+## OU
+
+Organise les objets et permet l’application de GPO.
+
+---
+
+# 37. Commandes PowerShell objets AD
+
+## Créer une OU
+
+`New-ADOrganizationalUnit -Name "NTIC"`
+
+## Créer une sous-OU
+
+`New-ADOrganizationalUnit -Name "TRI" -Path "OU=NTIC,DC=adatum,DC=com"`
+
+## Afficher les OU
+
+`Get-ADOrganizationalUnit -Filter *`
+
+## Créer un utilisateur
+
+`New-ADUser`
+
+## Définir mot de passe
+
+`Set-ADAccountPassword`
+
+## Activer un compte
+
+`Enable-ADAccount`
+
+## Désactiver un compte
+
+`Disable-ADAccount`
+
+## Supprimer un utilisateur
+
+`Remove-ADUser`
+
+## Créer un ordinateur
+
+`New-ADComputer`
+
+## Modifier un ordinateur
+
+`Set-ADComputer`
+
+## Supprimer un ordinateur
+
+`Remove-ADComputer`
+
+## Créer un groupe
+
+`New-ADGroup`
+
+## Ajouter membres
+
+`Add-ADGroupMember`
+
+## Retirer membres
+
+`Remove-ADGroupMember`
+
+## Déplacer objet
+
+`Move-ADObject`
+
+## Renommer objet
+
+`Rename-ADObject`
+
+Les commandes de gestion AD, utilisateurs, ordinateurs et groupes sont présentes dans le support PowerShell M202. 
+
+---
+
+# 38. Protection contre suppression accidentelle
+
+## Définition
+
+Option empêchant la suppression involontaire d’un objet AD.
+
+## Souvent activée sur
+
+OU.
+
+## Pour supprimer une OU protégée
+
+Désactiver la protection.
+Puis supprimer l’OU.
+
+## Piège pratique
+
+Si la suppression échoue, vérifier la protection contre suppression accidentelle.
+
+---
+
+# 39. Groupes Active Directory
+
+## Catégories
+
+Groupe de sécurité.
+Groupe de distribution.
+
+## Groupe de sécurité
+
+Utilisé pour attribuer des permissions.
+Peut aussi servir à la distribution mail selon contexte.
+
+## Groupe de distribution
+
+Utilisé pour e-mail.
+Ne sert pas à attribuer des permissions de sécurité.
+
+## Étendues
+
+Local domaine.
+Global.
+Universel.
+
+## Groupe global
+
+Contient généralement des comptes du même domaine.
+Peut être utilisé pour organiser les utilisateurs par rôle.
+
+## Groupe local domaine
+
+Utilisé pour attribuer des permissions sur les ressources du domaine.
+
+## Groupe universel
+
+Utilisé dans une forêt multi-domaines.
+Stocké dans le catalogue global.
+
+---
+
+# 40. Modèle AGDLP
+
+## Signification
+
+A = Accounts.
+G = Global Groups.
+DL = Domain Local Groups.
+P = Permissions.
+
+## Principe
+
+Comptes utilisateurs dans groupes globaux.
+Groupes globaux dans groupes locaux de domaine.
+Permissions appliquées aux groupes locaux de domaine.
+
+## Objectif
+
+Gestion propre des permissions.
+Administration scalable.
+Moins d’erreurs.
+
+## Mémo
+
+Utilisateurs → Global → Domaine Local → Permission.
+
+---
+
+# 41. Jeton d’accès
+
+## Définition
+
+Le jeton d’accès est créé lors de l’ouverture de session.
+
+## Contient
+
+SID utilisateur.
+SID des groupes.
+Droits.
+Privilèges.
+
+## Rôle
+
+Permet à Windows de vérifier les autorisations d’accès.
+
+## Piège
+
+Après changement d’appartenance à un groupe, l’utilisateur doit souvent se déconnecter/reconnecter pour obtenir un nouveau jeton.
+
+---
+
+# 42. Corbeille Active Directory
+
+## Définition
+
+Fonction permettant de restaurer des objets AD supprimés.
+
+## Avantage
+
+Restauration sans redémarrage en mode DSRM.
+Conserve davantage d’attributs qu’une restauration tombstone classique.
+
+## Prérequis
+
+Niveau fonctionnel compatible.
+Fonction activée.
+
+## Piège
+
+Une fois activée, la Corbeille AD ne se désactive pas simplement.
+
+---
+
+# 43. DHCP Windows Server
+
+## Définition
+
+DHCP attribue automatiquement une configuration IP aux clients.
+
+## Fournit
+
+Adresse IP.
+Masque.
+Passerelle.
+DNS.
+Durée de bail.
+Options.
+
+## Avantages
+
+Évite les conflits IP.
+Centralise la configuration.
+Simplifie l’administration.
+
+## DORA
+
+Discover.
+Offer.
+Request.
+Acknowledgement.
+
+## Ports
+
+Serveur : UDP 67.
+Client : UDP 68.
+
+## Piège
+
+Le support de synthèse rappelle DHCP DORA avec Discover/Offer/Request/Acknowledge. 
+
+---
+
+# 44. DHCP — Étendue
+
+## Définition
+
+Une étendue est une plage d’adresses IP distribuables pour un sous-réseau.
+
+## Contient
+
+Plage de début.
+Plage de fin.
+Masque.
+Exclusions.
+Options.
+Durée de bail.
+
+## Exclusion
+
+Adresse ou plage non distribuée automatiquement.
+
+### Usage
+
+Serveur.
+Imprimante.
+Routeur.
+Équipement avec IP statique.
+
+## Réservation
+
+Attribue toujours la même IP à un client.
+Basée sur l’adresse MAC.
+
+## Bail
+
+Attribution temporaire d’une IP.
+
+---
+
+# 45. Options DHCP
+
+## Option 003
+
+Passerelle par défaut.
+
+## Option 006
+
+Serveur DNS.
+
+## Autres options possibles
+
+Nom de domaine.
+Serveur WINS.
+Serveur TFTP.
+Option 150 selon téléphonie IP.
+
+## Niveau d’options
+
+Options serveur.
+Options étendue.
+Options réservation.
+
+## Priorité logique
+
+Réservation spécifique.
+Étendue.
+Serveur.
+
+---
+
+# 46. DHCP Failover
+
+## Définition
+
+Haute disponibilité DHCP entre deux serveurs.
+
+## Modes
+
+### Load Balance
+
+Deux serveurs partagent la charge.
+
+### Hot Standby
+
+Serveur principal actif.
+Serveur secondaire en attente.
+Le secondaire prend le relais en cas de panne.
+
+## Limites
+
+Maximum deux serveurs.
+Fonctionne uniquement pour IPv4.
+Les réservations doivent être créées sur les deux serveurs selon le support. 
+
+## Règle 80/20
+
+Sans basculement, on peut distribuer 80 % de la plage sur un serveur et 20 % sur l’autre pour éviter les conflits.
+
+---
+
+# 47. IPAM
+
+## Définition
+
+IPAM signifie IP Address Management.
+
+## Rôle
+
+Découvrir.
+Surveiller.
+Auditer.
+Gérer les plages IP.
+Gérer les serveurs DHCP.
+Gérer les serveurs DNS.
+
+## Groupes locaux IPAM
+
+Utilisateurs IPAM : consultation.
+Administrateurs IPAM ASM : gestion espace d’adressage.
+Administrateurs IPAM MSM : gestion multi-serveurs.
+Administrateurs IPAM Audit : journaux.
+Administrateurs IPAM : accès complet.
+
+## Fonctionnement
+
+IPAM utilise des GPO pour configurer les droits sur les serveurs gérés.
+Communication via WMI ou RPC. 
+
+---
+
+# 48. Commandes PowerShell DHCP
+
+## Installer DHCP
+
+`Install-WindowsFeature DHCP -IncludeManagementTools`
+
+## Autoriser DHCP dans AD
+
+`Add-DhcpServerInDC -DnsName lon-svr1.adatum.com -IPAddress 172.16.0.21`
+
+## Créer groupes DHCP
+
+`Add-DhcpServerSecurityGroup`
+
+## Créer une étendue
+
+`Add-DhcpServerv4Scope -Name ofppt -StartRange 172.18.0.50 -EndRange 172.18.0.150 -SubnetMask 255.255.255.0`
+
+## Ajouter une exclusion
+
+`Add-DhcpServerv4ExclusionRange`
+
+## Configurer passerelle
+
+`Set-DhcpServerv4OptionValue -ScopeId 172.18.0.0 -Router 172.18.0.1`
+
+## Configurer DNS
+
+`Set-DhcpServerv4OptionValue -ScopeId 172.18.0.0 -DnsServer 172.18.0.10`
+
+## Créer réservation
+
+`Add-DhcpServerv4Reservation`
+
+Ces commandes sont dans le support M202 PowerShell. 
+
+---
+
+# 49. DNS Windows Server
+
+## Définition
+
+DNS traduit les noms en adresses IP.
+
+## Rôle
+
+Résolution de noms.
+Localisation des services AD.
+Publication des serveurs.
+Résolution directe et inverse.
+
+## Importance dans AD
+
+AD dépend fortement de DNS.
+Les clients trouvent les DC grâce aux enregistrements SRV.
+
+## Hiérarchie DNS
+
+Racine.
+TLD.
+Domaine.
+Sous-domaines.
+Zones.
+
+---
+
+# 50. Zones DNS
+
+## Zone primaire
+
+Lecture/écriture.
+Zone principale.
+Modifiable sur le serveur qui l’héberge.
+
+## Zone secondaire
+
+Copie en lecture seule d’une zone primaire.
+Utilisée pour redondance.
+Mise à jour par transfert de zone.
+
+## Zone intégrée AD
+
+Stockée dans Active Directory.
+Répliquée via AD.
+Sécurise les mises à jour dynamiques.
+
+## Zone Stub
+
+Contient seulement les informations nécessaires pour localiser les serveurs autoritaires.
+
+### Contenu
+
+NS.
+SOA.
+A/AAAA glue records nécessaires.
+
+## Zone de recherche inversée
+
+Résout IP → nom.
+Contient des enregistrements PTR.
+
+## Zone GlobalNames
+
+Zone spéciale pour résoudre des noms courts statiques.
+Alternative partielle à WINS.
+Ne remplace pas totalement WINS.
+Réservée aux noms statiques importants. 
+
+## Piège
+
+Primaire = lecture/écriture.
+Secondaire = lecture seule.
+Stub = NS/SOA/A nécessaires seulement.
+Zone intégrée AD = réplication AD.
+
+---
+
+# 51. Enregistrements DNS
+
+## A
+
+Nom → IPv4.
+
+## AAAA
+
+Nom → IPv6.
+
+## CNAME
+
+Alias vers un nom canonique.
+
+## PTR
+
+IP → nom.
+Utilisé en zone inverse.
+
+## MX
+
+Serveur de messagerie.
+
+## NS
+
+Serveur DNS autoritaire.
+
+## SOA
+
+Informations principales de la zone.
+
+## SRV
+
+Localisation de services.
+Important pour Active Directory.
+
+## Piège
+
+AD utilise les SRV pour localiser LDAP, Kerberos et les DC.
+
+---
+
+# 52. Redirecteurs DNS
+
+## Redirecteur standard
+
+Transfère les requêtes hors zone vers un autre DNS.
+Exemple : DNS du FAI.
+
+## Redirecteur conditionnel
+
+Transfère selon le domaine demandé.
+Exemple : requêtes pour `test.ma` vers un serveur spécifique.
+
+## Résolution récursive
+
+Le serveur local délègue la résolution complète à un redirecteur.
+
+## Résolution itérative
+
+Le serveur local interroge successivement :
+
+racine ;
+TLD ;
+serveur du domaine.
+
+## Piège
+
+Récursive = quelqu’un fait tout pour toi.
+Itérative = le serveur local suit la chaîne DNS.
+
+---
+
+# 53. Scavenging DNS
+
+## Définition
+
+Nettoyage automatique des enregistrements DNS obsolètes.
+
+## Objectif
+
+Garder une base DNS propre.
+Supprimer les enregistrements dynamiques périmés.
+
+## Intervalles
+
+Intervalle de non-actualisation.
+Intervalle d’actualisation.
+
+## Point important
+
+Les enregistrements statiques ont un horodatage à 0.
+Ils ne sont pas supprimés automatiquement.
+Seuls les enregistrements dynamiques horodatés peuvent être nettoyés. 
+
+---
+
+# 54. Commandes PowerShell DNS
+
+## Installer DNS
+
+`Install-WindowsFeature DNS -IncludeManagementTools`
+
+## Zone primaire standard
+
+`Add-DnsServerPrimaryZone -Name ofppt.ma -ZoneFile ofppt.ma.dns`
+
+## Zone intégrée AD
+
+`Add-DnsServerPrimaryZone -Name ofppt.com -ReplicationScope Domain`
+
+## Zone inverse
+
+`Add-DnsServerPrimaryZone -NetworkId 172.18.0.0/16 -ZoneFile 18.172.in-addr.arpa.dns`
+
+## Zone secondaire
+
+`Add-DnsServerSecondaryZone -Name adatum.com -MasterServers 172.16.0.10 -ZoneFile adatum.com.dns`
+
+## Enregistrement A + PTR
+
+`Add-DnsServerResourceRecordA -ZoneName ofppt.ma -Name lon-client1 -IPv4Address 172.18.0.50 -CreatePtr`
+
+## Enregistrement AAAA
+
+`Add-DnsServerResourceRecordAAAA`
+
+## Enregistrement MX
+
+`Add-DnsServerResourceRecordMX`
+
+## Enregistrement CNAME
+
+`Add-DnsServerResourceRecordCName`
+
+## Enregistrement SRV
+
+`Add-DnsServerResourceRecord -Srv`
+
+Les commandes DNS et DHCP sont incluses dans les supports M202 PowerShell.  
+
+---
+
+# 55. GPO
+
+## Définition
+
+GPO signifie Group Policy Object.
+C’est un ensemble de paramètres appliqués aux utilisateurs et ordinateurs d’un domaine.
+
+## Rôle
+
+Automatiser la configuration.
+Renforcer la sécurité.
+Standardiser les postes.
+Déployer des paramètres.
+Contrôler l’environnement utilisateur.
+
+## Cibles
+
+Ordinateurs.
+Utilisateurs.
+
+## Application
+
+Les GPO s’appliquent selon les liens et l’ordre d’héritage.
+
+---
+
+# 56. Ordre d’application GPO
+
+## Mémo
+
+LSDO.
+
+## Ordre
+
+Local.
+Site.
+Domaine.
+OU.
+
+## Priorité
+
+La dernière GPO appliquée l’emporte en cas de conflit.
+La GPO de l’OU la plus proche de l’objet est prioritaire. Le support insiste sur LSDO et sur le fait que la dernière GPO appliquée gagne. 
+
+## Piège
+
+Local = priorité faible.
+OU proche = priorité forte.
+
+---
+
+# 57. Héritage GPO
+
+## Héritage
+
+Une OU enfant hérite des GPO liées aux niveaux supérieurs.
+
+## Bloquer l’héritage
+
+Empêche certaines GPO supérieures de s’appliquer.
+
+## Enforcement / Appliqué
+
+Force une GPO à s’appliquer malgré le blocage d’héritage.
+
+## Piège
+
+Enforced peut contourner Block Inheritance.
+
+---
+
+# 58. Filtres GPO
+
+## Filtre de sécurité
+
+Contrôle quels utilisateurs ou ordinateurs appliquent la GPO.
+Basé sur les permissions.
+
+## Filtre WMI
+
+Applique la GPO selon une condition WMI.
+
+### Exemples
+
+Version OS.
+Type ordinateur.
+Architecture.
+Mémoire.
+Nom machine.
+
+## Piège
+
+Filtre WMI trop lourd peut ralentir l’ouverture de session.
+
+---
+
+# 59. CSE
+
+## Définition
+
+CSE signifie Client-Side Extension.
+
+## Rôle
+
+Composant côté client qui applique réellement les paramètres GPO.
+
+## Exemples
+
+Sécurité.
+Registre.
+Installation logicielle.
+Scripts.
+Redirection de dossiers.
+
+## Point important
+
+La CSE de sécurité applique obligatoirement les modifications toutes les 16 heures même sans changement de GPO. Les autres CSE s’appliquent surtout en cas de modification. 
+
+---
+
+# 60. ADMX / ADML
+
+## ADMX
+
+Fichiers XML définissant les paramètres de stratégie.
+Stockés localement dans :
+
+`C:\Windows\PolicyDefinitions`
+
+## ADML
+
+Fichiers de langue associés aux ADMX.
+Contiennent les textes affichés dans GPMC.
+
+## Magasin central
+
+Copie des fichiers ADMX/ADML dans SYSVOL.
+
+### Chemin
+
+`\\domaine\SYSVOL\domaine\Policies\PolicyDefinitions`
+
+## Rôle
+
+Assurer la cohérence des modèles d’administration sur tous les DC.
+
+## Piège
+
+Sans magasin central, chaque DC peut utiliser ses propres fichiers ADMX locaux, ce qui peut créer des incohérences. 
+
+---
+
+# 61. Préférences de stratégies de groupe
+
+## Définition
+
+Les préférences offrent des paramètres étendus.
+
+## Exemples
+
+Lecteurs mappés.
+Imprimantes.
+Dossiers.
+Fichiers.
+Tâches planifiées.
+Registre.
+
+## Différence stratégies / préférences
+
+### Stratégies
+
+Paramètre verrouillé.
+L’utilisateur ne peut pas le modifier.
+
+### Préférences
+
+Paramètre proposé.
+L’utilisateur peut parfois le modifier.
+La GPO peut le repositionner plus tard.
+
+## Item-Level Targeting
+
+Permet de cibler finement une préférence.
+
+---
+
+# 62. GPO Starter
+
+## Définition
+
+Modèle de base pour créer de nouvelles GPO.
+
+## Contenu
+
+Uniquement paramètres des modèles d’administration.
+
+## Export
+
+Exportable en fichier `.cab`.
+
+## Rôle
+
+Standardiser la création de GPO.
+
+---
+
+# 63. Commandes PowerShell GPO
+
+## Créer une GPO
+
+`New-GPO -Name "cmd"`
+
+## Lier une GPO
+
+`New-GPLink -Name "cmd" -Target "OU=TRI,DC=ntic,DC=ma" -LinkEnabled Yes`
+
+## Renommer une GPO
+
+`Rename-GPO`
+
+## Supprimer un lien GPO
+
+`Remove-GPLink`
+
+## Supprimer une GPO
+
+`Remove-GPO`
+
+## Forcer mise à jour
+
+`gpupdate /force`
+
+## Créer dossier de redirection
+
+`New-Item -Path "C:\Redirect" -ItemType Directory`
+
+## Créer partage
+
+`New-SmbShare`
+
+Les commandes de gestion GPO et de redirection figurent dans le support PowerShell. 
+
+---
+
+# 64. Serveur de fichiers
+
+## Définition
+
+Un serveur de fichiers centralise le stockage et le partage des données.
+
+## Rôle
+
+Partager des dossiers.
+Contrôler les accès.
+Centraliser les données.
+Faciliter sauvegarde.
+Appliquer quotas.
+Auditer l’utilisation.
+
+## Partage SMB
+
+Permet l’accès réseau aux dossiers.
+Utilisé par les clients Windows.
+
+## Chemin UNC
+
+Format :
+
+`\\serveur\partage`
+
+---
+
+# 65. Autorisations partage et NTFS
+
+## Autorisations de partage
+
+S’appliquent à l’accès réseau.
+Exemples :
+
+Read ;
+Change ;
+Full Control.
+
+## Autorisations NTFS
+
+S’appliquent au système de fichiers local et réseau.
+
+### Exemples
+
+Read.
+Write.
+Modify.
+Full Control.
+List Folder.
+Read & Execute.
+
+## Règle finale
+
+Permission effective = combinaison la plus restrictive entre partage et NTFS.
+
+## Héritage NTFS
+
+Les permissions peuvent être héritées du dossier parent.
+
+## Piège
+
+Partage Full Control + NTFS Read = accès effectif Read.
+Toujours vérifier les deux niveaux.
+
+---
+
+# 66. ABE
+
+## Définition
+
+ABE signifie Access-Based Enumeration.
+
+## Rôle
+
+Masquer les dossiers auxquels l’utilisateur n’a pas accès.
+
+## Avantage
+
+Améliore la confidentialité.
+Simplifie l’affichage utilisateur.
+Réduit les tentatives d’accès.
+
+## Piège
+
+ABE masque l’affichage.
+ABE ne remplace pas les permissions NTFS.
+
+---
+
+# 67. Espaces de stockage
+
+## Définition
+
+Fonction Windows permettant de regrouper plusieurs disques physiques dans un pool.
+
+## Rôle
+
+Créer du stockage flexible.
+Améliorer la résilience.
+Simplifier la gestion.
+
+## Types de résilience
+
+Simple.
+Miroir.
+Parité.
+
+## Simple
+
+Pas de redondance.
+Performance et capacité.
+Risque de perte si disque tombe.
+
+## Miroir
+
+Copie les données.
+Résilience meilleure.
+Capacité utilisable réduite.
+
+## Parité
+
+Utilise informations de parité.
+Bon compromis capacité/résilience.
+
+---
+
+# 68. Déduplication de données
+
+## Définition
+
+Technique qui supprime les blocs redondants.
+
+## Rôle
+
+Réduire l’espace disque utilisé.
+Optimiser le stockage.
+
+## Fonctionnement
+
+Les blocs identiques sont stockés une seule fois.
+Les fichiers pointent vers les blocs communs.
+
+## Usage
+
+Serveurs de fichiers.
+Volumes avec beaucoup de données similaires.
+
+## Piège
+
+Ne pas activer partout sans réflexion.
+Vérifier compatibilité avec charges de travail.
+
+---
+
+# 69. Clichés instantanés VSS
+
+## Définition
+
+VSS permet de créer des versions précédentes de fichiers.
+
+## Rôle
+
+Restaurer un fichier supprimé ou modifié.
+Permettre aux utilisateurs de récupérer des versions.
+
+## Limite
+
+Ce n’est pas une sauvegarde complète.
+Même volume = même risque en cas de perte du disque.
+
+## Piège
+
+Cliché instantané ≠ sauvegarde. Le tableau de synthèse M202 rappelle que le cliché instantané n’est pas une sauvegarde. 
+
+---
+
+# 70. FSRM
+
+## Définition
+
+FSRM signifie File Server Resource Manager.
+
+## Rôle
+
+Gérer les quotas.
+Filtrer les fichiers.
+Générer des rapports de stockage.
+Contrôler l’utilisation du serveur de fichiers.
+
+## Quota hard
+
+Bloque l’écriture au dépassement.
+
+## Quota soft
+
+N’empêche pas l’écriture.
+Génère une alerte.
+
+## Filtrage de fichiers actif
+
+Bloque l’enregistrement des extensions interdites.
+
+## Filtrage de fichiers passif
+
+Surveille et alerte sans bloquer.
+
+## Rapports
+
+Utilisation du stockage.
+Fichiers volumineux.
+Fichiers dupliqués.
+Fichiers par propriétaire.
+
+## Piège
+
+Hard quota = bloque.
+Soft quota = alerte seulement.
+Filtrage actif = bloque.
+
+---
+
+# 71. DFS
+
+## Définition
+
+DFS signifie Distributed File System.
+
+## Rôle
+
+Fournir un espace de noms unifié.
+Simplifier l’accès aux partages.
+Répliquer les données entre serveurs.
+Améliorer disponibilité.
+
+## DFS Namespace
+
+Espace de noms DFS.
+Présente plusieurs partages sous un chemin logique unique.
+
+### Exemple
+
+`\\domaine.local\partages`
+
+## DFS Replication
+
+Réplique les données entre serveurs.
+
+## RDC
+
+Remote Differential Compression.
+Réplique seulement les modifications.
+Réduit la bande passante.
+
+## Avantages
+
+Accès simplifié.
+Tolérance aux pannes.
+Réplication multi-sites.
+Meilleure disponibilité.
+
+## Piège
+
+DFS Namespace = chemin logique.
+DFS Replication = copie/réplication des données.
+RDC = envoie seulement les différences. Le tableau de synthèse M202 rappelle que DFS RDC envoie seulement les modifications. 
+
+---
+
+# 72. PKI et AD CS
+
+## PKI
+
+Public Key Infrastructure.
+Infrastructure de clés publiques.
+
+## AD CS
+
+Active Directory Certificate Services.
+Rôle Windows Server permettant de créer une autorité de certification.
+
+## Rôle
+
+Émettre certificats.
+Gérer certificats.
+Révoquer certificats.
+Sécuriser les communications.
+
+## Autorité racine
+
+CA principale.
+Idéalement hors ligne pour plus de sécurité.
+
+## Autorité intermédiaire
+
+CA en ligne.
+Émet les certificats aux utilisateurs, serveurs et services.
+
+## Certificat
+
+Lie une identité à une clé publique.
+
+## Usages
+
+HTTPS.
+VPN.
+EFS.
+Authentification.
+Signature.
+Chiffrement.
+
+## Piège
+
+Bonne pratique : racine hors ligne, intermédiaire en ligne. 
+
+---
+
+# 73. EFS
+
+## Définition
+
+EFS signifie Encrypting File System.
+
+## Rôle
+
+Chiffrer des fichiers au niveau NTFS.
+
+## Fonctionnement
+
+Utilise une clé symétrique FEK pour chiffrer les fichiers.
+Protège la FEK avec un mécanisme asymétrique.
+
+## Agent de récupération
+
+Permet de récupérer les fichiers si l’utilisateur perd son certificat.
+
+## Piège
+
+EFS protège les fichiers, pas forcément tout le disque.
+Agent de récupération recommandé. Le tableau de synthèse indique : EFS = chiffrement symétrique FEK + asymétrique pour protéger la FEK. 
+
+---
+
+# 74. BitLocker
+
+## Définition
+
+BitLocker chiffre un volume ou disque entier.
+
+## Rôle
+
+Protéger les données en cas de vol du disque ou de l’ordinateur.
+
+## Différence avec EFS
+
+EFS chiffre des fichiers.
+BitLocker chiffre le volume.
+
+## TPM
+
+Module matériel permettant de stocker des clés de façon sécurisée.
+
+## Piège
+
+EFS = fichier.
+BitLocker = disque/volume.
+
+---
+
+# 75. WDS
+
+## Définition
+
+WDS signifie Windows Deployment Services.
+
+## Rôle
+
+Déployer Windows sur des postes via le réseau.
+
+## Fonction
+
+Serveur PXE Microsoft.
+Permet le démarrage réseau.
+Déploie des images Windows.
+Automatise l’installation.
+
+## Boot PXE
+
+DHCP.
+TFTP.
+Image de démarrage.
+Image d’installation.
+
+## Images
+
+Image de démarrage.
+Image d’installation.
+Image de capture.
+
+## Sysprep
+
+Prépare un poste de référence avant capture.
+Supprime les informations uniques comme SID et nom.
+Obligatoire avant capture d’image volumique. 
+
+## Fichier unattend
+
+Automatise les réponses d’installation.
+Réduit l’intervention humaine.
+
+## Multicast
+
+Permet de déployer une image vers plusieurs postes en même temps.
+Nécessite support IGMP sur équipements réseau selon le support. 
+
+## Périphériques préinstallés
+
+Permettent de précréer un poste avec GUID/UUID.
+Facilitent le nommage et la jonction domaine automatique. 
+
+## Pilotes
+
+WDS permet d’injecter des pilotes.
+Important pour carte réseau et stockage dans WinPE.
+
+## Piège
+
+WDS + DHCP sur même serveur nécessite options DHCP Proxy selon synthèse M202. 
+
+---
+
+# 76. Maintenance AD
+
+## Arrêter NTDS
+
+`net stop ntds`
+
+## Rôle
+
+Arrêter le service AD DS sans redémarrer en DSRM.
+
+## Services dépendants possibles
+
+DNS intégré.
+KDC.
+Réplication.
+Services liés.
+
+## DSRM
+
+Mode de restauration des services d’annuaire.
+Nécessite redémarrage en mode spécifique.
+Utilisé pour restauration AD.
+
+## Piège
+
+Arrêt NTDS à chaud ≠ DSRM.
+
+---
+
+# 77. Diagnostic AD
+
+## dcdiag
+
+Diagnostic complet du contrôleur de domaine.
+
+## repadmin /showrepl
+
+Vérifie la réplication AD.
+
+## dcdiag /V /C /D /E
+
+Diagnostic détaillé sur l’ensemble de l’environnement.
+
+## gpotool
+
+Vérifie cohérence des GPO.
+
+## Observateur d’événements
+
+Vérifie les journaux :
+
+Directory Service ;
+DNS Server ;
+System ;
+Security.
+
+## Piège
+
+Avant migration ou mise à niveau, vérifier que l’AD est sain.
+
+---
+
+# 78. Adprep
+
+## Définition
+
+Adprep prépare la forêt ou le domaine pour une nouvelle version de Windows Server.
+
+## forestprep
+
+Met à jour le schéma de la forêt.
+
+## domainprep
+
+Prépare le domaine.
+
+## Contrôleur cible
+
+`adprep /forestprep` doit être exécuté sur le DC détenant le rôle Maître de schéma.
+
+## Irréversibilité
+
+La mise à jour du schéma est critique et difficile à annuler.
+
+## Piège
+
+Toujours sauvegarder et vérifier la réplication avant adprep.
+
+---
+
+# 79. Migration SYSVOL FRS vers DFSR
+
+## Contexte
+
+FRS est l’ancien mécanisme de réplication SYSVOL.
+DFSR est plus robuste.
+
+## Outil
+
+`dfsrmig`
+
+## États
+
+### Prepared
+
+DFSR prépare une copie.
+FRS reste actif.
+
+### Redirected
+
+DFSR devient actif pour SYSVOL.
+FRS n’est plus utilisé par les clients.
+
+### Eliminated
+
+FRS est supprimé.
+DFSR devient le seul mécanisme.
+
+## Commande
+
+`dfsrmig /setglobalstate <n>`
+
+## Piège
+
+Migration séquentielle.
+Ne pas sauter les étapes sans vérifier l’état.
+
+---
+
+# 80. PowerShell — logique d’examen
+
+## Verbe-Nom
+
+Les cmdlets PowerShell suivent souvent la forme :
+
+`Get-...`
+`New-...`
+`Set-...`
+`Add-...`
+`Remove-...`
+`Install-...`
+
+## Verbes fréquents
+
+Get = afficher.
+New = créer.
+Set = modifier.
+Add = ajouter.
+Remove = supprimer.
+Install = installer.
+Enable = activer.
+Disable = désactiver.
+Rename = renommer.
+Move = déplacer.
+
+## Pipeline
+
+Le pipe `|` envoie la sortie d’une commande vers l’entrée d’une autre.
+
+### Exemple logique
+
+Afficher puis sélectionner.
+Afficher puis filtrer.
+Afficher puis formater.
+
+## Where-Object
+
+Filtre les objets.
+
+## Select-Object
+
+Sélectionne des propriétés.
+
+## Format-Table
+
+Affiche sous forme de tableau.
+
+## Piège
+
+PowerShell manipule des objets, pas seulement du texte.
+
+---
+
+# 81. Commandes PowerShell essentielles par thème
+
+## Système
+
+`Restart-Computer`
+`Stop-Computer`
+`Rename-Computer`
+
+## Réseau
+
+`Get-NetIPInterface`
+`New-NetIPAddress`
+`Set-DnsClientServerAddress`
+
+## Domaine
+
+`Add-Computer`
+`Install-WindowsFeature AD-Domain-Services`
+`Install-ADDSForest`
+`Install-ADDSDomainController`
+
+## AD
+
+`New-ADUser`
+`Set-ADUser`
+`Remove-ADUser`
+`New-ADGroup`
+`Add-ADGroupMember`
+`New-ADOrganizationalUnit`
+
+## DNS
+
+`Install-WindowsFeature DNS`
+`Add-DnsServerPrimaryZone`
+`Add-DnsServerResourceRecordA`
+`Add-DnsServerResourceRecordCName`
+`Add-DnsServerResourceRecordMX`
+
+## DHCP
+
+`Install-WindowsFeature DHCP`
+`Add-DhcpServerInDC`
+`Add-DhcpServerv4Scope`
+`Set-DhcpServerv4OptionValue`
+`Add-DhcpServerv4Reservation`
+
+## GPO
+
+`New-GPO`
+`New-GPLink`
+`Remove-GPO`
+`gpupdate /force`
+
+## Fichiers
+
+`New-Item`
+`New-SmbShare`
+`Get-SmbShare`
+`Set-Acl`
+
+---
+
+# 82. Mémo final Windows M202
+
+Windows Server = services réseau centralisés.
+Standard = peu virtualisé.
+Datacenter = forte virtualisation.
+Essentials = petite entreprise.
+Server Core = moins de GUI, plus sécurisé.
+Hyper-V = hyperviseur type 1.
+Génération 1 = BIOS.
+Génération 2 = UEFI + Secure Boot.
+VHDX = moderne, 64 To, plus résistant.
+Commutateur externe = réseau physique.
+Commutateur interne = VM + hôte.
+Commutateur privé = VM seulement.
+Checkpoint ≠ sauvegarde.
+Live Migration = migration à chaud.
+Server Manager = console classique.
+WAC = administration web moderne.
+AD DS = annuaire Microsoft.
+Forêt = frontière de sécurité.
+Domaine = limite administrative.
+OU = organisation + GPO + délégation.
+FSMO = 5 rôles.
+GC = recherche forêt + groupes universels.
+Site AD = topologie physique.
+RODC = DC lecture seule pour succursale.
+DSRM = mode restauration AD.
+DHCP = DORA.
+DHCP Failover = 2 serveurs max, IPv4.
+IPAM = gérer DHCP/DNS/adressage.
+DNS = noms vers IP.
+SRV = localisation services AD.
+Zone primaire = lecture/écriture.
+Zone secondaire = lecture seule.
+Stub = NS/SOA/A nécessaires.
+Scavenging = nettoyage dynamique.
+GPO = politiques utilisateurs/ordinateurs.
+LSDO = Local, Site, Domaine, OU.
+Dernière GPO appliquée = prioritaire.
+CSE = applique les paramètres GPO.
+ADMX = modèles.
+ADML = langue.
+Magasin central = cohérence ADMX.
+Partage + NTFS = plus restrictif gagne.
+ABE = masque ce qui n’est pas autorisé.
+FSRM hard quota = bloque.
+FSRM soft quota = alerte.
+DFS Namespace = chemin logique.
+DFS Replication = réplication.
+RDC = seulement modifications.
+PKI = certificats.
+Racine hors ligne = bonne pratique.
+EFS = fichiers.
+BitLocker = disque.
+WDS = déploiement PXE.
+Sysprep = obligatoire avant capture.
+Boot PXE = DHCP → TFTP → image.
+
+---
+
+# 83. Pièges d’examen Windows
+
+Installer AD DS ne veut pas dire promouvoir DC.
+DNS est obligatoire pour AD.
+IP statique est obligatoire pour serveur d’infrastructure.
+Forêt = frontière de sécurité, pas domaine.
+OU n’est pas une frontière de sécurité.
+PDC Emulator est très important au quotidien.
+GC est nécessaire pour groupes universels.
+RODC ne stocke pas les mots de passe par défaut.
+Server Core est plus sécurisé mais sans GUI.
+On ne bascule pas simplement Core ↔ GUI après installation.
+Checkpoint Hyper-V n’est pas une sauvegarde.
+Interne Hyper-V ≠ Privé.
+VHDX est préféré à VHD.
+DHCP doit être autorisé dans AD.
+DHCP failover = seulement 2 serveurs et IPv4.
+Réservation DHCP dépend de la MAC.
+Zone secondaire DNS = lecture seule.
+Stub zone ne contient pas toute la zone.
+SRV est critique pour AD.
+Les enregistrements statiques DNS ne sont pas nettoyés par scavenging.
+LSDO = ordre GPO.
+Dernière GPO appliquée gagne.
+Enforced peut passer malgré Block Inheritance.
+Stratégie = verrouille, préférence = propose.
+ADMX sans magasin central peut créer incohérence.
+Permission effective = la plus restrictive entre partage et NTFS.
+ABE masque seulement, ne sécurise pas à lui seul.
+VSS n’est pas une vraie sauvegarde.
+Quota hard bloque, quota soft alerte.
+DFS Namespace ≠ DFS Replication.
+EFS chiffre fichier, BitLocker chiffre volume.
+Sysprep est obligatoire avant capture WDS.
+WDS sur même serveur que DHCP nécessite options adaptées.
+PowerShell utilise des objets, pas seulement du texte.
