@@ -379,6 +379,15 @@
     }
     .chapter-card:hover .ch-arrow { transform: translateX(3px); color: var(--accent-light); }
 
+    /* Card stagger animation (no IntersectionObserver needed) */
+    .chapters-grid .chapter-card {
+      animation: cardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .ch-check {
       width: 24px; height: 24px; border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
@@ -756,8 +765,9 @@
     <div class="content-area">
       <div class="chapters-grid">
         <template v-for="(sec, idx) in filteredSections" :key="sec.id">
-          <div class="chapter-card reveal" :class="{ 'active-card': openSection && openSection.id === sec.id }"
+          <div class="chapter-card" :class="{ 'active-card': openSection && openSection.id === sec.id }"
             :ref="el => { if(el) revealEls[idx] = el }"
+            :style="{ animationDelay: (idx * 30) + 'ms' }"
             @mousemove="handleCardGlow($event, idx)"
             @click="openPanel(sec)">
             <span class="ch-num" :class="{ done: checked[sec.id] }">
