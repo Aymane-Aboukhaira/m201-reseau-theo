@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M201 — Réseaux OFPPT | Support de Révision</title>
+  <meta name="description" content="Support de révision complet pour le module M201 Réseaux OFPPT. Topologies, OSI, VLAN, OSPF, BGP, VPN, VoIP et plus.">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
+            surface: { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',700:'#1e293b',800:'#0f172a',900:'#020617' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [v-cloak] { display: none; }
+    * { scrollbar-width: thin; scrollbar-color: #4f46e5 transparent; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
+    .sidebar-link { transition: all 0.2s ease; }
+    .sidebar-link:hover, .sidebar-link.active { background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent); border-left-color: #6366f1; }
+    .sidebar-link.active { color: #818cf8; font-weight: 600; }
+    .card-glow { box-shadow: 0 0 0 1px rgba(99,102,241,0.1), 0 4px 24px rgba(0,0,0,0.06); }
+    .dark .card-glow { box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 4px 24px rgba(0,0,0,0.4); }
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; }
+    .piege-card { border-left: 4px solid #f59e0b; background: linear-gradient(90deg, rgba(245,158,11,0.08), transparent); }
+    .dark .piege-card { background: linear-gradient(90deg, rgba(245,158,11,0.12), transparent); }
+    .definition-card { border-left: 4px solid #6366f1; background: linear-gradient(90deg, rgba(99,102,241,0.06), transparent); }
+    .dark .definition-card { background: linear-gradient(90deg, rgba(99,102,241,0.12), transparent); }
+    .advantage-card { border-left: 4px solid #10b981; background: linear-gradient(90deg, rgba(16,185,129,0.06), transparent); }
+    .dark .advantage-card { background: linear-gradient(90deg, rgba(16,185,129,0.1), transparent); }
+    .disadvantage-card { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239,68,68,0.06), transparent); }
+    .dark .disadvantage-card { background: linear-gradient(90deg, rgba(239,68,68,0.1), transparent); }
+    .memo-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    .section-animate { animation: slideIn 0.35s ease-out; }
+    .progress-ring { transition: stroke-dashoffset 0.5s ease; }
+    mark { background: rgba(99,102,241,0.25); color: inherit; border-radius: 2px; padding: 0 2px; }
+    .dark mark { background: rgba(129,140,248,0.3); }
+    @media print { .no-print { display: none !important; } .print-break { page-break-before: always; } }
+  </style>
+</head>
+<body class="dark">
+<div id="app" v-cloak class="min-h-screen bg-surface-50 dark:bg-surface-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+
+  <!-- Top Bar -->
+  <header class="no-print fixed top-0 left-0 right-0 z-50 h-14 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 flex items-center px-4 gap-3">
+    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-sm">M2</div>
+      <span class="font-bold text-lg bg-gradient-to-r from-brand-500 to-brand-400 bg-clip-text text-transparent">M201 Réseaux</span>
+    </div>
+    <div class="flex-1 max-w-md mx-auto relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input v-model="searchQuery" type="text" placeholder="Rechercher un concept... (Ctrl+K)" @keydown.escape="searchQuery=''"
+        class="w-full pl-10 pr-4 py-1.5 rounded-lg bg-gray-100 dark:bg-surface-700 border border-transparent focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 outline-none text-sm transition">
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-xs text-gray-400 hidden sm:block">{{ completedSections }}/{{ totalSections }}</span>
+      <div class="w-24 h-1.5 bg-gray-200 dark:bg-surface-700 rounded-full overflow-hidden hidden sm:block">
+        <div class="h-full bg-gradient-to-r from-brand-500 to-brand-400 rounded-full transition-all duration-500" :style="{width: progressPercent+'%'}"></div>
+      </div>
+      <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
+        <svg v-if="darkMode" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg v-else class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+    class="no-print fixed top-14 left-0 bottom-0 w-72 bg-white/90 dark:bg-surface-800/90 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 z-40 overflow-y-auto transition-transform duration-300 pb-8">
+    <nav class="p-3 space-y-0.5">
+      <template v-for="(sec, idx) in filteredSections" :key="sec.id">
+        <a :href="'#'+sec.id" @click="setActive(sec.id); sidebarOpen=false"
+          class="sidebar-link flex items-center gap-2 px-3 py-2 rounded-lg text-sm border-l-2 border-transparent"
+          :class="{'active': activeSection === sec.id}">
+          <span class="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold shrink-0"
+            :class="checked[sec.id] ? 'bg-green-500/20 text-green-400' : 'bg-brand-500/10 text-brand-400'">
+            <span v-if="checked[sec.id]">✓</span><span v-else>{{ sec.num }}</span>
+          </span>
+          <span class="truncate" v-html="highlight(sec.title)"></span>
+        </a>
+      </template>
+    </nav>
+  </aside>
+
+  <!-- Overlay -->
+  <div v-if="sidebarOpen" @click="sidebarOpen=false" class="lg:hidden fixed inset-0 bg-black/40 z-30 backdrop-blur-sm"></div>
+
+  <!-- Main Content -->
+  <main class="lg:ml-72 pt-14 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+      <!-- Hero -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 p-8 text-white">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%221%22 fill=%22white%22/></svg>'); background-size: 20px 20px;"></div>
+        <h1 class="text-3xl sm:text-4xl font-black mb-2 relative">Version fusionnée complète — Réseaux OFPPT</h1>
+        <p class="text-brand-200 relative">Module M201 • 70 chapitres • Support de révision optimisé</p>
+        <div class="mt-4 flex flex-wrap gap-2 relative">
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">OSI & TCP/IP</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VLAN & Switching</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Routage</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Sécurité</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WLAN</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WAN & VPN</span>
+          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VoIP</span>
+        </div>
+      </div>
+
+      <!-- Sections are rendered from sections.js -->
+      <template v-for="sec in filteredSections" :key="sec.id">
+        <section :id="sec.id" class="section-animate scroll-mt-20">
+          <div class="flex items-center gap-3 mb-4">
+            <button @click="toggleCheck(sec.id)" class="w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all shrink-0"
+              :class="checked[sec.id] ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark:border-gray-600 hover:border-brand-400'">
+              <svg v-if="checked[sec.id]" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </button>
+            <h2 class="text-xl sm:text-2xl font-bold">
+              <span class="text-brand-400 font-mono mr-1">{{ sec.num }}.</span>
+              <span v-html="highlight(sec.title)"></span>
+            </h2>
+          </div>
+          <div class="space-y-4 rounded-xl bg-white dark:bg-surface-800 card-glow p-5 sm:p-6" v-html="sec.html"></div>
+        </section>
+      </template>
+
+      <div v-if="filteredSections.length === 0" class="text-center py-20 text-gray-400">
+        <svg class="w-16 h-16 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <p class="text-lg">Aucun résultat pour « {{ searchQuery }} »</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Back to top -->
+  <button v-show="showBackToTop" @click="scrollToTop" class="no-print fixed bottom-6 right-6 w-12 h-12 rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 flex items-center justify-center hover:bg-brand-500 transition-all z-50">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+  </button>
+</div>
+
+<!-- Sections data loaded from external JS files -->
+<script src="helpers.js"></script>
+<script src="sections1.js"></script>
+<script src="sections2.js"></script>
+<script src="sections3.js"></script>
+<script src="sections4.js"></script>
+<script src="sections5.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

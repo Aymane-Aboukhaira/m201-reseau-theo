@@ -1,0 +1,3337 @@
+Version fusionnée complète — Réseaux OFPPT
+1. Introduction réseau
+Définition d’un réseau
+
+Un réseau est un ensemble de moyens matériels et logiciels mis en œuvre pour assurer la communication entre :
+
+ordinateurs ;
+stations de travail ;
+terminaux informatiques ;
+serveurs ;
+équipements réseau ;
+applications ;
+services.
+
+Idée centrale
+
+Un réseau sert à :
+
+connecter ;
+partager ;
+communiquer ;
+segmenter ;
+router ;
+sécuriser ;
+superviser.
+
+Classification géographique
+PAN
+
+Personal Area Network.
+Réseau personnel.
+Très courte portée.
+Exemples :
+
+Bluetooth ;
+Wi-Fi personnel ;
+partage entre téléphone, casque, montre, PC.
+
+LAN
+
+Local Area Network.
+Réseau local.
+Portée : maison, salle, bâtiment, entreprise.
+Portée visible dans les notes : environ 10 à 100 m.
+Exemple : réseau d’entreprise.
+
+MAN
+
+Metropolitan Area Network.
+Réseau métropolitain.
+Couvre une ville ou une grande zone urbaine.
+Relie plusieurs LAN dans la même région.
+
+WAN
+
+Wide Area Network.
+Réseau étendu.
+Relie des LAN géographiquement éloignés.
+Couvre :
+
+pays ;
+continent ;
+plusieurs sites distants ;
+siège et agences.
+
+Classification fonctionnelle
+Réseau privé
+
+Réseau interne.
+Non accessible directement depuis l’extérieur.
+Utilisé dans une organisation.
+
+Intranet
+
+Réseau privé interne.
+Accessible seulement aux utilisateurs autorisés.
+Utilisé pour les services internes.
+
+Extranet
+
+Extension contrôlée de l’intranet.
+Permet de connecter des partenaires externes.
+Accès limité et sécurisé.
+
+Internet
+
+Réseau public mondial.
+Accessible à tous.
+Infrastructure partagée.
+
+2. Topologies réseau
+Point-à-point
+
+Connexion directe entre deux équipements.
+Connexion simple et rapide.
+Exemple : liaison série entre deux routeurs.
+
+Linéaire
+
+Les équipements sont connectés les uns à la suite des autres.
+
+Avantage
+
+Simple.
+Coût réduit.
+
+Inconvénient
+
+La défaillance d’un équipement peut couper la chaîne.
+
+Bus
+
+Tous les équipements partagent le même support.
+
+Avantages
+
+Peu coûteux.
+Facile à mettre en œuvre.
+
+Inconvénient
+
+Risque de collisions lorsque plusieurs équipements émettent en même temps.
+
+Anneau
+
+Les équipements sont connectés en boucle.
+Les données circulent généralement dans un seul sens.
+
+Avantage
+
+Permet de connecter des équipements sur une grande distance.
+
+Inconvénient
+
+Une coupure peut perturber la communication.
+
+Étoile
+
+Tous les équipements sont connectés à un équipement central.
+Topologie très utilisée dans les LAN modernes.
+
+Avantage
+
+L’équipement central coordonne le trafic.
+La panne d’un câble affecte seulement un équipement.
+
+Inconvénient
+
+La défaillance de l’équipement central peut interrompre le réseau.
+
+Maillée
+
+Chaque équipement peut être interconnecté avec plusieurs autres.
+
+Types
+
+Maillage complet.
+Maillage partiel.
+
+Avantage
+
+Pas de point de défaillance unique.
+
+Inconvénient
+
+Coût élevé avec l’augmentation du nombre d’équipements.
+
+Hybride
+
+Combine plusieurs topologies.
+Permet de profiter des avantages de chaque modèle.
+Limite les inconvénients.
+
+Collision
+
+Une collision est une perte ou perturbation de données qui se produit lorsque deux équipements émettent en même temps sur le même support.
+
+3. Modèle OSI
+Définition
+
+Le modèle OSI, Open Systems Interconnection, est un modèle de référence créé par l’ISO pour standardiser les communications réseau.
+
+Objectifs
+
+Faciliter la conception réseau.
+Simplifier le dépannage.
+Standardiser les communications.
+Séparer les fonctions réseau en couches.
+Comprendre où se situe une panne.
+
+Les 7 couches OSI
+
+Application.
+Présentation.
+Session.
+Transport.
+Réseau.
+Liaison de données.
+Physique.
+
+Mémo
+
+Application → utilisateur.
+Présentation → format.
+Session → dialogue.
+Transport → ports et fiabilité.
+Réseau → IP et routage.
+Liaison → MAC et trames.
+Physique → bits et câbles.
+
+Encapsulation
+
+L’encapsulation est l’ajout d’informations de contrôle aux données venant de la couche supérieure.
+Chaque couche ajoute son en-tête.
+Le résultat final est transmis sur le support physique.
+
+Décapsulation
+
+La décapsulation consiste à retirer les informations ajoutées par les couches précédentes pour récupérer les données utilisables par la couche concernée.
+
+4. Couches OSI détaillées
+7. Couche Application
+
+Point d’accès aux services réseau.
+Permet à l’utilisateur :
+
+d’ouvrir un site web ;
+d’envoyer un e-mail ;
+de télécharger des fichiers ;
+d’utiliser DNS ;
+d’utiliser une application réseau.
+
+Protocoles cités
+
+HTTP.
+FTP.
+SMTP.
+DNS.
+
+6. Couche Présentation
+
+Prépare les données.
+Assure la compatibilité entre systèmes.
+
+Fonctions
+
+Cryptage.
+Encodage.
+Compression.
+Conversion de formats.
+
+5. Couche Session
+
+Établit la communication.
+Maintient la communication.
+Synchronise les échanges.
+Peut gérer plusieurs flux en même temps.
+
+4. Couche Transport
+
+Assure le transport des données de bout en bout.
+
+Fonctions
+
+Segmentation.
+Réassemblage.
+Contrôle de flux.
+Contrôle des erreurs.
+Ajout du numéro de port.
+Multiplexage des applications.
+
+TCP
+
+Mode connecté.
+Fiable.
+Contrôle les erreurs.
+Utilise accusés de réception.
+Plus lent mais sûr.
+
+UDP
+
+Mode non connecté.
+Simple.
+Rapide.
+Pas de garantie de livraison.
+Utilisé pour voix, vidéo, DNS, DHCP.
+
+3. Couche Réseau
+
+Construit une voie de communication de bout en bout.
+Utilise l’adressage logique IP.
+Unité de données : paquet.
+
+Fonctions
+
+Routage.
+Fragmentation.
+Choix du meilleur chemin.
+Adressage logique.
+
+Protocoles cités
+
+IPv4.
+IPv6.
+ICMP.
+
+2. Couche Liaison de données
+
+Communication entre équipements du même segment LAN.
+Crée les trames Ethernet.
+Utilise les adresses MAC.
+
+Sous-couches
+
+LLC : contrôle logique, identification des protocoles, correction/contrôle.
+MAC : accès au média, adressage physique MAC.
+
+1. Couche Physique
+
+Transmission réelle des bits.
+Transforme les données en signaux.
+
+Éléments
+
+Câbles.
+Débit.
+Hubs.
+Connecteurs.
+Signaux électriques.
+Signaux optiques.
+Ondes radio.
+
+5. Protocoles mail cités
+POP
+
+Sert à récupérer les e-mails.
+Télécharge souvent les messages localement.
+
+Ports
+
+995 en sécurisé.
+
+IMAP
+
+Synchronise les e-mails avec le serveur.
+Permet de garder les messages sur le serveur.
+
+Ports
+
+993 en sécurisé.
+
+SMTP
+
+Sert à envoyer les e-mails.
+Fonctionne au niveau application.
+
+6. Adresse MAC
+Définition
+
+L’adresse MAC est une adresse physique unique attribuée à chaque carte réseau, appelée NIC.
+Elle identifie un équipement dans un réseau local.
+
+Couche
+
+Couche 2.
+Liaison de données.
+
+Structure
+
+48 bits.
+6 octets.
+24 bits : OUI, identifiant constructeur.
+24 bits : identifiant unique de la carte.
+
+Rôle
+
+Identifier une carte réseau.
+Permettre la commutation locale.
+Alimenter la table MAC du switch.
+
+Différence MAC / IP
+MAC
+
+Adresse physique.
+Couche 2.
+Utilisée dans le LAN.
+Ne change normalement pas selon le réseau.
+
+IP
+
+Adresse logique.
+Couche 3.
+Utilisée pour identifier et router entre réseaux.
+Peut changer selon le réseau.
+
+7. Adressage IPv4
+Définition
+
+IPv4 est un protocole d’adressage de couche 3 utilisant des adresses de 32 bits.
+
+Plages privées
+
+10.0.0.0/8.
+172.16.0.0/12.
+192.168.0.0/16.
+
+Classes IPv4
+Classe A
+
+0 à 126.
+Masque par défaut : /8.
+
+Classe B
+
+128 à 191.
+Masque par défaut : /16.
+
+Classe C
+
+192 à 223.
+Masque par défaut : /24.
+
+Classe D
+
+224 à 239.
+Multidiffusion.
+
+Adresse de bouclage
+
+127.0.0.0/8.
+Utilisée comme adresse de loopback.
+Permet de tester la pile TCP/IP locale.
+
+Adresse publique
+
+Routable sur Internet.
+Attribuée par un fournisseur ou une autorité.
+
+Adresse privée
+
+Utilisée dans les réseaux internes.
+Non routable directement sur Internet.
+Nécessite NAT/PAT pour sortir vers Internet.
+
+8. Adressage IPv6
+Définition
+
+IPv6 est la nouvelle génération du protocole IP.
+Il a été conçu pour remplacer IPv4.
+
+Raisons du passage à IPv6
+
+Croissance d’Internet.
+Manque d’adresses IPv4.
+Passage de 32 bits à 128 bits.
+En-tête simplifié.
+Traitement plus efficace.
+Qualité de service intégrée.
+RFC 2460 mentionnée dans les notes.
+
+Structure
+
+Adresse de 128 bits.
+Écrite en hexadécimal.
+Découpée en blocs séparés par :.
+
+Exemple visible
+
+2001:0DB8::/64.
+
+Parties
+
+Préfixe de routage global.
+ID de sous-réseau.
+ID d’interface.
+
+Autre exemple visible
+
+0129:00AB:CAFE:0F1E/64.
+
+Compression IPv6
+
+00AB devient AB.
+0000 devient 0.
+Une suite de zéros peut être remplacée par ::.
+:: ne peut être utilisé qu’une seule fois dans une adresse.
+
+Types d’adresses IPv6
+::1/128
+
+Adresse de loopback.
+Permet à l’équipement de communiquer avec lui-même.
+
+FE80 à FEBF
+
+Adresse link-local.
+Identifie un hôte sur le lien local.
+Permet la communication sur le même segment.
+Non routable sur Internet.
+Préfixe général : FE80::/10.
+
+FC00 à FCFF
+
+Adresse locale unique.
+Équivalent logique d’une adresse privée.
+Utilisée dans un réseau spécifique.
+
+FF00 à FFFF
+
+Multidiffusion.
+Communication de groupe.
+
+2000 à 3FFF
+
+Adresse globale.
+Adresse publique IPv6.
+Routable sur Internet.
+
+GUA
+
+Global Unicast Address.
+Adresse IPv6 publique routable.
+Utilisée pour communiquer sur Internet.
+
+Link-local
+
+Adresse locale au lien.
+Obligatoire sur les interfaces IPv6.
+Utilisée par OSPFv3, SLAAC et Neighbor Discovery.
+
+9. Commutateur / Switch
+Définition
+
+Un commutateur est un équipement de couche 2 qui relie plusieurs appareils dans un même réseau local.
+
+Rôles
+
+Relier les équipements du LAN.
+Améliorer les performances.
+Réduire les collisions.
+Apprendre les adresses MAC.
+Transmettre les trames selon les adresses MAC.
+Créer un domaine de collision par port.
+Conserver le même domaine de diffusion sauf séparation par VLAN.
+
+Apprentissage MAC
+
+Le switch lit l’adresse MAC source.
+Il associe cette MAC au port d’entrée.
+Il ajoute l’information dans sa table MAC/CAM.
+Il utilise ensuite cette table pour transférer les trames.
+
+Table MAC
+
+Mémoire utilisée pour stocker :
+
+adresse MAC ;
+numéro VLAN ;
+port associé.
+
+Timer MAC
+
+Une entrée dynamique reste temporairement dans la table.
+Si la MAC n’est plus vue, l’entrée expire.
+
+Séquence de démarrage d’un switch
+
+POST : test des composants matériels.
+Boot loader : lancement du système.
+Initialisation CPU bas niveau.
+Initialisation de la mémoire flash.
+Chargement de l’image IOS.
+Chargement du fichier startup-config.
+Application de la configuration de démarrage.
+
+Startup-config
+
+Fichier de configuration de démarrage.
+Souvent stocké dans config.text.
+Chargé au démarrage.
+
+Boot loader
+
+Permet de récupérer un switch si IOS absent ou corrompu.
+Permet aussi certaines opérations de dépannage.
+
+10. Modes duplex et Auto-MDIX
+Half-duplex
+
+L’équipement peut émettre ou recevoir.
+Il ne peut pas faire les deux en même temps.
+Collisions possibles.
+
+Full-duplex
+
+L’équipement peut émettre et recevoir en même temps.
+Pas de collisions sur le lien.
+Meilleure performance.
+
+Auto-MDIX
+
+Détecte automatiquement le type de câble.
+Permet d’utiliser câble droit ou croisé.
+Nécessite généralement vitesse et duplex en auto.
+
+Erreurs possibles
+
+Mauvais duplex.
+Mauvaise vitesse.
+Collisions tardives.
+CRC.
+Trames trop petites.
+Trames trop grandes.
+
+11. Trame Ethernet
+Structure d’une trame
+
+MAC destination.
+MAC source.
+EtherType.
+Payload / données.
+FCS.
+
+EtherType
+
+Indique le protocole transporté.
+
+Exemples
+
+IPv4.
+IPv6.
+ARP.
+802.1Q.
+
+FCS
+
+Frame Check Sequence.
+Permet de détecter les erreurs.
+Utilise un contrôle de type CRC.
+
+Ports de transmission
+Ingress port
+
+Port d’entrée.
+Interface par laquelle la trame arrive.
+
+Egress port
+
+Port de sortie.
+Interface par laquelle le switch transmet la trame.
+
+12. Méthodes de transmission des trames
+Flooding
+
+Le switch ne connaît pas la MAC destination.
+Il diffuse la trame sur tous les ports du VLAN sauf le port d’entrée.
+
+Forwarding
+
+La MAC destination existe dans la table MAC.
+Le switch transmet la trame vers le bon port.
+
+Filtering
+
+La MAC source et la MAC destination sont sur le même port.
+Le switch supprime la trame.
+
+Broadcast
+
+La trame est envoyée à tous les équipements du VLAN.
+
+Unknown unicast
+
+Destination inconnue.
+Le switch fait du flooding.
+
+13. Méthodes de communication du switch
+Store-and-forward
+
+Le switch reçoit toute la trame avant de transmettre.
+Il vérifie le FCS.
+Méthode fiable.
+Méthode plus lente.
+Bloque les trames corrompues.
+
+Cut-through
+
+Le switch lit seulement l’adresse MAC destination avant de transmettre.
+Méthode rapide.
+Risque de transmettre des erreurs.
+
+Fragment-free
+
+Le switch lit les premiers 64 octets avant transmission.
+Évite les runts.
+Compromis entre rapidité et contrôle.
+
+Correspondance avec notes manuscrites
+
+Direct = rapide, mais peut laisser passer des erreurs.
+Différé = lecture complète, vérification avant transmission.
+Mixte = compromis entre rapidité et vérification.
+
+14. Domaines de communication
+Domaine de collision
+
+Partie du réseau où plusieurs équipements peuvent entrer en collision.
+Présent surtout en half-duplex.
+Chaque port de switch représente un domaine de collision indépendant.
+
+Domaine de diffusion
+
+Ensemble des équipements qui reçoivent une trame broadcast.
+Un VLAN représente un domaine de diffusion séparé.
+Chaque interface de routeur crée un nouveau domaine de diffusion.
+
+Hub
+
+Équipement de couche 1.
+Reçoit un signal électrique sur un port.
+Le reproduit sur tous les autres ports.
+Un hub ne filtre pas.
+Un hub ne lit pas les adresses MAC.
+Un hub augmente les collisions.
+
+Piège examen
+
+Switch réduit les collisions.
+VLAN ou routeur réduit les broadcasts.
+Hub travaille en couche 1.
+Switch travaille en couche 2.
+Routeur travaille en couche 3.
+
+15. VLAN
+Définition
+
+Un VLAN est un réseau local virtuel.
+Il permet de diviser logiquement un réseau physique en plusieurs réseaux séparés.
+Chaque VLAN représente un domaine de broadcast séparé.
+
+Rôle
+
+Regrouper des équipements comme s’ils étaient sur un réseau séparé.
+Isoler les diffusions.
+Organiser le réseau par service.
+Augmenter la sécurité.
+Améliorer les performances.
+
+Avantages
+
+Sécurité renforcée.
+Réduction des broadcasts.
+Réduction des coûts.
+Meilleures performances.
+Flexibilité.
+Organisation logique.
+Administration simplifiée.
+
+Pourquoi deux VLANs ne communiquent pas directement
+
+Ils appartiennent à des réseaux logiques différents.
+La communication nécessite un routage inter-VLAN.
+
+Types de VLAN
+VLAN par défaut
+
+VLAN 1.
+Tous les ports y appartiennent par défaut.
+Ne peut pas être supprimé.
+
+VLAN de données
+
+Trafic utilisateur.
+PC.
+Applications.
+Web.
+Email.
+
+VLAN de gestion
+
+Administration des équipements.
+SSH.
+Telnet.
+Accès VTY.
+Adresse IP de management du switch.
+
+VLAN natif
+
+VLAN transmis sans tag sur un trunk 802.1Q.
+Par défaut souvent VLAN 1.
+Doit être identique des deux côtés du trunk.
+Recommandé de le changer pour la sécurité.
+
+VLAN voix
+
+Trafic VoIP.
+Téléphones IP.
+QoS prioritaire.
+Délai recommandé voix : inférieur à 150 ms.
+
+Piège
+
+VLAN natif ≠ VLAN de gestion.
+Ils peuvent tous les deux être VLAN 1 par défaut, mais leur rôle est différent.
+
+16. Port access, trunk, 802.1Q, DTP
+Port access
+
+Transporte un seul VLAN.
+Utilisé pour connecter :
+
+PC ;
+imprimante ;
+téléphone IP ;
+équipement final.
+
+Port trunk
+
+Transporte plusieurs VLANs.
+Utilise IEEE 802.1Q.
+Utilisé entre :
+
+switch et switch ;
+switch et routeur ;
+switch et serveur ;
+switch et WLC ;
+switch et AP multi-SSID.
+
+802.1Q
+
+Ajoute un tag VLAN dans la trame Ethernet.
+Permet d’identifier le VLAN sur un lien trunk.
+Le tag 802.1Q ajoute 4 octets.
+La native VLAN circule sans tag.
+
+Native VLAN mismatch
+
+Si la native VLAN n’est pas identique des deux côtés du trunk, il peut y avoir des problèmes de connectivité et de sécurité.
+
+DTP
+
+Dynamic Trunking Protocol.
+Protocole Cisco.
+Négocie automatiquement le mode trunk entre switches Cisco.
+
+Modes DTP
+
+Access : force le port en access.
+Trunk : force le port en trunk.
+Dynamic auto : attend que l’autre côté propose le trunk.
+Dynamic desirable : tente activement de former un trunk.
+
+Sécurité DTP
+
+Désactiver DTP sur les ports access.
+Ne pas laisser un port utilisateur négocier un trunk.
+Utiliser une configuration explicite.
+
+17. VTP
+Définition
+
+VTP permet de créer, synchroniser et propager les informations VLAN entre plusieurs switches Cisco dans le même domaine VTP.
+
+Avantages
+
+Gestion centralisée.
+Gain de temps.
+Réduction des erreurs.
+Propagation automatique des VLANs.
+
+Modes VTP
+Server
+
+Crée les VLANs.
+Supprime les VLANs.
+Modifie les VLANs.
+Stocke dans la NVRAM.
+Envoie les mises à jour.
+
+Client
+
+Ne crée pas les VLANs.
+Ne supprime pas les VLANs.
+Reçoit les mises à jour.
+Applique la base VLAN reçue.
+
+Transparent
+
+Ne participe pas au domaine VTP.
+Ne modifie pas sa base VLAN selon VTP.
+Transmet les messages VTP.
+Permet une gestion locale des VLANs.
+
+Numéro de révision VTP
+
+Indique la version de la base VLAN.
+Un switch accepte une annonce si le numéro de révision est plus élevé.
+
+Danger
+
+Un switch mal configuré avec un numéro de révision élevé peut écraser la base VLAN correcte du réseau.
+
+Piège
+
+Avant d’ajouter un ancien switch au réseau, réinitialiser sa configuration VTP ou le mettre en mode transparent.
+
+18. Routage inter-VLAN
+Définition
+
+Le routage inter-VLAN permet la communication entre plusieurs VLANs différents.
+
+Pourquoi nécessaire
+
+Un VLAN est un domaine de broadcast séparé.
+Deux VLANs ne communiquent pas directement en couche 2.
+Il faut un équipement couche 3.
+
+Rôle
+
+Permettre la communication entre services.
+Contrôler les échanges.
+Appliquer des ACL.
+Améliorer la gestion.
+Isoler les diffusions.
+
+Méthodes
+Routage inter-VLAN classique
+
+Chaque VLAN est relié à une interface physique du routeur.
+Simple.
+Peu scalable.
+Consomme beaucoup d’interfaces.
+
+Router-on-a-stick
+
+Une seule liaison entre switch et routeur.
+Lien trunk.
+Plusieurs sous-interfaces.
+Une sous-interface par VLAN.
+Chaque sous-interface utilise 802.1Q.
+Solution économique.
+Peut devenir un goulot d’étranglement.
+
+Switch Layer 3
+
+Le switch effectue le routage IP.
+Chaque VLAN possède une SVI.
+Activer le routage avec ip routing.
+Meilleures performances.
+Routage inter-VLAN au niveau matériel.
+
+SVI
+
+Switch Virtual Interface.
+Interface VLAN logique.
+Sert de passerelle pour les hôtes du VLAN.
+
+Piège
+
+Router-on-a-stick = routeur + sous-interfaces.
+Switch Layer 3 = SVI + ip routing.
+Le switch couche 3 est plus performant.
+
+19. Port Security
+Définition
+
+Port Security est une fonctionnalité de sécurité sur les commutateurs qui contrôle les équipements autorisés à se connecter à un port en se basant sur leurs adresses MAC.
+
+Objectifs
+
+Empêcher les connexions non autorisées.
+Limiter le nombre d’adresses MAC par port.
+Bloquer les attaques simples de couche 2.
+Réduire les risques de MAC flooding.
+
+Types d’adresses MAC sécurisées
+Static secure MAC
+
+Configurée manuellement.
+Adresse MAC autorisée explicitement.
+
+Dynamic secure MAC
+
+Apprise automatiquement.
+Stockée dans la table MAC.
+Non conservée après redémarrage.
+
+Sticky secure MAC
+
+Apprise automatiquement.
+Enregistrée dans la configuration.
+Peut rester après sauvegarde.
+
+Modes de violation
+Protect
+
+Les trames non autorisées sont rejetées.
+Le port reste actif.
+Pas de message d’alerte.
+Pas de compteur.
+
+Restrict
+
+Les trames non autorisées sont rejetées.
+Le port reste actif.
+Génère un message syslog.
+Incrémente le compteur de violation.
+
+Shutdown
+
+Le port est désactivé.
+Mode par défaut.
+Le port passe en err-disabled.
+Niveau de sécurité maximal.
+
+Piège
+
+Protect = silencieux.
+Restrict = log + compteur.
+Shutdown = port désactivé.
+
+20. Sécurité couche 2 LAN
+Idée principale
+
+La couche 2 est critique.
+Si la couche 2 est compromise, les couches supérieures deviennent vulnérables.
+Le firewall ne protège pas toujours contre les attaques internes LAN.
+
+MAC Flooding
+
+L’attaquant envoie beaucoup de fausses MAC.
+La table CAM du switch se remplit.
+Le switch peut se comporter comme un hub.
+L’attaquant peut sniffer le trafic.
+
+Protection
+
+Port Security.
+
+VLAN Hopping
+
+L’attaquant tente d’accéder à un autre VLAN.
+
+Méthodes
+
+DTP abusé.
+Double tagging.
+
+Protections
+
+Désactiver DTP.
+Mettre les ports utilisateurs en access.
+Changer la native VLAN.
+Utiliser une native VLAN non utilisée.
+Ne pas laisser les ports inutilisés actifs.
+
+DHCP Starvation
+
+L’attaquant consomme toutes les adresses du pool DHCP.
+Les vrais clients ne reçoivent plus d’adresse IP.
+
+Protection
+
+DHCP Snooping.
+
+DHCP Spoofing
+
+Un faux serveur DHCP distribue :
+
+fausse passerelle ;
+faux DNS ;
+mauvaise configuration IP.
+
+Protection
+
+DHCP Snooping.
+Ports trusted et untrusted.
+
+ARP Spoofing / ARP Poisoning
+
+L’attaquant envoie de fausses associations IP/MAC.
+Peut provoquer Man-in-the-Middle.
+
+Protection
+
+Dynamic ARP Inspection.
+
+IP Spoofing
+
+L’attaquant falsifie une adresse IP.
+
+Protection
+
+IP Source Guard.
+
+Attaque STP
+
+L’attaquant tente de devenir Root Bridge.
+Peut modifier le chemin du trafic.
+
+Protections
+
+BPDU Guard.
+Root Guard.
+
+AAA
+
+Authentication.
+Authorization.
+Accounting.
+
+Authentication
+
+Qui est l’utilisateur ?
+
+Authorization
+
+Que peut-il faire ?
+
+Accounting
+
+Qu’a-t-il fait ?
+
+802.1X
+
+Contrôle d’accès basé sur les ports.
+Le port reste bloqué avant authentification.
+Utilise souvent RADIUS.
+
+Acteurs
+
+Supplicant : client.
+Authenticator : switch ou AP.
+Authentication Server : serveur RADIUS.
+
+21. SSH et RSA
+SSH
+
+SSH est un protocole de communication sécurisée permettant d’accéder à distance à un équipement de manière chiffrée.
+
+Garanties
+
+Confidentialité.
+Authentification.
+Intégrité.
+
+Usage
+
+Administration distante.
+Remplacement sécurisé de Telnet.
+Accès CLI chiffré.
+
+Clés SSH
+Clé publique
+
+Partagée librement avec les autres équipements.
+
+Clé privée
+
+Secrète.
+Stockée sur le serveur ou l’équipement.
+
+RSA
+
+RSA est une paire de clés cryptographiques utilisée en cryptographie asymétrique.
+Il permet de sécuriser la communication SSH.
+
+Piège
+
+Telnet transmet en clair.
+SSH chiffre la session.
+
+22. Routeur
+Définition
+
+Un routeur est un équipement réseau de couche 3.
+
+Rôles
+
+Relier plusieurs réseaux différents.
+Acheminer les paquets.
+Choisir le meilleur chemin.
+Envoyer les paquets vers le réseau destination.
+Séparer les domaines de diffusion.
+
+Table de routage
+
+Elle contient :
+
+réseau de destination ;
+masque ;
+next-hop ;
+interface de sortie ;
+source de la route ;
+distance administrative ;
+métrique.
+
+Transmission de paquets
+
+Le routeur reçoit le paquet.
+Il lit l’adresse IP destination.
+Il consulte la table de routage.
+Il choisit la meilleure route.
+Il envoie le paquet vers le next-hop ou l’interface de sortie.
+
+Longest Match
+
+Si plusieurs routes correspondent, le routeur choisit le préfixe le plus long.
+Le préfixe le plus long est le plus spécifique.
+
+Exemple
+
+/26 est préféré à /18.
+/18 est préféré à /12.
+Route spécifique préférée à route par défaut.
+
+23. Concepts de routage
+Définition
+
+Le routage est le processus qui permet aux paquets de passer d’un réseau à un autre pour atteindre leur destination.
+
+Critères de choix du chemin
+
+Nombre de sauts.
+Bande passante.
+Coût.
+Métrique.
+Fiabilité du lien.
+Distance administrative.
+
+Meilleur chemin
+
+Le meilleur chemin est celui qui possède la meilleure métrique selon le protocole utilisé.
+En cas de sources différentes, la distance administrative départage.
+
+Sources de routes
+Codes importants
+
+C = Connected.
+L = Local.
+S = Static.
+O = OSPF.
+R = RIP.
+D = EIGRP.
+B = BGP.
+* = candidate default route.
+
+Distance administrative
+
+Mesure la fiabilité de la source de route.
+Plus la valeur est faible, plus la route est préférée.
+
+Valeurs importantes
+
+Connecté : 0.
+Statique : 1.
+EIGRP résumé : 5.
+eBGP : 20.
+EIGRP interne : 90.
+OSPF : 110.
+IS-IS : 115.
+RIP : 120.
+EIGRP externe : 170.
+iBGP : 200.
+
+24. Types de routage
+Routage statique
+
+Configuration manuelle des routes.
+
+Avantages
+
+Simple.
+Fiable.
+Sécurisé.
+Peu de ressources CPU/RAM.
+
+Inconvénients
+
+Maintenance manuelle.
+Risque d’erreurs.
+Ne s’adapte pas automatiquement aux pannes.
+
+Routage dynamique
+
+Configuration automatique des routes via des protocoles.
+
+Avantages
+
+Flexible.
+Scalable.
+S’adapte aux pannes.
+Met à jour la table automatiquement.
+
+Inconvénients
+
+Plus complexe.
+Consomme des ressources.
+Nécessite une bonne conception.
+
+Types de routes statiques
+Route standard
+
+Vers un réseau précis.
+
+Route par défaut
+
+Utilisée si aucune autre route ne correspond.
+IPv4 : 0.0.0.0/0.
+IPv6 : ::/0.
+
+Route récapitulative
+
+Regroupe plusieurs réseaux en une seule route.
+
+Route flottante de secours
+
+Route statique de backup.
+Distance administrative plus élevée.
+Active seulement si la route principale tombe.
+
+25. Mécanismes de transfert Cisco
+Process Switching
+
+Chaque paquet est traité par le CPU.
+Méthode lente.
+
+Fast Switching
+
+Utilise un cache.
+Plus rapide que process switching.
+
+CEF
+
+Cisco Express Forwarding.
+Méthode la plus performante.
+Utilise :
+
+FIB ;
+Adjacency table.
+
+Piège
+
+CEF est généralement activé par défaut sur les équipements Cisco modernes.
+
+26. OSPF
+Définition
+
+OSPF est un protocole de routage dynamique basé sur l’état de lien.
+
+Signification
+
+Open Shortest Path First.
+
+Caractéristiques
+
+Utilise l’algorithme SPF.
+Cherche le meilleur chemin.
+Convergence rapide.
+Très scalable.
+Sécurisé.
+Supporte plusieurs zones.
+Métrique basée sur le coût.
+
+Inconvénients
+
+Plus complexe.
+Consomme CPU/RAM.
+Nécessite une bonne conception.
+
+Fonctionnement
+
+Échange de paquets Hello.
+Découverte des voisins.
+Échange de LSA.
+Création de la LSDB.
+Calcul du plus court chemin avec SPF.
+Installation des meilleures routes dans la table de routage.
+
+Métrique
+
+Coût basé sur la bande passante.
+
+Formule classique
+
+Coût = 100 000 000 / bande passante en bps.
+
+Exemple
+
+FastEthernet 100 Mbps → coût 1.
+
+Types de paquets OSPF
+Hello
+
+Découvrir les voisins.
+Maintenir les adjacences.
+
+DBD
+
+Database Description.
+Résumé de la base de données.
+
+LSR
+
+Link State Request.
+Demande d’informations spécifiques.
+
+LSU
+
+Link State Update.
+Transporte les LSA.
+
+LSAck
+
+Confirme la réception des LSA.
+
+LSA
+
+Link State Advertisement.
+Annonce d’état de lien.
+
+LSDB
+
+Link State Database.
+Base de données topologique.
+Doit être identique dans une même zone.
+
+27. OSPFv2 et OSPFv3
+OSPFv2
+
+Utilisé pour IPv4.
+Multicast :
+
+224.0.0.5 ;
+224.0.0.6.
+
+OSPFv3
+
+Utilisé pour IPv6.
+S’active souvent sur interface.
+Utilise l’adresse link-local comme source.
+Multicast :
+
+FF02::5 ;
+FF02::6.
+
+Prérequis IPv6
+
+Activer le routage IPv6.
+Utiliser des adresses IPv6 correctes.
+Utiliser les interfaces concernées.
+
+Authentification
+
+OSPFv3 peut utiliser IPsec pour l’authentification.
+
+28. Router ID OSPF
+Définition
+
+Le Router ID identifie un routeur OSPF de manière unique.
+
+Ordre de choix
+
+Router ID configuré manuellement.
+Sinon plus haute adresse IP loopback.
+Sinon plus haute adresse IP d’une interface active.
+
+Modification
+
+Un changement de Router ID peut nécessiter de redémarrer le processus OSPF.
+
+Piège
+
+Une interface loopback est souvent utilisée pour stabiliser le Router ID.
+
+29. Zones OSPF multiples
+Définition
+
+OSPF peut diviser un grand réseau en plusieurs zones.
+
+Objectifs
+
+Réduire le nombre de LSA.
+Limiter les calculs SPF.
+Améliorer les performances.
+Faciliter la scalabilité.
+
+Zone 0
+
+Zone backbone.
+Zone principale.
+Toutes les autres zones doivent normalement être connectées à la zone 0.
+
+Types de routeurs OSPF
+Routeur interne
+
+Toutes ses interfaces OSPF sont dans la même zone.
+
+Backbone Router
+
+Possède au moins une interface dans la zone 0.
+
+ABR
+
+Area Border Router.
+Connecte plusieurs zones.
+Relie une zone à une autre zone ou à la zone 0.
+
+ASBR
+
+Autonomous System Boundary Router.
+Connecte OSPF à un autre système autonome ou à un autre protocole.
+
+Types de réseaux OSPF
+
+Point-to-point.
+Multi-access.
+Broadcast : réseau Ethernet classique.
+
+30. DR / BDR
+Rôle
+
+DR et BDR optimisent la communication OSPF dans les réseaux multi-access.
+
+DR
+
+Designated Router.
+Routeur principal.
+Centralise les échanges OSPF.
+Redistribue les LSA.
+
+BDR
+
+Backup Designated Router.
+Secours du DR.
+Prend le rôle du DR si celui-ci tombe.
+
+DROther
+
+Les autres routeurs.
+Ni DR ni BDR.
+Échangent principalement avec DR/BDR.
+
+Élection DR/BDR
+
+Priorité la plus élevée.
+En cas d’égalité : Router ID le plus élevé.
+
+Priorité 0
+
+Un routeur avec priorité 0 ne devient jamais DR/BDR.
+
+31. EIGRP
+Définition
+
+EIGRP est un protocole hybride.
+
+Nature
+
+Distance vector.
+État de lien.
+Développé par Cisco.
+
+Algorithme
+
+DUAL.
+Choisit le meilleur chemin.
+Permet des mises à jour partielles.
+
+Métrique
+
+Bande passante.
+Délai.
+
+Avantage
+
+Facile à configurer.
+Convergence rapide.
+Mises à jour partielles.
+
+Note
+
+Historiquement Cisco uniquement.
+
+32. BGP
+Définition
+
+BGP est un protocole de routage utilisé pour échanger des routes entre différents systèmes autonomes sur Internet.
+
+Signification
+
+Border Gateway Protocol.
+
+Type
+
+EGP.
+Path Vector.
+Utilise TCP port 179.
+
+Caractéristiques
+
+Très stable.
+Lent à converger.
+Utilise l’AS Path.
+Orienté politique de routage.
+Utilisé pour Internet et grands réseaux.
+
+AS
+
+Autonomous System.
+Ensemble de réseaux IP et routeurs administrés par une même organisation avec une politique de routage commune.
+
+ASN
+
+Identifie un AS.
+Permet de regrouper plusieurs réseaux sous une même administration.
+
+iBGP
+
+BGP interne.
+Même AS.
+
+eBGP
+
+BGP externe.
+AS différents.
+
+Messages BGP
+OPEN
+
+Établit la session BGP.
+
+KEEPALIVE
+
+Maintient la session.
+
+UPDATE
+
+Annonce ou retire des routes.
+
+NOTIFICATION
+
+Signale une erreur et ferme la session.
+
+Attributs BGP
+
+AS-Path.
+Next-Hop.
+Origin.
+Local Preference.
+MED.
+Community.
+
+Quand utiliser BGP
+
+Plusieurs connexions Internet.
+Plusieurs AS.
+Besoin de contrôler les chemins.
+Politique de routage complexe.
+
+Piège
+
+Une seule connexion Internet simple = route par défaut statique suffisante.
+
+33. STP — Spanning Tree Protocol
+Définition
+
+STP est un protocole de couche 2 utilisé sur les switches pour éviter les boucles dans un réseau.
+
+Rôles
+
+Détecter les boucles.
+Bloquer automatiquement certains ports.
+Assurer la redondance des liens.
+Éviter la perte de disponibilité.
+Créer une topologie logique sans boucle.
+
+Problème des boucles couche 2
+
+Pas de TTL en Ethernet.
+Les broadcasts peuvent tourner indéfiniment.
+La table MAC devient instable.
+Les trames peuvent être dupliquées.
+Le réseau peut devenir inutilisable.
+
+BPDU
+
+Bridge Protocol Data Unit.
+Message utilisé par STP.
+
+Contenu visible
+
+Priority.
+MAC.
+System ID.
+VLAN ID.
+
+Bridge ID
+
+Identifie un switch dans STP.
+
+Composition
+
+Priorité STP.
+Adresse MAC.
+System ID / VLAN selon les variantes.
+
+Priorité STP
+
+Valeurs par incréments de 4096.
+Valeur par défaut visible : 32769.
+La priorité la plus basse gagne.
+Si priorité égale : MAC la plus basse gagne.
+
+Pont racine / Root Bridge
+
+Switch central de référence STP.
+Élu avec le Bridge ID le plus faible.
+
+Coût de chemin
+
+FastEthernet : 19.
+GigabitEthernet : 4.
+Le plus petit coût vers le Root Bridge est préféré.
+
+Versions STP
+
+STP.
+RSTP.
+PVST.
+PVST+.
+Rapid PVST+.
+MSTP.
+
+34. Rôles et états STP
+Rôles de ports
+Root Port
+
+Meilleur chemin vers le pont racine.
+Existe sur les switches non-root.
+
+Designated Port
+
+Port désigné sur un segment.
+Transmet les trames sur le segment.
+
+Alternate Port
+
+Port de secours.
+Bloqué pour éviter une boucle.
+Peut devenir actif en cas de panne.
+
+États STP classiques
+Blocking
+
+Ne transmet pas de trafic utilisateur.
+Reçoit les BPDU.
+
+Listening
+
+Écoute les BPDU.
+Participe au calcul STP.
+
+Learning
+
+Apprend les adresses MAC.
+Ne transmet pas encore le trafic utilisateur.
+
+Forwarding
+
+Transmet le trafic normalement.
+
+Disabled
+
+Port désactivé.
+
+Convergence STP classique
+
+Environ 50 secondes.
+20 s Max Age.
+15 s Listening.
+15 s Learning.
+
+RSTP
+
+Rapid Spanning Tree Protocol.
+Convergence plus rapide que STP classique.
+
+PVST+
+
+Une instance STP par VLAN.
+Permet une topologie différente par VLAN.
+Peut aider à équilibrer la charge.
+
+Rapid PVST+
+
+Version Cisco rapide basée sur RSTP.
+Une instance rapide par VLAN.
+
+PortFast
+
+Permet à un port access de passer rapidement en forwarding.
+Utilisé seulement vers :
+
+PC ;
+imprimante ;
+serveur ;
+téléphone IP.
+
+Danger
+
+Ne jamais activer PortFast vers un autre switch.
+
+BPDU Guard
+
+Protège les ports PortFast.
+Si une BPDU est reçue, le port passe en err-disabled.
+Empêche le branchement d’un switch non autorisé.
+
+35. EtherChannel
+Définition
+
+EtherChannel regroupe plusieurs liens physiques entre deux équipements pour former un seul lien logique.
+
+Avantages
+
+Augmente la bande passante.
+Évite le blocage par STP.
+Améliore la disponibilité réseau.
+Assure la redondance.
+Simplifie la topologie STP.
+
+Fonctionnement
+
+Plusieurs liens physiques sont vus comme un seul lien logique.
+La configuration se fait sur l’interface Port-Channel.
+STP voit le canal comme un seul lien.
+
+Conditions de cohérence
+
+Même vitesse.
+Même duplex.
+Même mode access ou trunk.
+Même VLAN access.
+Même native VLAN.
+Même liste de VLANs autorisés.
+Même type d’interface.
+
+Protocoles
+PAgP
+
+Cisco.
+Modes :
+
+auto ;
+desirable.
+
+LACP
+
+Standard IEEE.
+Modes :
+
+active ;
+passive.
+
+Combinaisons PAgP
+
+Desirable + desirable = fonctionne.
+Desirable + auto = fonctionne.
+Auto + auto = ne fonctionne pas.
+
+Combinaisons LACP
+
+Active + active = fonctionne.
+Active + passive = fonctionne.
+Passive + passive = ne fonctionne pas.
+
+Piège
+
+Deux côtés passifs ne forment pas EtherChannel.
+Deux côtés auto ne forment pas PAgP.
+
+36. FHRP — First Hop Redundancy Protocol
+Définition
+
+FHRP est une famille de protocoles de redondance qui assure la disponibilité de la passerelle par défaut.
+
+Problème résolu
+
+Les hôtes ont une seule passerelle par défaut.
+Si cette passerelle tombe, ils perdent l’accès aux réseaux externes.
+
+Fonction
+
+Fournir une passerelle virtuelle commune.
+Assurer la continuité en cas de panne.
+Utiliser une IP virtuelle.
+Utiliser une MAC virtuelle.
+
+Protocoles FHRP
+HSRP
+
+Cisco.
+Rôles :
+
+active ;
+standby.
+
+VRRP
+
+Standard.
+Rôles :
+
+master ;
+backup.
+
+GLBP
+
+Cisco.
+Rôles :
+
+AVG ;
+AVF.
+
+Permet à plusieurs routeurs de transmettre les paquets simultanément.
+
+HSRP
+Priorité
+
+Valeur par défaut : 100.
+La priorité la plus haute devient active.
+En égalité, l’adresse IP la plus élevée gagne.
+
+Preempt
+
+Permet au routeur le plus prioritaire de redevenir actif après son retour.
+
+Timers
+
+Hello : 3 secondes.
+Hold / Dead : 10 secondes.
+
+MAC virtuelle
+
+Forme typique : 0000.0C07.ACXX.
+XX correspond au groupe HSRP en hexadécimal.
+
+Piège
+
+HSRP / VRRP = redondance de passerelle.
+GLBP = redondance + équilibrage de charge.
+
+37. DHCP
+Définition
+
+DHCP est un protocole réseau qui attribue automatiquement une adresse IP et des paramètres réseau aux appareils.
+
+Signification
+
+Dynamic Host Configuration Protocol.
+
+Paramètres fournis
+
+Adresse IP.
+Masque.
+Passerelle.
+DNS.
+Durée du bail.
+Domaine.
+Options spécifiques.
+
+Avantages
+
+Gestion centralisée.
+Simplifie la gestion.
+Évite les conflits d’adresses.
+Évite la répétition manuelle.
+Réduit les erreurs.
+
+Ports
+
+Serveur DHCP : UDP 67.
+Client DHCP : UDP 68.
+
+Processus DORA
+Discover
+
+Le client envoie une requête broadcast.
+Il cherche un serveur DHCP.
+
+Offer
+
+Le serveur DHCP répond par une offre.
+Il propose une adresse IP.
+
+Request
+
+Le client demande l’adresse proposée.
+Il confirme son choix.
+
+ACK
+
+Le serveur confirme l’attribution.
+Le bail devient actif.
+
+Bail DHCP
+
+Adresse louée pour une durée limitée.
+Le client doit renouveler son bail.
+
+Réservation DHCP
+
+Attribue toujours la même adresse à un équipement.
+Basée sur l’adresse MAC.
+Utile pour :
+
+imprimantes ;
+serveurs ;
+téléphones IP ;
+équipements réseau.
+
+Relais DHCP
+
+Nécessaire si le serveur DHCP est dans un autre réseau.
+Les broadcasts DHCP ne traversent pas les routeurs.
+Le routeur relaie vers le serveur DHCP avec ip helper-address.
+
+38. SLAAC et DHCPv6
+SLAAC
+
+Stateless Address Autoconfiguration.
+Permet à un hôte de générer automatiquement son adresse IPv6 sans DHCPv6 complet.
+
+Fonctionnement SLAAC
+
+Le client envoie RS.
+Le routeur répond avec RA.
+Le RA contient le préfixe réseau.
+L’hôte génère la partie interface ID.
+L’hôte vérifie l’unicité avec DAD.
+
+RS
+
+Router Solicitation.
+Message envoyé par le client pour demander des informations.
+
+RA
+
+Router Advertisement.
+Message envoyé par le routeur avec les informations nécessaires.
+
+DAD
+
+Duplicate Address Detection.
+Vérifie que l’adresse IPv6 générée n’est pas déjà utilisée.
+
+EUI-64
+
+Méthode pour générer l’identifiant d’interface.
+Utilise l’adresse MAC.
+Insère FFFE.
+Inverse le 7e bit.
+
+Flags IPv6
+Flag M
+
+Indique si l’hôte utilise DHCPv6 pour obtenir une adresse IPv6.
+
+Flag O
+
+Indique si l’hôte utilise DHCPv6 pour obtenir des informations complémentaires.
+
+DHCPv6 Stateless
+
+SLAAC donne l’adresse.
+DHCPv6 donne seulement les options complémentaires comme DNS.
+
+DHCPv6 Stateful
+
+DHCPv6 donne l’adresse IPv6 et les paramètres.
+Fonctionnement proche de DHCPv4.
+
+39. Conception hiérarchique du réseau
+Définition
+
+Modèle hiérarchique dans lequel l’architecture réseau est divisée en plusieurs couches, chacune avec une fonction spécifique.
+
+Couche accès
+
+Connecte les utilisateurs.
+Connecte les PC.
+Connecte les imprimantes.
+Connecte les téléphones IP.
+Connecte les points d’accès AP.
+Applique souvent Port Security et VLAN.
+
+Couche distribution
+
+Agrège les switches d’accès.
+Fait le routage inter-VLAN.
+Applique les politiques de sécurité.
+Utilise ACL.
+Assure redondance et filtrage.
+
+Couche cœur
+
+Connecte le réseau dorsal.
+Haute disponibilité.
+Haute vitesse.
+Transport rapide du trafic.
+Doit rester simple et performant.
+
+Évolution du réseau
+
+Adapter l’infrastructure aux nouveaux besoins :
+
+ajouter de nouveaux utilisateurs ;
+augmenter la bande passante ;
+mettre en place la redondance ;
+ajouter des VLANs ;
+améliorer la sécurité ;
+prévoir la croissance.
+
+Choix d’un switch
+
+Coût.
+Densité des ports.
+Débit.
+PoE.
+Fonctionnalités de sécurité.
+Support VLAN.
+Support couche 3.
+Empilabilité.
+Évolutivité.
+
+PoE
+
+Power over Ethernet.
+Alimente par câble Ethernet :
+
+téléphones IP ;
+AP ;
+caméras IP.
+
+40. Supervision
+SNMP
+
+Surveillance du réseau.
+Permet de collecter des informations sur les équipements.
+
+Composants
+
+Manager / NMS.
+Agent.
+MIB.
+
+Ports
+
+UDP 161 pour les requêtes.
+UDP 162 pour les traps.
+
+Versions
+
+SNMPv1 : ancien, non sécurisé.
+SNMPv2c : community en clair.
+SNMPv3 : authentification et chiffrement, recommandé.
+
+Syslog
+
+Journalisation des événements.
+Centralise les logs.
+Port UDP 514.
+
+Niveaux Syslog
+
+0 Emergency.
+1 Alert.
+2 Critical.
+3 Error.
+4 Warning.
+5 Notice.
+6 Informational.
+7 Debug.
+
+Piège
+
+0 = plus grave.
+7 = moins grave / debug.
+
+NTP
+
+Synchronisation de l’heure.
+Port UDP 123.
+Important pour :
+
+logs ;
+sécurité ;
+corrélation d’événements ;
+dépannage ;
+certificats.
+
+LLDP
+
+Protocole standard ouvert.
+Découvre les équipements voisins.
+Multi-constructeurs.
+
+CDP
+
+Protocole Cisco.
+Découvre les équipements Cisco directement connectés.
+
+41. WLAN
+Définition
+
+Un WLAN est un réseau local sans fil utilisant les normes IEEE 802.11 pour permettre la communication entre équipements via les ondes radio.
+
+Composants WLAN
+
+Client sans fil.
+Point d’accès AP.
+WLC : contrôleur qui gère plusieurs AP de manière centralisée.
+Serveur RADIUS pour WPA2/WPA3 Enterprise.
+Infrastructure filaire associée.
+
+Fonctionnement WLAN
+
+Scanning.
+Authentification.
+Association.
+Transmission des données.
+Obtention d’adresse IP.
+Accès au réseau.
+
+SSID
+
+Nom du réseau Wi-Fi.
+Identifie le WLAN.
+
+Canal
+
+Fréquence utilisée par l’AP.
+Doit être choisi pour réduire les interférences.
+
+Canaux non chevauchants 2,4 GHz
+
+Canal 1.
+Canal 6.
+Canal 11.
+
+Fréquences
+2,4 GHz
+
+Portée plus grande.
+Débit plus faible.
+Plus d’interférences.
+
+5 GHz
+
+Débit plus élevé.
+Portée plus faible.
+Moins d’interférences.
+
+6 GHz
+
+Haut débit.
+Faible congestion.
+Utilisé par Wi-Fi 6E.
+
+42. Normes Wi-Fi
+Wi-Fi 4
+
+802.11n.
+2,4 GHz et 5 GHz selon contexte.
+MIMO.
+Débits supérieurs aux anciennes normes.
+
+Wi-Fi 5
+
+802.11ac.
+5 GHz.
+Débit élevé.
+MU-MIMO.
+
+Wi-Fi 6
+
+802.11ax.
+2,4 GHz et 5 GHz.
+OFDMA.
+Meilleure gestion des environnements denses.
+
+Wi-Fi 6E
+
+802.11ax.
+6 GHz.
+Moins de congestion.
+Débit élevé.
+
+43. CAPWAP
+Définition
+
+CAPWAP permet au WLC de gérer les points d’accès légers.
+
+Signification
+
+Control And Provisioning of Wireless Access Points.
+
+Ports
+
+Contrôle : UDP 5246.
+Données : UDP 5247.
+
+Fonctionnement
+
+Utilise deux tunnels :
+
+tunnel de contrôle ;
+tunnel de données.
+
+Rôle
+
+Permet la configuration centralisée des AP.
+Permet la supervision des AP.
+Permet la gestion radio.
+Permet de séparer contrôle et données.
+
+44. Menaces WLAN
+Rogue AP
+
+Point d’accès non autorisé.
+Peut donner un accès non sécurisé au réseau.
+
+Evil Twin
+
+Faux réseau Wi-Fi créé par un attaquant.
+Imite un vrai SSID.
+Peut voler des identifiants.
+
+DoS
+
+Rend le réseau indisponible.
+Peut venir du brouillage radio ou de paquets malveillants.
+
+Sniffing
+
+Capture du trafic Wi-Fi.
+Risque élevé si le trafic n’est pas chiffré.
+
+Interférences
+
+Peuvent dégrader les performances.
+Causées par autres AP, appareils radio, mauvais canaux.
+
+45. Sécurité WLAN
+WEP
+
+Ancien.
+Utilise RC4.
+Faible.
+À éviter.
+
+WPA
+
+Ancien.
+Utilise TKIP.
+Meilleur que WEP mais dépassé.
+
+WPA2
+
+Utilise AES.
+Très utilisé.
+Mode Personal ou Enterprise.
+
+WPA3
+
+Utilise SAE.
+Très fort.
+À privilégier.
+
+802.1X
+
+Authentification basée sur serveur RADIUS.
+Utilisée en entreprise.
+
+Filtrage MAC
+
+Autorise certaines adresses MAC seulement.
+Mesure faible seule, car une MAC peut être usurpée.
+
+WPA2 Personal
+
+Mot de passe partagé.
+Simple.
+Adapté aux petits réseaux.
+
+WPA2 Enterprise
+
+Utilise :
+
+802.1X ;
+serveur RADIUS.
+
+Chemin d’authentification
+
+Client → AP → WLC → Serveur RADIUS.
+
+Avantages
+
+Authentification individuelle.
+Sécurité élevée.
+Gestion centralisée.
+Adapté aux entreprises.
+
+Modes AP
+AP autonome
+
+Configuration individuelle.
+Pas de WLC.
+
+AP léger
+
+Géré par un WLC.
+Utilise CAPWAP.
+
+46. WLAN de site distant
+Définition
+
+Un site distant est une agence ou un bureau éloigné du siège principal.
+
+Étapes
+
+Installer un AP.
+Configurer un SSID.
+Choisir WPA2 ou WPA3.
+Configurer l’adressage IP.
+Associer le WLAN au VLAN.
+Vérifier la connectivité.
+Vérifier la sécurité.
+
+47. WLAN de base sur WLC
+Objectif
+
+Créer un réseau Wi-Fi fonctionnel avec :
+
+SSID ;
+VLAN associé ;
+sécurité ;
+connexion utilisateur.
+
+Étapes
+
+Créer le WLAN.
+Associer le WLAN à un VLAN.
+Activer le WLAN.
+Choisir le type de sécurité.
+Configurer les paramètres radio.
+Vérifier.
+
+Sécurité possible
+
+WPA2 Personal.
+WPA2 Enterprise.
+WPA3 selon matériel.
+
+Dépannage WLAN
+
+Vérifier :
+
+SSID ;
+signal Wi-Fi ;
+authentification ;
+adresse IP ;
+interférences ;
+AP ;
+WLC ;
+VLAN ;
+DHCP ;
+RADIUS.
+
+48. WAN
+Définition
+
+Un WAN est un réseau étendu permettant d’interconnecter des réseaux LAN géographiquement éloignés.
+
+Rôle
+
+Relier siège et agences.
+Connecter plusieurs sites.
+Transporter données, voix, vidéo entre longues distances.
+
+Éléments WAN
+CPE
+
+Customer Premises Equipment.
+Équipement chez le client.
+Exemple : routeur, modem.
+
+CO
+
+Central Office.
+Bureau central de l’opérateur téléphonique.
+
+Boucle locale
+
+Connexion physique entre le CPE et le CO.
+
+Types de WAN
+WAN privé
+
+Connexion dédiée.
+Bande passante garantie.
+Plus sécurisé.
+Coût élevé.
+
+WAN public
+
+Infrastructure partagée.
+Internet.
+Bande passante variable.
+Moins sécurisé sans VPN.
+
+49. Topologies WAN
+Point-à-point
+
+Connexion directe entre deux points.
+Simple.
+Faible redondance.
+
+Étoile / Hub-and-spoke
+
+Site central relié à plusieurs sites distants.
+Dépend fortement du hub.
+
+Maillage complet / Full mesh
+
+Tous les sites sont interconnectés.
+Très redondant.
+Coût élevé.
+
+Maillage partiel / Partial mesh
+
+Seuls certains sites sont directement connectés.
+Équilibre entre coût et redondance.
+
+Dual-homed
+
+Un site possède deux liens ou deux chemins physiques.
+Améliore la redondance.
+
+50. Types de commutation WAN
+Circuit-switched
+
+Établit un circuit dédié pendant toute la communication.
+Exemple : RTC.
+
+Packet-switched
+
+Découpe les données en paquets.
+Utilise une infrastructure partagée.
+Exemple : MPLS.
+
+Série
+
+Liaison point-à-point sur interface série.
+Utilisée historiquement entre routeurs.
+
+51. Technologies WAN couche 1
+SDH
+
+Synchronous Digital Hierarchy.
+Gestion internationale du débit sur fibre optique.
+
+SONET
+
+Norme nord-américaine équivalente à SDH.
+
+DWDM
+
+Transmet plusieurs signaux sur une seule fibre optique grâce à différentes longueurs d’onde.
+Augmente la capacité d’une fibre.
+
+52. Technologies WAN couche 2
+PPP
+
+PPP est un protocole point-à-point qui crée une liaison directe entre deux équipements connectés.
+
+Fonctionnement PPP
+1. Établissement de la liaison
+
+Utilise LCP.
+Négocie les paramètres de communication.
+
+2. Authentification
+
+PAP.
+CHAP.
+
+3. Transmission des données
+
+Utilise NCP.
+Configure le protocole de couche réseau.
+Permet l’échange des données.
+
+PAP
+
+Mot de passe envoyé en clair.
+Pas sécurisé.
+
+CHAP
+
+Mot de passe jamais envoyé en clair.
+Challenge/réponse.
+Plus sécurisé.
+
+Avantages PPP
+
+Support multiprotocole.
+Fiabilité élevée.
+Authentification possible.
+
+ATM
+
+Utilise des cellules fixes de 53 octets.
+Garantit une bonne qualité de service, QoS.
+
+Frame Relay
+
+Commutation de paquets.
+NBMA.
+Utilise des circuits virtuels permanents.
+Identifiant DLCI.
+
+53. Options de connectivité Internet
+xDSL
+
+Transmission via ligne téléphonique.
+
+Exemples
+
+ADSL.
+VDSL.
+
+Fibre optique
+
+Connexion par fibre.
+Très haut débit.
+Faible atténuation.
+Longue distance.
+
+Cellulaire
+
+Connexion via réseau mobile.
+
+Exemples
+
+3G.
+4G.
+5G.
+
+WiMAX
+
+Technologie sans fil longue distance.
+Fournit Internet dans des zones éloignées.
+
+Ethernet WAN
+
+Extension Ethernet sur longues distances.
+
+MPLS
+
+Technique de commutation basée sur des étiquettes.
+Supporte QoS.
+Supporte VPN.
+Utilisé par les opérateurs.
+
+Rôles MPLS
+
+CE : Customer Edge.
+PE : Provider Edge.
+P : Provider interne.
+
+Metro Ethernet
+
+Extension Ethernet à l’échelle métropolitaine.
+
+DMVPN
+
+VPN multipoints dynamiques.
+Souvent utilisé pour hub-and-spoke dynamique.
+
+54. ACL
+Définition
+
+Une ACL est une liste de contrôle d’accès.
+Elle autorise ou bloque le trafic selon des règles.
+
+ACE
+
+Access Control Entry.
+Une ligne/règle dans une ACL.
+
+Critères possibles
+
+Adresse source.
+Adresse destination.
+Protocole.
+Port TCP/UDP.
+Direction.
+Interface.
+
+Deny implicite
+
+Toute ACL finit par un deny implicite.
+Ce qui n’est pas autorisé est bloqué.
+
+ACL standard
+
+Filtre uniquement selon l’adresse source.
+
+Numéros
+
+1–99.
+1300–1999.
+
+Placement
+
+Proche de la destination.
+Car elle n’est pas précise.
+
+ACL étendue
+
+Filtre selon :
+
+source ;
+destination ;
+protocole ;
+port.
+
+Numéros
+
+100–199.
+2000–2699.
+
+Placement
+
+Proche de la source.
+Car elle est précise.
+
+ACL nommée
+
+Plus lisible.
+Plus facile à modifier.
+Préférée dans les configurations modernes.
+
+Piège
+
+ACL standard = source seulement = près destination.
+ACL étendue = source + destination + protocole + port = près source.
+
+55. NAT / PAT
+NAT
+
+Network Address Translation.
+Traduit les adresses IP privées en adresses publiques.
+Permet aux réseaux privés d’accéder à Internet.
+
+Avantages
+
+Économise les adresses IPv4 publiques.
+Cache les adresses internes.
+Facilite l’adressage privé.
+
+Inconvénients
+
+Peut compliquer IPsec.
+Peut casser la logique de bout en bout.
+Ajoute du traitement.
+
+NAT statique
+
+Mapping fixe 1:1.
+Une IP privée correspond à une IP publique.
+Utile pour publier un serveur interne.
+
+NAT dynamique
+
+Utilise un pool d’adresses publiques.
+Attribue dynamiquement une IP publique disponible.
+
+PAT / NAT Overload
+
+Plusieurs adresses privées utilisent une seule adresse publique.
+Les sessions sont distinguées par les ports TCP/UDP.
+C’est la forme la plus utilisée en entreprise.
+
+Piège
+
+PAT = plusieurs privés vers une IP publique avec ports.
+NAT dynamique classique = pool d’adresses publiques.
+
+56. VPN, GRE, IPsec
+VPN
+
+Virtual Private Network.
+Tunnel sécurisé sur un réseau public.
+Permet de transporter du trafic privé via Internet.
+
+Types VPN
+Site-à-site
+
+Relie deux réseaux d’entreprise.
+Tunnel entre passerelles VPN.
+
+Accès distant
+
+Utilisateur distant vers réseau d’entreprise.
+Utilise souvent un client VPN.
+
+VPN SSL sans client
+
+Accès via navigateur.
+Pas forcément besoin de logiciel dédié.
+
+VPN avec client
+
+Nécessite un logiciel comme AnyConnect.
+
+GRE
+
+Generic Routing Encapsulation.
+Encapsule du trafic.
+Ne chiffre pas.
+
+IPsec
+
+Sécurise le trafic IP.
+Assure :
+
+confidentialité ;
+intégrité ;
+authentification.
+
+AH
+
+Authentication Header.
+Authentification.
+Intégrité.
+Pas de chiffrement.
+
+ESP
+
+Encapsulating Security Payload.
+Chiffrement.
+Intégrité.
+Authentification.
+
+IKE / ISAKMP
+
+Négociation.
+Gestion des clés.
+Création des associations de sécurité.
+
+Diffie-Hellman
+
+Permet l’échange sécurisé de clés sur un réseau non sécurisé.
+
+GRE over IPsec
+
+GRE encapsule.
+IPsec chiffre.
+Permet de transporter plusieurs types de trafic dans un tunnel sécurisé.
+
+Piège
+
+GRE seul n’est pas sécurisé.
+AH ne chiffre pas.
+ESP chiffre.
+
+57. CDP
+Définition
+
+CDP est un protocole Cisco qui permet de découvrir les équipements Cisco directement connectés.
+
+Couche
+
+Couche 2.
+
+Informations fournies
+
+Nom de l’équipement voisin.
+Interface locale.
+Interface distante.
+Adresse IP.
+Modèle.
+Plateforme.
+Système / version IOS.
+
+Piège
+
+CDP est propriétaire Cisco.
+LLDP est standard ouvert.
+
+58. LLDP
+Définition
+
+LLDP est un protocole standard permettant de découvrir les équipements voisins.
+
+Standard
+
+IEEE 802.1AB.
+
+Avantage
+
+Fonctionne avec plusieurs constructeurs.
+
+Comparaison
+
+CDP = Cisco.
+LLDP = standard ouvert.
+
+59. Dépannage réseau
+Bottom-up
+
+Commence à la couche physique.
+Remonte couche par couche.
+Utile si problème de câble, interface, signal.
+
+Top-down
+
+Commence à la couche application.
+Descend vers les couches basses.
+Utile si problème applicatif.
+
+Divide and conquer
+
+Commence à une couche intermédiaire.
+Souvent couche 3.
+Permet de gagner du temps.
+
+Follow the path
+
+Suit le chemin source → destination.
+Utile pour routage et ACL.
+
+Substitution
+
+Remplace un composant suspect.
+
+Comparaison
+
+Compare avec une configuration fonctionnelle.
+
+60. VoIP
+Définition
+
+La VoIP permet de transmettre la voix via un réseau IP au lieu d’utiliser le téléphone classique.
+
+Principe
+
+La voix analogique est convertie en signal numérique.
+La voix est découpée en segments.
+Chaque segment devient un paquet.
+Les paquets sont transportés sur IP.
+La voix est reconstituée côté destination.
+
+Paquets voix
+
+La voix est découpée en petits segments.
+Chaque segment devient souvent un paquet RTP.
+Les paquets sont envoyés en continu.
+
+Avantages
+
+Réduction des coûts.
+Convergence voix/données/vidéo.
+Mobilité.
+Messagerie unifiée.
+Fonctionnalités avancées.
+Administration centralisée.
+
+61. Architecture VoIP
+Composants
+Téléphone IP
+
+Terminal utilisateur pour la voix IP.
+
+IP PBX
+
+Serveur de gestion des appels.
+
+Gateway VoIP
+
+Convertit entre réseau IP et réseau téléphonique.
+
+Switch
+
+Connecte les téléphones IP.
+Peut fournir l’alimentation PoE.
+Utilise souvent un VLAN voix.
+
+DHCP
+
+Attribue une adresse IP aux téléphones IP.
+Peut fournir l’option 150.
+
+VLAN voix
+
+Isole le trafic VoIP.
+Permet d’appliquer QoS.
+
+RTPC
+
+Réseau Téléphonique Public Commuté.
+Réseau téléphonique classique.
+
+PBX
+
+Private Branch Exchange.
+Commutateur téléphonique privé d’entreprise.
+Gère les appels internes et externes.
+
+FXS
+
+Foreign Exchange Station.
+Fournit tonalité, alimentation et sonnerie.
+Se connecte au téléphone analogique.
+
+FXO
+
+Foreign Exchange Office.
+Se connecte au central téléphonique ou au PBX.
+Reçoit la ligne du fournisseur.
+
+Piège
+
+FXS alimente le téléphone.
+FXO se connecte au central.
+
+62. Protocoles VoIP
+H.323
+
+Ancien protocole de signalisation VoIP.
+Complet.
+Utilisé avec des systèmes anciens.
+
+SIP
+
+Protocole moderne.
+Stable.
+Simple.
+Flexible.
+Standard très utilisé aujourd’hui.
+Sert à créer, modifier et terminer les appels.
+
+RTP
+
+Real-time Transport Protocol.
+Transporte la voix et la vidéo en temps réel.
+Utilise UDP.
+
+RTCP
+
+Contrôle RTP.
+Fournit des statistiques de qualité.
+
+MGCP
+
+Contrôle de passerelle.
+Modèle maître/esclave.
+Contrôleur centralisé.
+
+SCCP / Skinny
+
+Protocole Cisco propriétaire.
+Utilisé avec certains téléphones IP Cisco.
+
+63. CME — Cisco Unified Communications Manager Express
+Définition
+
+CME est une solution de téléphonie IP intégrée dans un routeur Cisco.
+
+Rôle
+
+Gérer :
+
+téléphones IP ;
+appels internes ;
+messagerie vocale ;
+extensions ;
+configuration des téléphones.
+
+Éléments visibles
+
+VLAN voix.
+DHCP option 150.
+Téléchargement de configuration pour les téléphones IP.
+Sécurisation HTTPS.
+ephone : téléphone physique.
+ephone-dn : numéro / téléphone logique.
+Support VoIP dans le LAN.
+Rôle proche d’un petit PBX intégré.
+
+Ephone
+
+Téléphone IP physique.
+Souvent identifié par adresse MAC.
+
+Ephone-dn
+
+Directory Number.
+Numéro logique / extension.
+Associé à un téléphone.
+
+DHCP option 150
+
+Indique l’adresse du serveur TFTP aux téléphones IP.
+Permet le téléchargement de configuration.
+
+64. QoS VoIP
+Besoin
+
+La voix est sensible à :
+
+délai ;
+jitter ;
+perte de paquets.
+
+Valeurs importantes
+
+Délai recommandé : < 150 ms.
+Jitter recommandé : < 30 ms.
+Perte recommandée : < 1 %.
+
+DSCP EF
+
+Marquage utilisé pour prioriser la voix.
+EF = Expedited Forwarding.
+
+VLAN voix
+
+Sépare le trafic voix.
+Permet de prioriser les paquets VoIP.
+
+65. Dial Peers
+Définition
+
+Un dial peer définit un point d’extrémité ou un chemin pour un appel VoIP.
+
+Rôle
+
+Déterminer où envoyer l’appel.
+Définir le codec.
+Définir les propriétés de transmission.
+Relier VoIP et téléphonie traditionnelle.
+
+POTS Dial Peer
+
+Vers réseau téléphonique classique.
+Utilise interfaces FXS, FXO, E&M, BRI ou PRI.
+
+VoIP Dial Peer
+
+Vers réseau IP.
+Utilise une adresse IP destination.
+
+Matching
+
+Le motif le plus spécifique est choisi.
+Logique proche du longest match en routage IP.
+
+Wildcards
+
+. = un chiffre quelconque.
+T = longueur variable.
++ = répétition du chiffre précédent.
+[ ] = série ou plage de chiffres.
+, = pause d’une seconde.
+
+66. Notes visibles partiellement lisibles
+Fragments corrigés
+
+“FCOO à FCFF” correspond probablement à FC00 à FCFF.
+“Multidiffusion pour communication de groupe” correspond aux adresses FF00::/8.
+“Local unique pour identifier un hôte dans un réseau spécifique” correspond aux ULA FC00::/7.
+“Loopback permet à un équipement de communiquer avec lui-même” correspond à ::1/128.
+“Option 150 IP” correspond à l’adresse TFTP pour téléphones IP.
+“Téléchargement config des téléphones IP” correspond au processus CME/TFTP.
+“Sécuriser HTTPS” correspond à l’accès sécurisé au service de configuration ou d’administration.
+“Double home” correspond probablement à deux liens ou deux chemins physiques.
+“Des secours / redondance” correspond à la haute disponibilité.
+
+67. Ports importants à mémoriser
+Administration
+
+SSH : TCP 22.
+Telnet : TCP 23.
+
+Web
+
+HTTP : TCP 80.
+HTTPS : TCP 443.
+
+Noms et adressage
+
+DNS : UDP/TCP 53.
+DHCP serveur : UDP 67.
+DHCP client : UDP 68.
+
+Temps et supervision
+
+NTP : UDP 123.
+SNMP requêtes : UDP 161.
+SNMP traps : UDP 162.
+Syslog : UDP 514.
+
+Routage
+
+BGP : TCP 179.
+
+Authentification
+
+RADIUS authentication : UDP 1812.
+RADIUS accounting : UDP 1813.
+
+Fichiers
+
+TFTP : UDP 69.
+
+Mail
+
+POP : TCP 110.
+POP sécurisé : TCP 995.
+IMAP : TCP 143.
+IMAP sécurisé : TCP 993.
+
+WLAN
+
+CAPWAP contrôle : UDP 5246.
+CAPWAP données : UDP 5247.
+
+68. Distances administratives à graver
+
+Connecté : 0.
+Statique : 1.
+EIGRP résumé : 5.
+eBGP : 20.
+EIGRP interne : 90.
+OSPF : 110.
+IS-IS : 115.
+RIP : 120.
+EIGRP externe : 170.
+iBGP : 200.
+
+69. Mémo final M201
+
+IP = couche 3.
+MAC = couche 2.
+Switch = table MAC.
+Routeur = table de routage.
+VLAN = domaine de broadcast séparé.
+Access = un VLAN.
+Trunk = plusieurs VLANs.
+802.1Q = tag VLAN.
+Native VLAN = non taguée.
+DTP = négociation trunk Cisco.
+VTP = propagation VLAN Cisco.
+Inter-VLAN = routage entre VLANs.
+Router-on-a-stick = sous-interfaces.
+Switch L3 = SVI + ip routing.
+STP = anti-boucle.
+Root Bridge = Bridge ID le plus faible.
+PortFast = uniquement vers terminal.
+BPDU Guard = protège PortFast.
+EtherChannel = plusieurs liens physiques → un lien logique.
+PAgP = Cisco.
+LACP = standard.
+HSRP = passerelle virtuelle Cisco.
+VRRP = passerelle virtuelle standard.
+GLBP = redondance + équilibrage.
+DHCP = DORA.
+SLAAC = RS + RA + préfixe + DAD.
+OSPF = link-state + coût.
+DR/BDR = optimisation réseau multi-access.
+EIGRP = DUAL.
+BGP = inter-AS + AS Path.
+WAN = relier sites distants.
+PPP = LCP + authentification + NCP.
+PAP = mot de passe en clair.
+CHAP = plus sécurisé.
+ACL standard = source seulement.
+ACL étendue = source + destination + protocole + port.
+NAT = privé vers public.
+PAT = plusieurs privés vers une IP publique.
+VPN = tunnel sécurisé.
+GRE = encapsule sans chiffrer.
+IPsec = chiffre / authentifie / protège l’intégrité.
+SNMP = supervision.
+Syslog = logs.
+NTP = heure.
+CDP = Cisco.
+LLDP = standard.
+VoIP = voix sur IP.
+SIP = signalisation moderne.
+RTP = transport voix.
+CME = téléphonie IP dans routeur Cisco.
+
+70. Pièges d’examen
+
+VLAN natif ≠ VLAN de gestion.
+Deux VLANs ne communiquent pas sans routage inter-VLAN.
+Switch réduit les collisions mais ne coupe pas les broadcasts sans VLAN.
+Routeur coupe les domaines de broadcast.
+PortFast ne doit pas être activé vers un switch.
+BPDU Guard met le port en err-disabled si BPDU reçue.
+PAgP auto + auto ne fonctionne pas.
+LACP passive + passive ne fonctionne pas.
+Protect ne journalise pas.
+Restrict journalise et incrémente le compteur.
+Shutdown désactive le port.
+OSPF choisit le Router ID manuel avant loopback.
+DR/BDR dépend de la priorité puis du Router ID.
+Priorité OSPF 0 = jamais DR/BDR.
+Route flottante = AD plus élevée.
+Longest match = préfixe le plus long.
+ACL standard proche destination.
+ACL étendue proche source.
+PAT est la forme la plus utilisée de NAT.
+AH ne chiffre pas.
+ESP chiffre.
+GRE seul n’est pas sécurisé.
+WEP est obsolète.
+WPA2 Enterprise utilise 802.1X/RADIUS.
+CAPWAP contrôle = UDP 5246.
+CAPWAP données = UDP 5247.
+FXS alimente le téléphone.
+FXO se connecte au central.
+Syslog 0 est plus grave que Syslog 7.
