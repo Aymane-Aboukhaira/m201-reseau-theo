@@ -654,15 +654,83 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      .hero { padding: 60px 16px 40px; }
-      .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
-      .content-area { padding: 0 16px 80px; }
-      .section-header { padding: 16px; gap: 10px; }
-      .section-content { padding: 0 16px 16px; }
+      /* Nav: compact, hide search text, stack tighter */
+      .top-nav { height: 56px; padding: 0 12px; gap: 8px; }
+      .nav-logo { font-size: 1.1rem; }
+      .module-switcher { border-radius: 6px; }
+      .module-btn { padding: 5px 10px; font-size: 0.7rem; }
+      .search-box { max-width: none; }
+      .search-box input { padding: 7px 12px 7px 34px; font-size: 0.8rem; border-radius: 8px; }
+      .search-box svg { left: 10px; width: 14px; height: 14px; }
       .search-kbd { display: none; }
       .progress-info { display: none; }
-      .menu-grid { grid-template-columns: 1fr; }
+      .icon-btn { width: 32px; height: 32px; border-radius: 8px; }
+      .nav-controls { gap: 6px; }
+
+      /* Hero: tighter */
+      .hero { padding: 48px 16px 32px; }
+      .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+      .hero-sub { font-size: 0.9rem; margin-top: 12px; }
+      .hero-badge { font-size: 0.65rem; padding: 5px 12px; margin-bottom: 16px; }
+      .hero-tags { gap: 6px; margin-top: 20px; }
+      .hero-tag { padding: 5px 10px; font-size: 0.7rem; }
+
+      /* Chapter cards: single column, touch-friendly */
+      .content-area { padding: 0 12px 80px; }
+      .chapters-grid { grid-template-columns: 1fr; gap: 8px; }
+      .chapter-card { padding: 14px 14px; gap: 10px; border-radius: 12px; }
+      .ch-num { width: 36px; height: 36px; border-radius: 8px; font-size: 0.75rem; }
+      .ch-title { font-size: 0.88rem; }
+      .ch-check { width: 22px; height: 22px; border-radius: 5px; }
+      .ch-arrow { width: 16px; height: 16px; }
+
+      /* Detail panel: FULLSCREEN on mobile */
+      .detail-panel {
+        width: 100vw; height: 100vh;
+        border-radius: 0; border: none;
+        top: 0; left: 0;
+        transform: translateY(30px);
+      }
+      .detail-panel.open { transform: translateY(0); top: 0; left: 0; }
+
+      .panel-header { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
+      .panel-close { width: 32px; height: 32px; border-radius: 8px; font-size: 0.9rem; }
+      .panel-title { font-size: 1rem; white-space: normal; }
+      .panel-subtitle { font-size: 0.7rem; }
+      .panel-nav-btn { width: 32px; height: 32px; border-radius: 8px; }
+      .panel-check-btn { padding: 5px 10px; font-size: 0.72rem; }
+      .panel-body { padding: 16px 14px 40px; font-size: 0.88rem; line-height: 1.7; }
+
+      /* Content inside panel */
+      .def-card, .piege, .adv-card, .disadv-card, .memo-block { padding: 14px 16px; margin: 12px 0; border-radius: 10px; }
+      .content-h3 { font-size: 1rem; margin: 20px 0 8px; }
+      .content-h4 { font-size: 0.9rem; margin: 14px 0 6px; }
+      .content-list li { padding: 6px 0 6px 22px; font-size: 0.86rem; }
+      .content-list li::before { left: 6px; top: 13px; width: 5px; height: 5px; }
+      .tbl-wrap table { font-size: 0.8rem; }
+      .tbl-wrap th { padding: 8px 10px; font-size: 0.65rem; }
+      .tbl-wrap td { padding: 8px 10px; }
+
+      /* Menu overlay */
+      .menu-overlay { padding: 70px 16px 24px; }
+      .menu-grid { grid-template-columns: 1fr; gap: 2px; }
+      .menu-item { padding: 12px 14px; border-radius: 10px; }
+      .menu-item-num { width: 32px; height: 32px; border-radius: 8px; font-size: 0.7rem; }
+      .menu-item-title { font-size: 0.85rem; }
+      .menu-close { top: 14px; right: 14px; width: 36px; height: 36px; }
+
+      /* FAB */
+      .fab { bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 12px; }
+
+      /* Hide custom cursor on touch */
       .cursor-dot, .cursor-ring { display: none; }
+    }
+
+    /* Small phones */
+    @media (max-width: 380px) {
+      .module-switcher { display: none; }
+      .hero h1 { font-size: 1.6rem; }
+      .hero-tags { display: none; }
     }
 
     @media print { .no-print { display: none !important; } }
