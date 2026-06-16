@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M201 — Réseaux OFPPT | Support de Révision</title>
-  <meta name="description" content="Support de révision complet pour le module M201 Réseaux OFPPT. Topologies, OSI, VLAN, OSPF, BGP, VPN, VoIP et plus.">
+  <title>M201 / M205 OFPPT | Support de Révision</title>
+  <meta name="description" content="Support de révision complet pour les modules M201 (Réseaux) et M205 (Sécurité) OFPPT.">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,9 +61,12 @@
     <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 mr-2">
       <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-sm">M2</div>
-      <span class="font-bold text-lg bg-gradient-to-r from-brand-500 to-brand-400 bg-clip-text text-transparent">M201 Réseaux</span>
+      <select v-model="activeModule" class="font-bold text-lg bg-transparent text-brand-600 dark:text-brand-400 outline-none cursor-pointer appearance-none pr-4" style="background-image: url('data:image/svg+xml;utf8,<svg fill=%22none%22 stroke=%22currentColor%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22></path></svg>'); background-repeat: no-repeat; background-position: right center; background-size: 16px;">
+        <option value="M201" class="text-gray-800 dark:text-gray-200 bg-white dark:bg-surface-800">M201 Réseaux</option>
+        <option value="M205" class="text-gray-800 dark:text-gray-200 bg-white dark:bg-surface-800">M205 Sécurité</option>
+      </select>
     </div>
     <div class="flex-1 max-w-md mx-auto relative">
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -110,16 +113,26 @@
       <!-- Hero -->
       <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 p-8 text-white">
         <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%221%22 fill=%22white%22/></svg>'); background-size: 20px 20px;"></div>
-        <h1 class="text-3xl sm:text-4xl font-black mb-2 relative">Version fusionnée complète — Réseaux OFPPT</h1>
-        <p class="text-brand-200 relative">Module M201 • 70 chapitres • Support de révision optimisé</p>
+        <h1 class="text-3xl sm:text-4xl font-black mb-2 relative">Version fusionnée complète — {{ activeModule === 'M201' ? 'Réseaux' : 'Sécurité' }} OFPPT</h1>
+        <p class="text-brand-200 relative">Module {{ activeModule }} • {{ totalSections }} chapitres • Support de révision optimisé</p>
         <div class="mt-4 flex flex-wrap gap-2 relative">
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">OSI & TCP/IP</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VLAN & Switching</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Routage</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Sécurité</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WLAN</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WAN & VPN</span>
-          <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VoIP</span>
+          <template v-if="activeModule === 'M201'">
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">OSI & TCP/IP</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VLAN & Switching</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Routage</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Sécurité</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WLAN</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WAN & VPN</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VoIP</span>
+          </template>
+          <template v-else>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Concepts & CIA+</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Attaques L2/L3</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Pare-feu & IDS/IPS</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VPN & IPsec</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Cryptographie & PKI</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Cybercriminalité</span>
+          </template>
         </div>
       </div>
 
@@ -162,6 +175,12 @@
 <script src="sections3.js"></script>
 <script src="sections4.js"></script>
 <script src="sections5.js"></script>
+<script src="m205_sections1.js"></script>
+<script src="m205_sections2.js"></script>
+<script src="m205_sections3.js"></script>
+<script src="m205_sections4.js"></script>
+<script src="m205_sections5.js"></script>
+<script src="m205_sections6.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

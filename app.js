@@ -2,37 +2,49 @@ const { createApp, ref, computed, onMounted, onUnmounted, watch, nextTick } = Vu
 
 createApp({
   setup() {
+    const activeModule = ref(localStorage.getItem('m20x-activeModule') || 'M201');
     const darkMode = ref(false);
     const sidebarOpen = ref(window.innerWidth >= 1024);
     const searchQuery = ref('');
     const activeSection = ref('');
     const showBackToTop = ref(false);
-    const checked = ref(JSON.parse(localStorage.getItem('m201-checked') || '{}'));
-    const collapsed = ref(JSON.parse(localStorage.getItem('m201-collapsed') || '{}'));
+    
+    const m201Checked = ref(JSON.parse(localStorage.getItem('m201-checked') || '{}'));
+    const m201Collapsed = ref(JSON.parse(localStorage.getItem('m201-collapsed') || '{}'));
+    const m205Checked = ref(JSON.parse(localStorage.getItem('m205-checked') || '{}'));
+    const m205Collapsed = ref(JSON.parse(localStorage.getItem('m205-collapsed') || '{}'));
 
-    // sections from sections.js
-    const allSections = window.M201_SECTIONS || [];
-    const totalSections = allSections.length;
+    const allSections = computed(() => activeModule.value === 'M201' ? (window.M201_SECTIONS || []) : (window.M205_SECTIONS || []));
+    const checked = computed(() => activeModule.value === 'M201' ? m201Checked.value : m205Checked.value);
+    const collapsed = computed(() => activeModule.value === 'M201' ? m201Collapsed.value : m205Collapsed.value);
+
+    const totalSections = computed(() => allSections.value.length);
 
     const filteredSections = computed(() => {
-      if (!searchQuery.value.trim()) return allSections;
+      if (!searchQuery.value.trim()) return allSections.value;
       const q = searchQuery.value.toLowerCase();
-      return allSections.filter(s => 
+      return allSections.value.filter(s => 
         s.title.toLowerCase().includes(q) || s.searchText.toLowerCase().includes(q)
       );
     });
 
     const completedSections = computed(() => Object.values(checked.value).filter(Boolean).length);
-    const progressPercent = computed(() => totalSections ? Math.round((completedSections.value / totalSections) * 100) : 0);
+    const progressPercent = computed(() => totalSections.value ? Math.round((completedSections.value / totalSections.value) * 100) : 0);
 
     function toggleCheck(id) {
       checked.value[id] = !checked.value[id];
-      localStorage.setItem('m201-checked', JSON.stringify(checked.value));
+      localStorage.setItem(activeModule.value === 'M201' ? 'm201-checked' : 'm205-checked', JSON.stringify(checked.value));
     }
     function toggleSection(id) {
       collapsed.value[id] = !collapsed.value[id];
-      localStorage.setItem('m201-collapsed', JSON.stringify(collapsed.value));
+      localStorage.setItem(activeModule.value === 'M201' ? 'm201-collapsed' : 'm205-collapsed', JSON.stringify(collapsed.value));
     }
+    
+    watch(activeModule, (v) => {
+      localStorage.setItem('m20x-activeModule', v);
+      searchQuery.value = '';
+      window.scrollTo(0,0);
+    });
     function setActive(id) { activeSection.value = id; }
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     function highlight(text) {
@@ -68,7 +80,7 @@ createApp({
 
     onUnmounted(() => { if (observer) observer.disconnect(); });
 
-    return { darkMode, sidebarOpen, searchQuery, activeSection, showBackToTop, checked, collapsed,
+    return { activeModule, darkMode, sidebarOpen, searchQuery, activeSection, showBackToTop, checked, collapsed,
       filteredSections, totalSections, completedSections, progressPercent,
       toggleCheck, toggleSection, setActive, scrollToTop, highlight };
   }

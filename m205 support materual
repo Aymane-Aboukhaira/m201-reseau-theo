@@ -1,0 +1,2979 @@
+Version fusionnée en style **“Extraction structurée des notes”**, basée sur les fiches Sécurité, la série EFF Sécurité, les banques de questions, et les compléments “theo all”. Les sources couvrent CIA+, attaques réseau, sécurité couche 2, pare-feux, IDS/IPS, AAA, DMZ, ASA, VPN/IPsec/GRE, ACL/NAT, cryptographie, PKI, cybercriminalité et cadre marocain.   
+
+# Sécurité — Extraction structurée des notes
+
+## Version fusionnée complète — OFPPT TRI / ID-SR
+
+# 1. Introduction à la sécurité informatique
+
+## Définition
+
+La sécurité informatique est la protection des ressources matérielles, logicielles, réseaux, systèmes et données contre :
+
+accès non autorisés ;
+attaques ;
+dommages ;
+modifications non autorisées ;
+interruption de service ;
+vol ou fuite d’informations.
+
+## Objectif général
+
+Assurer que les informations restent :
+
+confidentielles ;
+intègres ;
+disponibles ;
+authentiques ;
+non répudiables ;
+accessibles uniquement aux personnes autorisées.
+
+## Idée centrale
+
+**Menace → exploite → Vulnérabilité → génère → Risque → cause → Préjudice**
+
+## Formule clé
+
+**Risque = Préjudice × Probabilité d’occurrence**
+
+## Risque acceptable
+
+Un risque peut être accepté si les mesures de prévention sont effectives et efficaces.
+
+### Exemple 1
+
+Forte probabilité mais préjudice prévenu.
+Exemple : panne disque + sauvegardes testées.
+
+### Exemple 2
+
+Forte gravité mais faible probabilité.
+Exemple : météorite.
+
+---
+
+# 2. Concepts fondamentaux
+
+## Attaque
+
+Action qui compromet la confidentialité, l’intégrité ou la disponibilité d’un système, d’un service ou d’une information.
+
+## Menace
+
+Danger potentiel pouvant provoquer :
+
+vol de données ;
+destruction ;
+corruption ;
+indisponibilité ;
+perte financière ;
+atteinte à la réputation.
+
+## Vulnérabilité
+
+Faiblesse exploitable dans :
+
+un système ;
+une application ;
+une configuration ;
+une procédure ;
+un comportement humain.
+
+### Exemples
+
+Bug logiciel.
+Mot de passe faible.
+Port ouvert inutile.
+Mauvaise configuration.
+Utilisateur non formé.
+
+## Risque
+
+Possibilité qu’une menace exploite une vulnérabilité et provoque un dommage.
+
+## Préjudice
+
+Conséquence négative du risque.
+
+### Exemples
+
+Perte de données.
+Arrêt de service.
+Vol d’identifiants.
+Atteinte à l’image.
+Perte financière.
+
+## Contre-mesure
+
+Moyen technique, humain ou organisationnel permettant de réduire :
+
+la probabilité d’une attaque ;
+l’impact d’une attaque ;
+la surface d’attaque ;
+le temps de détection ;
+le temps de récupération.
+
+## Mécanisme de sécurité
+
+Processus ou dispositif conçu pour détecter, prévenir ou récupérer d’une attaque.
+
+### Exemples
+
+Chiffrement.
+Pare-feu.
+Signature numérique.
+Journalisation.
+Sauvegarde.
+Contrôle d’accès.
+
+## Service de sécurité
+
+Service qui améliore la sécurité des communications ou des traitements.
+
+### Exemples
+
+Authentification.
+Contrôle d’accès.
+Confidentialité.
+Intégrité.
+Non-répudiation.
+
+---
+
+# 3. Objectifs de sécurité — CIA+
+
+## Mémo
+
+**I-A-C-NR-D**
+
+Intégrité.
+Authenticité.
+Confidentialité.
+Non-répudiation.
+Disponibilité.
+
+## Confidentialité
+
+Garantit que seules les personnes autorisées peuvent accéder aux données.
+
+### Exemples
+
+Chiffrement AES.
+VPN.
+HTTPS.
+Contrôle d’accès.
+ACL.
+
+## Intégrité
+
+Garantit que les données ne sont pas modifiées sans autorisation.
+
+### Exemples
+
+Hash.
+Signature numérique.
+Contrôle d’intégrité.
+Base de données cohérente.
+
+## Disponibilité
+
+Garantit que les données et services restent accessibles aux utilisateurs autorisés.
+
+### Exemples
+
+Redondance.
+Load balancing.
+Sauvegardes.
+Haute disponibilité.
+Protection anti-DoS.
+
+## Authenticité
+
+Vérifie l’identité réelle d’un utilisateur, système ou émetteur.
+
+### Exemples
+
+Mot de passe.
+Certificat.
+MFA.
+802.1X.
+RADIUS.
+
+## Non-répudiation
+
+Empêche une personne de nier une action réalisée ou un message envoyé.
+
+### Exemples
+
+Signature numérique.
+Journaux d’audit.
+Notarisation.
+
+## Contrôle d’accès
+
+Garantit que seules les entités autorisées accèdent aux ressources.
+
+### Exemples
+
+ACL.
+RBAC.
+VLAN.
+Pare-feu.
+Droits utilisateurs.
+
+---
+
+# 4. Différences importantes
+
+## Confidentialité ≠ Authenticité
+
+### Confidentialité
+
+Protège le contenu.
+Objectif : personne non autorisée ne doit lire.
+
+### Authenticité
+
+Vérifie l’identité.
+Objectif : être sûr de l’émetteur ou utilisateur.
+
+## Identification ≠ Authentification
+
+### Identification
+
+Déclarer qui on est.
+Élément public.
+
+Exemple : nom d’utilisateur.
+
+### Authentification
+
+Prouver qui on est.
+Élément secret ou personnel.
+
+Exemple : mot de passe, certificat, MFA.
+
+## Authentification ≠ Autorisation
+
+### Authentification
+
+Qui es-tu ?
+
+### Autorisation
+
+Qu’as-tu le droit de faire ?
+
+## Menace ≠ Vulnérabilité ≠ Risque
+
+### Menace
+
+Danger.
+
+### Vulnérabilité
+
+Faiblesse.
+
+### Risque
+
+Résultat possible si la menace exploite la faiblesse.
+
+## IDS ≠ IPS
+
+### IDS
+
+Surveille.
+Détecte.
+Passif.
+Ne bloque pas.
+
+### IPS
+
+Inspecte.
+Détecte.
+Bloque.
+Actif.
+
+## Attaque active ≠ Attaque passive
+
+### Attaque active
+
+Modifie, bloque ou perturbe.
+
+### Attaque passive
+
+Observe ou intercepte sans modifier.
+
+---
+
+# 5. Services, mécanismes et attaques
+
+## Attaque de sécurité
+
+Action qui compromet la sécurité.
+
+### Exemples
+
+Vol de données.
+DoS.
+Injection.
+Modification de fichiers.
+Sniffing.
+
+## Mécanisme de sécurité
+
+Moyen utilisé pour contrer une attaque.
+
+### Exemples
+
+Chiffrement.
+Pare-feu.
+Contrôle d’accès.
+Signature numérique.
+
+## Service de sécurité
+
+Fonction fournie grâce à des mécanismes.
+
+### Exemples
+
+Confidentialité.
+Authentification.
+Contrôle d’accès.
+Non-répudiation.
+
+## Relation
+
+Les services de sécurité utilisent des mécanismes pour contrer les attaques.
+
+---
+
+# 6. Mécanismes de sécurité
+
+## Mécanismes spécifiques
+
+Chiffrement.
+Signature numérique.
+Contrôle d’accès.
+Intégrité des données.
+Échange d’authentification.
+Remplissage du trafic.
+Contrôle de routage.
+Notarisation.
+
+## Mécanismes omniprésents
+
+Fonctionnalité de confiance.
+Étiquette de sécurité.
+Détection d’événements.
+Sentier d’audit de sécurité.
+Récupération de sécurité.
+
+---
+
+# 7. Tableau mental — Objectif / Service / Mécanisme
+
+## Authentification
+
+Service : authentification d’entité ou d’origine.
+Mécanismes :
+
+chiffrement ;
+signature numérique ;
+échange d’authentification.
+
+## Contrôle d’accès
+
+Service : contrôle d’accès.
+Mécanismes :
+
+ACL ;
+RBAC ;
+pare-feu ;
+droits.
+
+## Confidentialité des données
+
+Service : confidentialité.
+Mécanismes :
+
+chiffrement ;
+contrôle de routage ;
+VPN.
+
+## Confidentialité du flux
+
+Service : confidentialité du trafic.
+Mécanismes :
+
+chiffrement ;
+remplissage du trafic ;
+routage contrôlé.
+
+## Intégrité
+
+Service : intégrité des données.
+Mécanismes :
+
+hash ;
+signature ;
+contrôle d’intégrité.
+
+## Non-répudiation
+
+Service : non-répudiation.
+Mécanismes :
+
+signature numérique ;
+journaux ;
+notarisation.
+
+## Disponibilité
+
+Service : disponibilité.
+Mécanismes :
+
+redondance ;
+sauvegarde ;
+load balancing ;
+anti-DoS ;
+récupération.
+
+---
+
+# 8. Attaques passives et actives
+
+## Attaque passive
+
+L’attaquant observe ou intercepte sans modifier les données.
+
+### Exemples
+
+Sniffing.
+Écoute réseau.
+Interception de trafic.
+Analyse passive.
+
+### Particularité
+
+Difficile à détecter car elle laisse peu de traces.
+
+## Attaque active
+
+L’attaquant modifie, supprime, bloque ou perturbe le système.
+
+### Exemples
+
+DoS.
+DDoS.
+Injection.
+Modification de données.
+ARP spoofing.
+Ransomware.
+
+---
+
+# 9. DoS et DDoS
+
+## DoS
+
+Denial of Service.
+Un seul attaquant envoie un volume massif de requêtes vers une cible.
+
+## Objectif
+
+Épuiser :
+
+CPU ;
+mémoire ;
+bande passante ;
+sessions ;
+ressources serveur.
+
+## Impact
+
+Service inaccessible.
+Perte financière.
+Atteinte à la réputation.
+
+## Solutions
+
+Rate limiting.
+Firewall.
+IPS.
+Filtrage des paquets malformés.
+Blackholing.
+Redondance.
+
+## DDoS
+
+Distributed Denial of Service.
+Même principe que DoS, mais depuis plusieurs machines infectées.
+
+## Source
+
+Botnet.
+Zombies.
+Machines compromises.
+
+## Impact
+
+Plus difficile à bloquer.
+Sources distribuées.
+Peut saturer de grandes infrastructures.
+
+## Solutions
+
+Anti-DDoS cloud.
+Scrubbing center.
+Anycast.
+ACL opérateur.
+IPS.
+Surveillance trafic.
+
+## Différence DoS / DDoS
+
+DoS = une source principale.
+DDoS = plusieurs sources distribuées.
+
+---
+
+# 10. TCP SYN Flooding
+
+## Définition
+
+TCP SYN flooding est une attaque DoS qui exploite l’établissement de connexion TCP.
+
+## Fonctionnement normal TCP
+
+SYN.
+SYN-ACK.
+ACK.
+
+## Principe de l’attaque
+
+L’attaquant envoie beaucoup de paquets SYN.
+Le serveur réserve des ressources pour des connexions incomplètes.
+L’ACK final n’arrive pas.
+La file d’attente se remplit.
+
+## Impact
+
+Le serveur ne peut plus accepter de vraies connexions.
+
+## Solutions
+
+SYN cookies.
+Firewall.
+IPS.
+Rate limiting.
+Timeout réduit.
+Filtrage anti-spoofing.
+
+---
+
+# 11. Attaques couche 2
+
+## Idée centrale
+
+La couche 2 est un maillon faible.
+Si la couche 2 est compromise, les couches supérieures sont affectées.
+
+## Conséquence
+
+Même VPN, pare-feu ou IPS peuvent être insuffisants si l’attaque est interne au LAN.
+
+## Types d’attaques couche 2
+
+MAC Flooding.
+VLAN Hopping.
+DHCP Starvation.
+DHCP Spoofing.
+ARP Spoofing.
+Attaque STP.
+Usurpation MAC/IP.
+
+---
+
+# 12. MAC Flooding
+
+## Définition
+
+MAC Flooding est une attaque qui sature la table CAM du switch.
+
+## Fonctionnement
+
+L’attaquant envoie beaucoup de trames avec de fausses adresses MAC sources.
+Le switch remplit sa table CAM.
+Quand la table est saturée, le switch ne sait plus où envoyer certaines trames.
+Il peut faire du flooding comme un hub.
+
+## Impact
+
+Sniffing possible.
+Perte de performance.
+Risque d’interception.
+
+## Solution
+
+Port Security.
+
+---
+
+# 13. VLAN Hopping
+
+## Définition
+
+VLAN Hopping est une attaque permettant d’accéder à un VLAN non autorisé.
+
+## Méthodes
+
+Abus de DTP.
+Double tagging 802.1Q.
+
+## Impact
+
+Accès à des VLANs normalement isolés.
+Risque d’accès à des données sensibles.
+
+## Solutions
+
+Désactiver DTP.
+Forcer les ports utilisateurs en mode access.
+Changer la native VLAN.
+Utiliser une native VLAN dédiée non utilisée.
+Désactiver les ports inutilisés.
+Ne jamais laisser les ports utilisateurs négocier un trunk.
+
+---
+
+# 14. DHCP Starvation
+
+## Définition
+
+DHCP Starvation est une attaque qui épuise le pool d’adresses DHCP.
+
+## Fonctionnement
+
+L’attaquant envoie beaucoup de requêtes DHCP Discover.
+Il utilise de fausses adresses MAC.
+Le serveur DHCP attribue toutes les adresses disponibles.
+Les vrais clients ne reçoivent plus d’adresse IP.
+
+## Impact
+
+Déni de service réseau.
+Clients légitimes sans connectivité.
+
+## Solutions
+
+DHCP Snooping.
+Limitation du nombre de requêtes DHCP par port.
+Port Security.
+
+---
+
+# 15. DHCP Spoofing
+
+## Définition
+
+DHCP Spoofing est une attaque où un faux serveur DHCP répond aux clients.
+
+## Fonctionnement
+
+L’attaquant place un serveur DHCP non autorisé.
+Il distribue une mauvaise configuration réseau.
+
+## Paramètres falsifiés possibles
+
+Passerelle par défaut.
+DNS.
+Adresse IP.
+Domaine.
+Routes.
+
+## Impact
+
+Man-in-the-Middle.
+Redirection du trafic.
+Interception de données.
+Déni de service.
+
+## Solution
+
+DHCP Snooping.
+
+## Principe DHCP Snooping
+
+Ports vers vrais serveurs DHCP = Trusted.
+Ports utilisateurs = Untrusted.
+Les DHCP Offer venant d’un port Untrusted sont bloqués.
+
+---
+
+# 16. ARP Spoofing / ARP Poisoning
+
+## Définition
+
+ARP Spoofing est une attaque qui falsifie les associations IP ↔ MAC.
+
+## Fonctionnement
+
+L’attaquant envoie de fausses réponses ARP.
+Il fait croire à la victime que sa MAC est celle de la passerelle.
+Il fait croire à la passerelle que sa MAC est celle de la victime.
+
+## Impact
+
+Man-in-the-Middle.
+Sniffing.
+Modification du trafic.
+Redirection.
+Vol d’identifiants.
+
+## Solution
+
+DAI.
+Dynamic ARP Inspection.
+
+## Principe DAI
+
+Vérifie les messages ARP.
+Compare avec la base DHCP Snooping.
+Bloque les associations IP/MAC invalides.
+
+---
+
+# 17. Usurpation IP/MAC
+
+## Définition
+
+L’attaquant utilise une fausse adresse IP ou MAC.
+
+## Objectif
+
+Contourner une restriction.
+Se faire passer pour une autre machine.
+Échapper à un filtrage.
+Voler une identité réseau.
+
+## Solution
+
+IP Source Guard.
+Port Security.
+DHCP Snooping.
+
+---
+
+# 18. Attaque STP
+
+## Définition
+
+Attaque visant à manipuler STP pour modifier la topologie réseau.
+
+## Fonctionnement
+
+L’attaquant envoie des BPDU.
+Il tente de devenir Root Bridge.
+Le trafic peut être redirigé vers lui.
+
+## Impact
+
+Interception de trafic.
+Instabilité réseau.
+Boucles.
+Perte de disponibilité.
+
+## Solutions
+
+BPDU Guard.
+Root Guard.
+
+## BPDU Guard
+
+Protège les ports access / PortFast.
+Si une BPDU est reçue, le port passe en err-disabled.
+
+## Root Guard
+
+Empêche un port de devenir chemin vers un nouveau Root Bridge non autorisé.
+Protège l’élection STP.
+
+---
+
+# 19. DTP Security
+
+## DTP
+
+Dynamic Trunking Protocol.
+Protocole Cisco négociant automatiquement la formation d’un trunk.
+
+## Risque
+
+Un attaquant peut tenter de transformer un port access en trunk.
+Cela peut faciliter VLAN Hopping.
+
+## Protection
+
+Désactiver DTP.
+Configurer explicitement les ports utilisateurs en access.
+Utiliser `switchport nonegotiate` sur les trunks nécessaires.
+Désactiver les ports inutilisés.
+
+---
+
+# 20. Port Security
+
+## Définition
+
+Port Security limite le nombre d’adresses MAC valides autorisées sur un port de switch.
+
+## Objectifs
+
+Empêcher les connexions non autorisées.
+Réduire MAC Flooding.
+Limiter les équipements connectés à un port.
+Sécuriser les ports access.
+
+## Méthodes d’apprentissage
+
+### Manuelle
+
+L’administrateur configure les MAC autorisées.
+
+### Dynamique
+
+Le switch apprend automatiquement.
+Perdu après redémarrage.
+
+### Sticky
+
+Le switch apprend automatiquement.
+Enregistre dans la running-config.
+Peut être conservé si sauvegardé.
+
+## Modes de violation
+
+### Shutdown
+
+Mode par défaut.
+Le port passe en err-disabled.
+Message syslog : oui.
+Nécessite remise en service.
+
+### Restrict
+
+Supprime les paquets suspects.
+Incrémente le compteur.
+Message syslog : oui.
+Le port reste actif.
+
+### Protect
+
+Supprime les paquets suspects silencieusement.
+Pas de syslog.
+Pas de compteur.
+Le port reste actif.
+
+## Piège
+
+Shutdown = err-disabled.
+Restrict = log + compteur.
+Protect = silencieux.
+
+---
+
+# 21. DHCP Snooping
+
+## Définition
+
+DHCP Snooping est une protection couche 2 contre les attaques DHCP.
+
+## Rôle
+
+Bloquer les faux serveurs DHCP.
+Protéger contre DHCP Spoofing.
+Limiter DHCP Starvation.
+Construire une base IP/MAC/port/VLAN.
+
+## Ports Trusted
+
+Ports connectés aux vrais serveurs DHCP.
+Les réponses DHCP y sont autorisées.
+
+## Ports Untrusted
+
+Ports utilisateurs.
+Les réponses DHCP y sont bloquées.
+
+## Utilité de la base DHCP Snooping
+
+Utilisée par DAI.
+Utilisée par IP Source Guard.
+
+---
+
+# 22. DAI — Dynamic ARP Inspection
+
+## Définition
+
+DAI inspecte les paquets ARP pour bloquer les attaques ARP Spoofing.
+
+## Fonctionnement
+
+Vérifie les correspondances IP/MAC.
+S’appuie sur la base DHCP Snooping.
+Bloque les paquets ARP invalides.
+
+## Objectif
+
+Empêcher Man-in-the-Middle via ARP Poisoning.
+
+---
+
+# 23. IP Source Guard
+
+## Définition
+
+IP Source Guard empêche l’usurpation d’adresse IP sur les ports d’accès.
+
+## Fonctionnement
+
+Vérifie que l’adresse IP source correspond :
+
+au port ;
+à la MAC ;
+au VLAN ;
+à la base DHCP Snooping.
+
+## Objectif
+
+Bloquer IP Spoofing.
+
+---
+
+# 24. Malware
+
+## Définition
+
+Malware signifie logiciel malveillant.
+C’est un programme conçu pour nuire, voler, espionner ou contrôler un système.
+
+## Types
+
+Virus.
+Ver.
+Cheval de Troie.
+Ransomware.
+Spyware.
+Keylogger.
+Rootkit.
+Scumware.
+Hijacker.
+Stealware.
+
+---
+
+# 25. Virus
+
+## Définition
+
+Programme malveillant qui s’attache à un fichier ou programme légitime.
+
+## Fonctionnement
+
+S’exécute quand le fichier infecté est lancé.
+Peut se propager à d’autres fichiers.
+
+## Impact
+
+Corruption.
+Suppression.
+Ralentissement.
+Propagation.
+
+---
+
+# 26. Ver informatique
+
+## Définition
+
+Malware capable de se propager automatiquement sur le réseau.
+
+## Différence avec virus
+
+Le ver n’a pas besoin de fichier hôte.
+Il peut se répliquer seul.
+
+## Impact
+
+Saturation réseau.
+Propagation massive.
+Exploitation de failles.
+
+---
+
+# 27. Cheval de Troie
+
+## Définition
+
+Programme qui semble légitime mais cache une fonction malveillante.
+
+## Objectif
+
+Ouvrir une porte dérobée.
+Voler des données.
+Installer d’autres malwares.
+Permettre un accès distant.
+
+## Exemple de question EFF
+
+Définir la confidentialité des données et un cheval de Troie.
+
+---
+
+# 28. Ransomware
+
+## Définition
+
+Malware qui chiffre ou bloque les données puis demande une rançon.
+
+## Fonctionnement
+
+Infection.
+Chiffrement des fichiers.
+Affichage d’une demande de rançon.
+Paiement exigé souvent en cryptomonnaie.
+
+## Ransomwares récents
+
+Utilisent souvent chiffrement fort.
+Peuvent combiner chiffrement + exfiltration.
+Menacent de publier les données.
+
+## RSA-4096 dans un scénario de ransomware
+
+RSA-4096 est un chiffrement asymétrique fort.
+La clé publique peut chiffrer.
+La clé privée est nécessaire pour déchiffrer.
+Sans clé privée, le déchiffrement est très difficile.
+
+## Mesures de réduction d’impact
+
+Sauvegardes régulières.
+Sauvegardes hors ligne.
+Tests de restauration.
+Antivirus/EDR.
+Mise à jour des systèmes.
+Restriction des droits.
+Segmentation réseau.
+Sensibilisation utilisateurs.
+
+---
+
+# 29. Rootkit
+
+## Définition
+
+Malware conçu pour cacher sa présence et maintenir un accès privilégié.
+
+## Objectif
+
+Masquer fichiers, processus ou connexions.
+Maintenir une persistance.
+Donner un contrôle profond au système.
+
+## Danger
+
+Très difficile à détecter.
+Peut manipuler le système d’exploitation.
+
+---
+
+# 30. Spyware et variantes
+
+## Spyware
+
+Logiciel espion collectant des informations sans consentement.
+
+## Keylogger
+
+Enregistre les frappes clavier.
+Peut voler mots de passe et identifiants.
+
+## Hijacker / BHO
+
+Détourne le navigateur.
+Modifie page d’accueil, recherches ou redirections.
+
+## Stealware
+
+Vole des données sensibles.
+
+## Scumware
+
+Logiciel douteux ou indésirable.
+
+## Wabbity / Fork Bomb
+
+Épuise les ressources système par réplication ou création excessive de processus.
+
+---
+
+# 31. Buffer Overflow
+
+## Définition
+
+Buffer Overflow est une attaque exploitant un dépassement de mémoire tampon.
+
+## Fonctionnement
+
+Un programme reçoit plus de données que prévu.
+La mémoire adjacente est écrasée.
+L’attaquant peut provoquer un crash ou exécuter du code.
+
+## Impact
+
+Crash applicatif.
+Exécution de code.
+Élévation de privilèges.
+Compromission système.
+
+## Solutions
+
+Validation des entrées.
+Mises à jour.
+Protection mémoire.
+ASLR.
+DEP.
+Langages sûrs.
+IPS/WAF selon contexte.
+
+---
+
+# 32. Man-in-the-Middle
+
+## Définition
+
+MITM est une attaque où l’attaquant s’interpose entre deux parties.
+
+## Objectif
+
+Lire le trafic.
+Modifier le trafic.
+Voler des identifiants.
+Rediriger les communications.
+
+## Causes fréquentes
+
+ARP Spoofing.
+DHCP Spoofing.
+Evil Twin Wi-Fi.
+Certificat frauduleux.
+Réseau non chiffré.
+
+## Solutions
+
+HTTPS.
+VPN.
+Certificats valides.
+DAI.
+DHCP Snooping.
+802.1X.
+WPA2/WPA3 Enterprise.
+
+---
+
+# 33. Ingénierie sociale
+
+## Définition
+
+Technique qui manipule l’humain pour obtenir une action ou une information.
+
+## Exemples
+
+Phishing.
+Prétexte téléphonique.
+Fausse urgence.
+Faux support technique.
+Usurpation d’identité.
+Pièce jointe piégée.
+
+## Protection
+
+Sensibilisation.
+MFA.
+Vérification des demandes.
+Filtrage e-mail.
+Charte informatique.
+Procédures internes.
+
+---
+
+# 34. Phishing
+
+## Définition
+
+Attaque qui imite un service légitime pour voler des informations.
+
+## Cibles
+
+Mots de passe.
+Codes bancaires.
+Identifiants cloud.
+Données personnelles.
+
+## Signes
+
+Lien suspect.
+Fausse urgence.
+Expéditeur douteux.
+Fautes.
+Pièce jointe inattendue.
+
+## Protections
+
+Formation.
+MFA.
+Antispam.
+SEG.
+Vérification URL.
+Signalement des emails suspects.
+
+---
+
+# 35. Étapes d’une cyberattaque réussie
+
+## 1. Reconnaissance
+
+Collecte d’informations sur la cible.
+
+### Exemples
+
+Domaines.
+IP.
+Employés.
+Technologies.
+Réseaux sociaux.
+Services exposés.
+
+## 2. Préparation / Weaponization
+
+Préparation de l’outil d’attaque.
+
+### Exemples
+
+Malware.
+Exploit.
+Document piégé.
+Lien malveillant.
+
+## 3. Livraison
+
+Transmission de l’attaque à la victime.
+
+### Exemples
+
+Email.
+USB.
+Site web.
+Service exposé.
+
+## 4. Exploitation
+
+Exploitation d’une vulnérabilité.
+
+### Exemples
+
+Faille logicielle.
+Mot de passe faible.
+Erreur humaine.
+Mauvaise configuration.
+
+## 5. Installation / Persistance
+
+Installation d’un malware ou accès durable.
+
+### Exemples
+
+Backdoor.
+Rootkit.
+Service caché.
+Compte créé.
+
+## 6. Command and Control
+
+Communication avec l’attaquant.
+
+### Rôle
+
+Recevoir des commandes.
+Télécharger des outils.
+Maintenir le contrôle.
+
+## 7. Actions sur objectifs
+
+Vol de données.
+Exfiltration.
+Chiffrement.
+Sabotage.
+Obfuscation.
+Effacement des traces.
+
+## Élévation de privilèges
+
+Permet d’obtenir plus de droits.
+Objectif : passer d’un compte simple à administrateur.
+
+## Exfiltration
+
+Sortie non autorisée des données hors du SI.
+
+## Obfuscation
+
+Cacher l’attaque, les traces ou le code malveillant.
+
+---
+
+# 36. Sécurisation des postes de travail
+
+## Bonnes pratiques générales
+
+Mettre à jour le système.
+Mettre à jour les applications.
+Installer et maintenir un antivirus.
+Activer le pare-feu local.
+Utiliser des mots de passe forts.
+Activer MFA si possible.
+Limiter les droits administrateur.
+Verrouiller la session.
+Sauvegarder régulièrement.
+Éviter les sites illicites.
+Ne pas ouvrir les pièces jointes suspectes.
+
+## Poste Windows
+
+Activer Windows Defender ou antivirus.
+Activer le pare-feu.
+Appliquer les mises à jour.
+Utiliser BitLocker si nécessaire.
+Restreindre l’exécution de scripts.
+Surveiller les comptes administrateurs.
+
+## Poste Linux
+
+Mettre à jour les paquets.
+Désactiver les services inutiles.
+Utiliser sudo au lieu de root direct.
+Configurer le pare-feu.
+Utiliser SSH sécurisé.
+Désactiver l’accès root SSH.
+Utiliser des permissions correctes.
+Installer Fail2ban si service exposé.
+
+## Formation utilisateurs
+
+Réduit les erreurs humaines.
+Aide à détecter phishing et pièces jointes suspectes.
+Améliore le respect des procédures.
+
+## Charte informatique
+
+Définit les règles d’usage.
+Responsabilise les utilisateurs.
+Encadre les accès, mots de passe, données et Internet.
+
+## Sauvegardes
+
+Doivent être régulières.
+Doivent être testées.
+Doivent être protégées.
+Doivent inclure une copie hors ligne ou isolée.
+
+---
+
+# 37. Composantes d’une infrastructure de sécurité
+
+## Antivirus
+
+Détecte, neutralise et éradique les malwares.
+Rôle préventif et curatif.
+
+## Pare-feu
+
+Filtre le trafic entre réseaux.
+Utilise des règles allow / deny / drop.
+Protège entre réseau interne et externe.
+
+## Proxy
+
+Intermédiaire entre utilisateur et Internet.
+Contrôle les accès web.
+Cache les requêtes.
+Peut anonymiser ou journaliser.
+
+## IDS
+
+Intrusion Detection System.
+Surveille et détecte les intrusions.
+Passif.
+Ne bloque pas directement.
+
+## IPS
+
+Intrusion Prevention System.
+Inspecte et bloque les attaques.
+Actif.
+Peut bloquer selon signature ou contenu.
+
+## UTM
+
+Unified Threat Management.
+Solution tout-en-un.
+
+### Intègre
+
+Pare-feu.
+Antivirus.
+Anti-spam.
+IDS/IPS.
+Filtrage URL.
+
+## SIEM
+
+Security Information and Event Management.
+Centralise et corrèle les événements de sécurité.
+
+### Rôle
+
+Collecte logs.
+Corrèle les alertes.
+Aide à détecter incidents.
+Facilite audit.
+
+## SOAR
+
+Automatise la réponse aux incidents.
+
+## UEBA
+
+Analyse le comportement des utilisateurs et entités.
+Détecte les comportements anormaux.
+
+## DLP
+
+Data Loss Prevention.
+Empêche la fuite de données sensibles.
+
+### Exemples
+
+Cartes bancaires.
+Identifiants.
+Données clients.
+Documents confidentiels.
+
+## SEG
+
+Secure Email Gateway.
+Inspecte les emails avant les serveurs de messagerie.
+Filtre spam, phishing et malwares.
+
+---
+
+# 38. Pare-feu
+
+## Définition
+
+Un pare-feu filtre le trafic réseau selon des règles de sécurité.
+
+## Rôle
+
+Autoriser.
+Bloquer.
+Journaliser.
+Séparer les zones.
+Réduire la surface d’attaque.
+
+## Règles
+
+Allow.
+Deny.
+Drop.
+
+## Politique moindre privilège
+
+On autorise uniquement ce qui est explicitement permis.
+C’est la politique la plus sûre.
+
+## Politique liste noire
+
+On bloque ce qui est explicitement interdit.
+Moins restrictive.
+Moins sûre.
+
+## Pare-feu personnel
+
+Protège uniquement la machine sur laquelle il est installé.
+
+---
+
+# 39. Types de pare-feux
+
+## Stateless Firewall
+
+Filtre paquet par paquet.
+Ne garde pas l’état des connexions.
+Décision basée sur IP, port, protocole.
+
+### Avantage
+
+Simple.
+Rapide.
+
+### Limite
+
+Moins intelligent.
+Ne comprend pas le contexte de session.
+
+## Stateful Firewall
+
+Suit l’état des connexions.
+Comprend si un paquet appartient à une session valide.
+
+### Avantage
+
+Plus sécurisé.
+Plus intelligent.
+
+### Exemple
+
+Autoriser automatiquement le trafic retour d’une connexion établie.
+
+## Proxy Firewall
+
+Intermédiaire applicatif.
+Le client parle au proxy.
+Le proxy parle à Internet.
+
+### Avantages
+
+Contrôle applicatif.
+Cache.
+Filtrage URL.
+Masquage client.
+
+## NGFW
+
+Next Generation Firewall.
+Pare-feu nouvelle génération.
+
+### Fonctions
+
+Stateful firewall.
+Inspection applicative.
+Filtrage par utilisateur.
+IPS.
+Contrôle URL.
+Inspection avancée.
+
+## Piège
+
+Firewall filtre surtout IP/port/session.
+IPS filtre selon contenu et signatures.
+NGFW combine plusieurs fonctions.
+
+---
+
+# 40. IDS / IPS
+
+## IDS
+
+Système passif.
+Surveille le trafic.
+Détecte les intrusions.
+Génère des alertes.
+Ne bloque pas directement.
+
+## IPS
+
+Système actif.
+Inspecte le trafic.
+Détecte les attaques.
+Bloque les paquets suspects.
+
+## Comparaison
+
+IDS = caméra de surveillance.
+IPS = agent de sécurité avec droit d’arrêt.
+
+## Méthodes de détection
+
+Signatures.
+Anomalies.
+Comportement.
+Règles.
+
+## Placement
+
+IDS peut être placé en écoute miroir.
+IPS doit être placé en ligne pour bloquer.
+
+## Piège
+
+IDS ne modifie pas le trafic.
+IPS peut bloquer le trafic.
+
+---
+
+# 41. AAA
+
+## Définition
+
+AAA signifie :
+
+Authentication ;
+Authorization ;
+Accounting.
+
+## Authentication
+
+Vérifie l’identité.
+Question : qui est l’utilisateur ?
+
+## Authorization
+
+Détermine les droits.
+Question : que peut-il faire ?
+
+## Accounting
+
+Trace les actions.
+Question : qu’a-t-il fait ?
+
+## Méthodes AAA
+
+Locale.
+Serveur centralisé.
+
+## Authentification locale
+
+Comptes configurés directement sur l’équipement.
+Adapté aux petits réseaux.
+
+## Authentification par serveur
+
+Utilise un serveur central.
+Exemples :
+
+RADIUS ;
+TACACS+.
+
+---
+
+# 42. RADIUS et TACACS+
+
+## RADIUS
+
+Utilisé souvent pour l’accès réseau.
+Très utilisé avec 802.1X et Wi-Fi Enterprise.
+Combine souvent authentification et autorisation.
+Utilise UDP.
+
+## TACACS+
+
+Souvent utilisé pour l’administration des équipements réseau.
+Sépare authentification, autorisation et accounting.
+Utilise TCP.
+Chiffre davantage le contenu du paquet que RADIUS.
+
+## Choisir RADIUS
+
+Pour Wi-Fi Enterprise.
+Pour 802.1X.
+Pour accès réseau utilisateur.
+
+## Choisir TACACS+
+
+Pour administration d’équipements Cisco.
+Pour contrôle précis des commandes.
+Pour séparation AAA plus fine.
+
+---
+
+# 43. 802.1X
+
+## Définition
+
+802.1X est un contrôle d’accès basé sur les ports.
+
+## Rôle
+
+Empêche les stations non autorisées de se connecter au réseau.
+Le port reste bloqué jusqu’à authentification réussie.
+
+## Acteurs
+
+### Supplicant
+
+Client qui veut accéder au réseau.
+
+### Authenticator
+
+Switch ou point d’accès.
+Intermédiaire entre client et serveur.
+
+### Authentication Server
+
+Serveur RADIUS.
+Valide l’identité du client.
+
+## Usage
+
+Réseau câblé entreprise.
+WLAN Enterprise.
+
+---
+
+# 44. DMZ
+
+## Définition
+
+DMZ signifie zone démilitarisée.
+C’est une zone réseau intermédiaire entre Internet et le LAN interne.
+
+## Rôle
+
+Héberger les services exposés à Internet sans exposer directement le LAN.
+
+## Services possibles en DMZ
+
+Serveur web.
+Serveur mail.
+Serveur DNS public.
+Reverse proxy.
+VPN concentrator.
+
+## Intérêt
+
+Limiter l’impact d’une compromission.
+Séparer public et privé.
+Filtrer les flux entre Internet, DMZ et LAN.
+
+## Architecture simple
+
+Internet → Pare-feu → DMZ → Pare-feu / règles strictes → LAN.
+
+## Architecture renforcée
+
+Deux pare-feux :
+
+un entre Internet et DMZ ;
+un entre DMZ et LAN.
+
+## Piège
+
+DMZ n’est pas une zone de confiance totale.
+Elle est moins fiable que le LAN mais plus contrôlée qu’Internet.
+
+---
+
+# 45. ASA
+
+## Définition
+
+ASA signifie Cisco Adaptive Security Appliance.
+
+## Rôle
+
+Appliance de sécurité Cisco.
+
+## Fonctions
+
+Firewall stateful.
+VPN IPsec.
+VPN SSL.
+NAT.
+ACL.
+Inspection.
+IPS selon module FirePOWER/Snort.
+
+## Zones logiques
+
+Inside.
+Outside.
+DMZ.
+
+## Inside
+
+Réseau interne de confiance.
+
+## Outside
+
+Réseau externe non fiable, souvent Internet.
+
+## DMZ
+
+Zone intermédiaire pour serveurs exposés.
+
+## ACL ASA
+
+Appliquées sur les interfaces.
+Contrôlent le trafic entrant ou sortant.
+
+## NAT ASA
+
+Permet la traduction d’adresses entre inside, outside et DMZ.
+
+---
+
+# 46. ACL
+
+## Définition
+
+ACL signifie Access Control List.
+C’est une liste de règles permettant d’autoriser ou bloquer le trafic.
+
+## Critères
+
+IP source.
+IP destination.
+Protocole.
+Port.
+Interface.
+Direction.
+
+## Rôle
+
+Contrôle d’accès.
+Filtrage réseau.
+Segmentation.
+Protection des zones.
+
+## Deny implicite
+
+Tout ce qui n’est pas autorisé est bloqué à la fin.
+
+## ACL standard
+
+Filtre surtout selon la source.
+
+## ACL étendue
+
+Filtre selon :
+
+source ;
+destination ;
+protocole ;
+port.
+
+## Piège
+
+ACL mal placée peut bloquer un trafic légitime.
+Toujours penser au deny implicite.
+
+---
+
+# 47. NAT
+
+## Définition
+
+NAT signifie Network Address Translation.
+Il traduit les adresses privées en adresses publiques.
+
+## Rôle
+
+Permettre l’accès Internet aux réseaux privés.
+Masquer l’adressage interne.
+Économiser les IPv4 publiques.
+
+## NAT statique
+
+Traduction fixe 1:1.
+Une IP privée correspond toujours à une IP publique.
+
+### Usage
+
+Publier un serveur interne.
+
+## NAT dynamique
+
+Utilise un pool d’adresses publiques.
+Attribue une adresse selon disponibilité.
+
+## PAT
+
+Port Address Translation.
+Plusieurs IP privées partagent une seule IP publique.
+Différenciation par ports.
+
+## Piège
+
+NAT statique = serveur publié.
+PAT = sortie Internet de plusieurs clients.
+
+---
+
+# 48. VPN
+
+## Définition
+
+VPN signifie Virtual Private Network.
+C’est un tunnel sécurisé à travers un réseau public.
+
+## Objectifs
+
+Confidentialité.
+Intégrité.
+Authentification.
+Accès distant sécurisé.
+Interconnexion de sites.
+
+## VPN site-à-site
+
+Relie deux réseaux distants.
+Tunnel entre deux passerelles.
+
+## VPN accès distant
+
+Relie un utilisateur distant au réseau de l’entreprise.
+
+## VPN SSL
+
+Utilise TLS/SSL.
+Peut fonctionner via navigateur ou client.
+
+## VPN IPsec
+
+Utilise IPsec pour sécuriser le trafic IP.
+
+---
+
+# 49. IPsec
+
+## Définition
+
+IPsec est un ensemble de protocoles de sécurité pour IP.
+
+## Services fournis
+
+Confidentialité.
+Intégrité.
+Authentification.
+Protection contre rejeu selon configuration.
+
+## AH
+
+Authentication Header.
+
+### Fournit
+
+Authentification.
+Intégrité.
+
+### Ne fournit pas
+
+Chiffrement.
+
+## ESP
+
+Encapsulating Security Payload.
+
+### Fournit
+
+Chiffrement.
+Intégrité.
+Authentification.
+
+## IKE
+
+Internet Key Exchange.
+Négocie les paramètres de sécurité.
+Établit les clés.
+
+## ISAKMP
+
+Cadre de négociation des associations de sécurité.
+
+## Diffie-Hellman
+
+Permet l’échange sécurisé de clés sur un réseau non sécurisé.
+
+## Security Association
+
+Ensemble de paramètres négociés pour sécuriser le trafic.
+
+## Piège
+
+AH ne chiffre pas.
+ESP chiffre.
+
+---
+
+# 50. GRE
+
+## Définition
+
+GRE signifie Generic Routing Encapsulation.
+
+## Rôle
+
+Encapsuler des paquets dans un tunnel.
+Transporter différents protocoles.
+Permettre du routage dynamique dans un tunnel.
+
+## Limite
+
+GRE ne chiffre pas.
+
+## GRE over IPsec
+
+GRE fournit le tunnel.
+IPsec fournit le chiffrement et la sécurité.
+
+## Piège
+
+GRE seul = pas sécurisé.
+GRE + IPsec = tunnel sécurisé.
+
+---
+
+# 51. Cryptographie
+
+## Définition
+
+La cryptographie protège l’information par des mécanismes mathématiques.
+
+## Objectifs
+
+Confidentialité.
+Intégrité.
+Authentification.
+Non-répudiation.
+
+## Chiffrement
+
+Transforme un message lisible en message illisible.
+
+## Déchiffrement
+
+Transforme le message illisible en message lisible.
+
+---
+
+# 52. Chiffrement symétrique
+
+## Définition
+
+Même clé pour chiffrer et déchiffrer.
+
+## Avantages
+
+Rapide.
+Adapté aux grands volumes de données.
+
+## Inconvénient
+
+Problème de partage sécurisé de la clé.
+
+## Exemples
+
+AES.
+DES ancien.
+3DES ancien.
+
+## Exemple examen
+
+Avec une clé de 64 bits, il existe `2^64` clés possibles.
+
+## Attaque exhaustive
+
+En moyenne, il faut essayer la moitié de l’espace des clés.
+Pour 64 bits : environ `2^63` essais en moyenne.
+
+---
+
+# 53. Chiffrement asymétrique
+
+## Définition
+
+Utilise deux clés :
+
+clé publique ;
+clé privée.
+
+## Clé publique
+
+Peut être partagée.
+
+## Clé privée
+
+Doit rester secrète.
+
+## Usages
+
+Échange de clés.
+Signature numérique.
+Authentification.
+Chiffrement de petits volumes.
+
+## Exemple
+
+RSA.
+
+## Avantage
+
+Résout le problème de distribution de clé.
+
+## Limite
+
+Plus lent que le chiffrement symétrique.
+
+---
+
+# 54. Hash
+
+## Définition
+
+Fonction qui produit une empreinte fixe à partir de données.
+
+## Rôle
+
+Vérifier l’intégrité.
+
+## Propriétés attendues
+
+Sens unique.
+Collision difficile.
+Changement minime des données = hash différent.
+
+## Exemples
+
+SHA.
+MD5 ancien et faible.
+
+## Différence hash / chiffrement
+
+Hash ne se déchiffre pas.
+Chiffrement peut être déchiffré avec la clé.
+
+---
+
+# 55. Signature numérique
+
+## Définition
+
+Mécanisme qui prouve l’origine et l’intégrité d’un message.
+
+## Fonctionnement simplifié
+
+On calcule un hash du message.
+L’émetteur signe le hash avec sa clé privée.
+Le destinataire vérifie avec la clé publique.
+Si la vérification réussit, l’origine et l’intégrité sont validées.
+
+## Services assurés
+
+Authentification de l’origine.
+Intégrité.
+Non-répudiation.
+
+## Piège
+
+La signature numérique ne sert pas principalement à cacher le message.
+Elle sert surtout à prouver et vérifier.
+
+---
+
+# 56. Certificats numériques et PKI
+
+## Certificat numérique
+
+Document électronique liant une identité à une clé publique.
+
+## Contenu possible
+
+Identité du sujet.
+Clé publique.
+Autorité de certification.
+Dates de validité.
+Signature de l’autorité.
+
+## PKI
+
+Public Key Infrastructure.
+Infrastructure de gestion des clés et certificats.
+
+## Autorité de certification
+
+Émet et signe les certificats.
+Garantit le lien entre identité et clé publique.
+
+## Utilité
+
+HTTPS.
+VPN.
+Signature électronique.
+Authentification forte.
+
+---
+
+# 57. HTTPS
+
+## Définition
+
+HTTP sécurisé avec TLS.
+
+## Services
+
+Confidentialité.
+Intégrité.
+Authentification du serveur.
+Protection contre interception.
+
+## Utilise
+
+Certificat numérique.
+Chiffrement asymétrique pour établir la session.
+Chiffrement symétrique pour les données.
+
+---
+
+# 58. Sécurité WLAN
+
+## WEP
+
+Ancien.
+Utilise RC4.
+Très faible.
+À éviter.
+
+## WPA
+
+Améliore WEP.
+Utilise TKIP.
+Hérité.
+
+## WPA2
+
+Utilise AES-CCMP.
+Fort.
+Très utilisé.
+
+## WPA3
+
+Utilise SAE.
+Très fort.
+À privilégier.
+
+## WPA2 Personal
+
+Utilise PSK.
+Clé partagée.
+Adapté aux petits réseaux.
+
+## WPA2 Enterprise
+
+Utilise 802.1X et RADIUS.
+Authentification individuelle.
+Adapté aux entreprises.
+
+## Menaces Wi-Fi
+
+Rogue AP.
+Evil Twin.
+Sniffing.
+DoS radio.
+Interception de données.
+
+## Mesures simples WLAN
+
+Utiliser WPA2/WPA3.
+Changer le mot de passe par défaut.
+Désactiver WPS si inutile.
+Utiliser 802.1X en entreprise.
+Choisir de bons canaux.
+Mettre à jour les AP.
+Segmenter le Wi-Fi invité.
+
+---
+
+# 59. RADIUS dans WLAN
+
+## Rôle
+
+Authentification centralisée des utilisateurs Wi-Fi.
+
+## Utilisé avec
+
+WPA2 Enterprise.
+WPA3 Enterprise.
+802.1X.
+
+## Chemin
+
+Client → AP → WLC → RADIUS.
+
+## Avantage
+
+Chaque utilisateur a son identité.
+Révocation simple.
+Traçabilité.
+Sécurité supérieure au mot de passe partagé.
+
+---
+
+# 60. Cadre juridique et cybersécurité au Maroc
+
+## Cyberespace
+
+Espace formé par les systèmes informatiques, réseaux, données, services numériques et communications électroniques.
+
+## Criminalité informatique
+
+Tout acte illégal lié à l’informatique.
+
+## Cybercriminalité
+
+Variante de la criminalité informatique qui s’exprime à travers les réseaux de télécommunication.
+C’est un sous-ensemble de la criminalité informatique. 
+
+## DGSSI
+
+Direction Générale de la Sécurité des Systèmes d’Information.
+
+### Rôle
+
+Sécurité des SI des administrations.
+Veille technologique.
+Coordination technique.
+Rattachée à la Défense nationale selon le support.
+
+## CNDP
+
+Commission Nationale de Contrôle de la Protection des Données à caractère Personnel.
+
+### Rôle
+
+Protection des données personnelles.
+Contrôle de la licéité des traitements.
+Protection de la vie privée.
+
+## maCERT
+
+Moroccan Computer Emergency Response Team.
+
+### Rôle
+
+Veille.
+Détection.
+Réponse aux attaques informatiques.
+Coordination nationale des incidents.
+
+---
+
+# 61. Lois marocaines citées
+
+## Loi 43-20
+
+Services de confiance pour les transactions électroniques.
+Concerne :
+
+cryptologie ;
+signature électronique ;
+certificats.
+
+## Loi 05-20
+
+Cybersécurité.
+Cadre juridique pour la sécurité des SI des administrations et infrastructures vitales.
+
+## Loi 09-08
+
+Protection des personnes physiques à l’égard du traitement des données à caractère personnel.
+
+## Loi 07-03
+
+Complète le code pénal sur les infractions relatives aux STAD.
+
+### STAD
+
+Systèmes de Traitement Automatisé de Données.
+
+## Loi 53-05
+
+Échange électronique de données juridiques.
+Concerne aussi cryptographie, signature électronique et certification.
+
+## Loi 24-96
+
+Poste et télécommunications.
+
+## Loi 31-08
+
+Protection du consommateur, y compris en ligne.
+
+---
+
+# 62. Infractions et sanctions citées
+
+## Fausses déclarations à un prestataire de confiance
+
+Article 65 Loi 43-20.
+Sanction citée : 1 à 5 ans + 100 000 à 500 000 DH.
+
+## Traitement illégal de données personnelles
+
+Article 56 Loi 09-08.
+Sanction citée : 3 mois à 1 an + 2 000 à 200 000 DH.
+
+## Interruption volontaire des télécommunications
+
+Article 84 Loi 24-96.
+Sanction citée : 1 mois à 2 ans + 10 000 à 200 000 DH.
+
+## Accès frauduleux à un STAD
+
+Article 607-3 Loi 07-03.
+Sanction citée : 1 mois à 3 mois + 2 000 à 10 000 DH.
+
+## Falsification de documents informatisés
+
+Article 607-7 Loi 07-03.
+Sanction citée : 1 à 5 ans + 10 000 à 1 000 000 DH. 
+
+---
+
+# 63. Logs et audit
+
+## Journalisation
+
+Enregistrement des événements système et sécurité.
+
+## Rôle
+
+Détecter les incidents.
+Comprendre une panne.
+Prouver une action.
+Aider l’audit.
+Alimenter SIEM.
+
+## Logs importants
+
+Authentification réussie.
+Échec d’authentification.
+Accès administrateur.
+Modification de configuration.
+Connexion VPN.
+Blocage firewall.
+Alerte IDS/IPS.
+
+## Sentier d’audit
+
+Trace chronologique permettant de reconstruire les actions.
+
+## Lien avec non-répudiation
+
+Les logs aident à prouver qu’une action a été réalisée par une entité donnée.
+
+---
+
+# 64. Contrôle des comptes privilégiés
+
+## Compte privilégié
+
+Compte ayant des droits élevés.
+
+### Exemples
+
+Administrateur domaine.
+Root.
+Administrateur réseau.
+Compte de service critique.
+
+## Risque
+
+Si compromis, l’attaquant contrôle une grande partie du SI.
+
+## Bonnes pratiques
+
+Identifier tous les comptes privilégiés.
+Limiter leur nombre.
+Appliquer MFA.
+Faire rotation des mots de passe.
+Journaliser leur utilisation.
+Utiliser le moindre privilège.
+Séparer comptes utilisateur et comptes admin.
+
+---
+
+# 65. Sauvegarde et récupération
+
+## Objectif
+
+Réduire l’impact d’un incident.
+
+## Protège contre
+
+Ransomware.
+Suppression accidentelle.
+Panne disque.
+Corruption.
+Erreur humaine.
+Sinistre.
+
+## Bonnes pratiques
+
+Sauvegardes régulières.
+Copies hors ligne.
+Copies externalisées.
+Tests de restauration.
+Protection contre modification.
+Plan de reprise.
+
+## Piège
+
+Une sauvegarde non testée n’est pas fiable.
+
+---
+
+# 66. Disponibilité
+
+## Définition
+
+Assurer l’accès aux services et données quand les utilisateurs autorisés en ont besoin.
+
+## Menaces
+
+DoS.
+DDoS.
+Panne matérielle.
+Ransomware.
+Erreur humaine.
+Coupure réseau.
+
+## Mécanismes
+
+Redondance.
+Cluster.
+Load balancing.
+Sauvegardes.
+Plan de reprise.
+Monitoring.
+Anti-DDoS.
+
+---
+
+# 67. Analyse de risques
+
+## Étapes
+
+Identifier les actifs.
+Identifier les menaces.
+Identifier les vulnérabilités.
+Évaluer la probabilité.
+Évaluer l’impact.
+Calculer le risque.
+Choisir les contre-mesures.
+Accepter, réduire, transférer ou éviter le risque.
+
+## Actif
+
+Élément ayant de la valeur.
+
+### Exemples
+
+Données clients.
+Serveur.
+Application.
+Réseau.
+Compte administrateur.
+Image de marque.
+
+## Surface d’attaque
+
+Ensemble des points exploitables par un attaquant.
+
+## Réduction de surface
+
+Fermer ports inutiles.
+Désactiver services inutiles.
+Mettre à jour.
+Segmenter.
+Restreindre droits.
+Filtrer les accès.
+
+---
+
+# 68. Sécurité physique
+
+## Objectif
+
+Empêcher l’accès physique non autorisé.
+
+## Mesures
+
+Salle serveur verrouillée.
+Badges.
+Caméras.
+Onduleur.
+Climatisation.
+Détection incendie.
+Contrôle d’accès physique.
+Inventaire matériel.
+
+## Lien avec cybersécurité
+
+Un accès physique peut permettre :
+
+vol disque ;
+reset mot de passe ;
+branchement rogue device ;
+accès console ;
+implantation malware USB.
+
+---
+
+# 69. Sécurité organisationnelle
+
+## Politique de sécurité
+
+Document définissant les règles de sécurité.
+
+## Charte informatique
+
+Règles d’usage du SI pour les utilisateurs.
+
+## Sensibilisation
+
+Formation contre :
+
+phishing ;
+mots de passe faibles ;
+pièces jointes suspectes ;
+partage non autorisé ;
+navigation risquée.
+
+## Procédures
+
+Gestion des incidents.
+Gestion des comptes.
+Sauvegarde.
+Changement de mot de passe.
+Révocation d’accès.
+Mise à jour.
+
+---
+
+# 70. Sécurité réseau — logique de zones
+
+## Zone Internet
+
+Non fiable.
+Source externe.
+
+## Zone DMZ
+
+Intermédiaire.
+Services exposés.
+Règles strictes.
+
+## Zone LAN
+
+Interne.
+Plus fiable.
+Contient utilisateurs et serveurs internes.
+
+## Zone Management
+
+Administration.
+Accès très restreint.
+SSH, SNMPv3, HTTPS admin.
+
+## Zone Guest
+
+Invités.
+Isolée du LAN.
+Accès Internet seulement.
+
+## Principe
+
+Plus une zone est sensible, plus l’accès doit être limité.
+
+---
+
+# 71. Sécurité des accès distants
+
+## SSH
+
+Administration chiffrée.
+Remplace Telnet.
+
+## VPN
+
+Accès distant sécurisé.
+Tunnel chiffré.
+
+## MFA
+
+Ajoute un deuxième facteur.
+Réduit le risque de vol de mot de passe.
+
+## Certificat
+
+Permet authentification forte.
+
+## Bonnes pratiques
+
+Désactiver Telnet.
+Utiliser SSHv2.
+Limiter les IP autorisées.
+Utiliser comptes nominatifs.
+Activer logs.
+Appliquer MFA.
+Changer les ports seulement ne suffit pas.
+
+---
+
+# 72. Sécurité e-mail
+
+## Menaces
+
+Phishing.
+Malware en pièce jointe.
+Usurpation de domaine.
+Spam.
+Ransomware.
+
+## Protections
+
+SEG.
+Antispam.
+Antivirus mail.
+Filtrage pièces jointes.
+SPF/DKIM/DMARC selon contexte.
+Sensibilisation.
+
+---
+
+# 73. Sécurité des données
+
+## Données sensibles
+
+Données personnelles.
+Données clients.
+Données bancaires.
+Contrats.
+Secrets professionnels.
+Identifiants.
+Stratégies internes.
+
+## Mesures
+
+Classification.
+Chiffrement.
+Contrôle d’accès.
+DLP.
+Sauvegarde.
+Journalisation.
+Moindre privilège.
+
+## Cycle de vie
+
+Création.
+Stockage.
+Utilisation.
+Transmission.
+Archivage.
+Suppression sécurisée.
+
+---
+
+# 74. Sécurité applicative
+
+## Menaces
+
+Injection.
+Buffer overflow.
+Faille d’authentification.
+Mauvaise gestion des sessions.
+Exposition de données.
+Mauvaise configuration.
+
+## Protections
+
+Validation des entrées.
+Mise à jour.
+WAF.
+Gestion sécurisée des sessions.
+Principe du moindre privilège.
+Tests de sécurité.
+
+---
+
+# 75. Pare-feu vs IPS vs WAF
+
+## Pare-feu
+
+Filtre IP, ports, protocoles, sessions.
+
+## IPS
+
+Analyse le contenu du trafic.
+Détecte et bloque attaques connues ou comportements suspects.
+
+## WAF
+
+Protège les applications web.
+Filtre HTTP/HTTPS.
+Bloque attaques applicatives comme injections.
+
+## Piège
+
+Firewall ≠ IPS.
+IPS ≠ WAF.
+Ils sont complémentaires.
+
+---
+
+# 76. Récapitulatif attaques / solutions
+
+## DoS
+
+Solution : rate limiting, firewall, IPS, anti-DDoS.
+
+## DDoS
+
+Solution : scrubbing center, anti-DDoS cloud, anycast, ACL opérateur.
+
+## TCP SYN Flooding
+
+Solution : SYN cookies, firewall, IPS.
+
+## MAC Flooding
+
+Solution : Port Security.
+
+## VLAN Hopping
+
+Solution : désactiver DTP, native VLAN dédiée, ports access.
+
+## DHCP Starvation
+
+Solution : DHCP Snooping, Port Security.
+
+## DHCP Spoofing
+
+Solution : DHCP Snooping, ports Trusted/Untrusted.
+
+## ARP Spoofing
+
+Solution : DAI.
+
+## IP Spoofing
+
+Solution : IP Source Guard.
+
+## Attaque STP
+
+Solution : BPDU Guard, Root Guard.
+
+## Ransomware
+
+Solution : sauvegardes testées, EDR, patching, segmentation.
+
+## Phishing
+
+Solution : formation, MFA, SEG, vérification.
+
+## Malware
+
+Solution : antivirus, mises à jour, moindre privilège.
+
+---
+
+# 77. Mémo final Sécurité
+
+Sécurité = protéger ressources et données.
+Menace = danger.
+Vulnérabilité = faiblesse.
+Risque = menace exploitant vulnérabilité.
+Risque = Préjudice × Probabilité.
+Contre-mesure = réduit risque.
+Confidentialité = protéger le contenu.
+Intégrité = empêcher modification non autorisée.
+Disponibilité = garder service accessible.
+Authenticité = vérifier identité.
+Non-répudiation = empêcher de nier une action.
+Identification = login public.
+Authentification = preuve secrète.
+Autorisation = droits.
+AAA = Authentication, Authorization, Accounting.
+IDS = passif.
+IPS = actif.
+Firewall = filtre IP/port/session.
+NGFW = firewall + fonctions avancées.
+DMZ = zone entre Internet et LAN.
+ASA = firewall Cisco + VPN + NAT + ACL.
+NAT = traduction d’adresses.
+PAT = plusieurs privés vers une IP publique avec ports.
+VPN = tunnel sécurisé.
+GRE = tunnel sans chiffrement.
+IPsec = sécurité IP.
+AH = intégrité/authentification sans chiffrement.
+ESP = chiffrement + intégrité + authentification.
+Hash = intégrité, ne se déchiffre pas.
+Signature = intégrité + authenticité + non-répudiation.
+Certificat = identité + clé publique.
+PKI = infrastructure certificats.
+DoS = une source.
+DDoS = plusieurs sources.
+MAC Flooding = table CAM saturée.
+Port Security = limite MAC.
+DHCP Spoofing = faux DHCP.
+DHCP Snooping = bloque faux DHCP.
+ARP Spoofing = faux IP/MAC.
+DAI = bloque ARP faux.
+VLAN Hopping = saut VLAN.
+DTP désactivé = protection trunk.
+BPDU Guard = protège PortFast.
+Root Guard = protège Root Bridge.
+WEP = obsolète.
+WPA2 = AES.
+WPA3 = SAE.
+WPA2 Enterprise = 802.1X + RADIUS.
+CNDP = données personnelles.
+DGSSI = sécurité SI administrations.
+maCERT = réponse incidents.
+
+---
+
+# 78. Pièges d’examen
+
+Confidentialité ne veut pas dire authenticité.
+Authentification ne veut pas dire autorisation.
+Identification est publique, authentification est secrète.
+Risque n’est pas une vulnérabilité.
+IDS ne bloque pas.
+IPS bloque.
+Firewall filtre surtout IP/port/session.
+IPS inspecte le contenu.
+DoS vient d’une source.
+DDoS vient de nombreuses sources.
+Protect ne génère pas de log.
+Restrict génère log + compteur.
+Shutdown met le port en err-disabled.
+DHCP Snooping protège contre faux DHCP.
+DAI protège contre ARP Spoofing.
+Port Security protège contre MAC Flooding.
+Root Guard protège contre faux Root Bridge.
+BPDU Guard protège les ports access/PortFast.
+WEP ne doit pas être utilisé.
+WPA2 Personal = mot de passe partagé.
+WPA2 Enterprise = RADIUS.
+AH ne chiffre pas.
+ESP chiffre.
+GRE seul n’est pas sécurisé.
+Signature numérique ne cache pas le message.
+Hash ne se déchiffre pas.
+Sauvegarde non testée = sauvegarde non fiable.
+DMZ n’est pas le LAN.
+Cybercriminalité est un sous-ensemble de la criminalité informatique.

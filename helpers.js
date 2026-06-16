@@ -21,4 +21,6 @@ function S(num, id, title, searchText, html) {
 }
 
 window.M201_SECTIONS = [];
+window.M205_SECTIONS = [];
 function addSections(arr) { window.M201_SECTIONS.push(...arr); }
+function addM205Sections(arr) { window.M205_SECTIONS.push(...arr); }
