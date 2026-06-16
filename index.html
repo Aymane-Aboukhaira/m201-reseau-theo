@@ -1,174 +1,729 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M201 / M205 OFPPT | Support de Révision</title>
+  <title>M201 / M205 — OFPPT Revision Platform</title>
   <meta name="description" content="Support de révision complet pour les modules M201 (Réseaux) et M205 (Sécurité) OFPPT.">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-          colors: {
-            brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
-            surface: { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',700:'#1e293b',800:'#0f172a',900:'#020617' }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ═══════════════════════════════════════════════════════════════
+       AWWWARDS-WINNING DESIGN SYSTEM
+       Dark-first, immersive, premium revision platform
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root {
+      --bg-primary: #06060a;
+      --bg-secondary: #0c0c14;
+      --bg-card: #111119;
+      --bg-card-hover: #16161f;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888a0;
+      --text-tertiary: #55556a;
+      --accent: #7c5cfc;
+      --accent-light: #a78bfa;
+      --accent-glow: rgba(124,92,252,0.15);
+      --accent-glow-strong: rgba(124,92,252,0.35);
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --cyan: #22d3ee;
+    }
+    .light-mode {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f3f4f8;
+      --border: rgba(0,0,0,0.06);
+      --border-hover: rgba(0,0,0,0.12);
+      --text-primary: #111119;
+      --text-secondary: #55556a;
+      --text-tertiary: #9999aa;
+      --accent: #6d4de8;
+      --accent-light: #7c5cfc;
+      --accent-glow: rgba(109,77,232,0.08);
+      --accent-glow-strong: rgba(109,77,232,0.2);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     [v-cloak] { display: none; }
-    * { scrollbar-width: thin; scrollbar-color: #4f46e5 transparent; }
-    ::-webkit-scrollbar { width: 6px; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    * { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
-    .sidebar-link { transition: all 0.2s ease; }
-    .sidebar-link:hover, .sidebar-link.active { background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent); border-left-color: #6366f1; }
-    .sidebar-link.active { color: #818cf8; font-weight: 600; }
-    .card-glow { box-shadow: 0 0 0 1px rgba(99,102,241,0.1), 0 4px 24px rgba(0,0,0,0.06); }
-    .dark .card-glow { box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 4px 24px rgba(0,0,0,0.4); }
-    .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
-    .fade-enter-from, .fade-leave-to { opacity: 0; }
-    .piege-card { border-left: 4px solid #f59e0b; background: linear-gradient(90deg, rgba(245,158,11,0.08), transparent); }
-    .dark .piege-card { background: linear-gradient(90deg, rgba(245,158,11,0.12), transparent); }
-    .definition-card { border-left: 4px solid #6366f1; background: linear-gradient(90deg, rgba(99,102,241,0.06), transparent); }
-    .dark .definition-card { background: linear-gradient(90deg, rgba(99,102,241,0.12), transparent); }
-    .advantage-card { border-left: 4px solid #10b981; background: linear-gradient(90deg, rgba(16,185,129,0.06), transparent); }
-    .dark .advantage-card { background: linear-gradient(90deg, rgba(16,185,129,0.1), transparent); }
-    .disadvantage-card { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239,68,68,0.06), transparent); }
-    .dark .disadvantage-card { background: linear-gradient(90deg, rgba(239,68,68,0.1), transparent); }
-    .memo-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-    @keyframes slideIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-    .section-animate { animation: slideIn 0.35s ease-out; }
-    .progress-ring { transition: stroke-dashoffset 0.5s ease; }
-    mark { background: rgba(99,102,241,0.25); color: inherit; border-radius: 2px; padding: 0 2px; }
-    .dark mark { background: rgba(129,140,248,0.3); }
-    @media print { .no-print { display: none !important; } .print-break { page-break-before: always; } }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+
+    /* ─── ANIMATED MESH GRADIENT BACKGROUND ─── */
+    .mesh-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,92,252,0.08), transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34,211,238,0.06), transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167,139,250,0.04), transparent 60%);
+      animation: meshMove 20s ease-in-out infinite alternate;
+    }
+    .light-mode .mesh-bg {
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,92,252,0.06), transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34,211,238,0.04), transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167,139,250,0.03), transparent 60%);
+    }
+    @keyframes meshMove {
+      0% { transform: scale(1) translate(0,0); }
+      33% { transform: scale(1.05) translate(-2%, 3%); }
+      66% { transform: scale(0.98) translate(2%, -2%); }
+      100% { transform: scale(1.02) translate(-1%, 1%); }
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+    .light-mode .noise-overlay { opacity: 0.015; }
+
+    /* ─── SCROLL PROGRESS ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 999;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      transform-origin: 0% 50%;
+      box-shadow: 0 0 20px var(--accent-glow-strong);
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    .cursor-dot {
+      width: 8px; height: 8px; background: var(--accent);
+      border-radius: 50%; position: fixed; z-index: 10000;
+      pointer-events: none; transition: transform 0.15s ease, opacity 0.15s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent-light);
+      border-radius: 50%; position: fixed; z-index: 9999;
+      pointer-events: none; opacity: 0.5;
+      transition: width 0.3s, height 0.3s, opacity 0.3s;
+    }
+    @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+
+    /* ─── TOP NAVIGATION ─── */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      display: flex; align-items: center; padding: 0 24px; gap: 16px;
+      background: rgba(6,6,10,0.6);
+      backdrop-filter: blur(24px) saturate(1.4);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .light-mode .top-nav { background: rgba(248,249,252,0.7); }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1.25rem; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--accent-light), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .module-switcher {
+      display: flex; background: var(--bg-card); border-radius: 8px;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .module-btn {
+      padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; border: none; background: transparent;
+      color: var(--text-tertiary); transition: all 0.3s;
+      font-family: inherit; letter-spacing: 0.02em;
+    }
+    .module-btn.active {
+      background: var(--accent); color: white;
+      box-shadow: 0 0 20px var(--accent-glow-strong);
+    }
+
+    .search-box {
+      flex: 1; max-width: 400px; position: relative;
+    }
+    .search-box input {
+      width: 100%; padding: 8px 16px 8px 40px;
+      background: var(--bg-card); color: var(--text-primary);
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.85rem; font-family: inherit; outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .search-box input::placeholder { color: var(--text-tertiary); }
+    .search-box svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px; color: var(--text-tertiary);
+    }
+    .search-kbd {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;
+      padding: 2px 6px; border-radius: 4px;
+      background: var(--bg-secondary); color: var(--text-tertiary);
+      border: 1px solid var(--border);
+    }
+
+    .nav-controls { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+    .progress-info {
+      display: flex; align-items: center; gap: 8px; font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .progress-bar-outer {
+      width: 100px; height: 4px; border-radius: 99px;
+      background: var(--bg-card); overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s;
+    }
+    .icon-btn:hover {
+      background: var(--bg-card-hover); border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    /* ─── FULLSCREEN MENU OVERLAY ─── */
+    .menu-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(6,6,10,0.95);
+      backdrop-filter: blur(40px);
+      display: flex; flex-direction: column;
+      padding: 80px 40px 40px;
+      overflow-y: auto;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-overlay.open { opacity: 1; pointer-events: all; }
+    .light-mode .menu-overlay { background: rgba(248,249,252,0.97); }
+
+    .menu-close {
+      position: absolute; top: 20px; right: 24px;
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s; font-size: 1.2rem;
+    }
+    .menu-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 4px; max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+    .menu-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px; border-radius: 12px;
+      cursor: pointer; transition: all 0.2s;
+      text-decoration: none; color: var(--text-primary);
+    }
+    .menu-item:hover { background: var(--accent-glow); }
+    .menu-item-num {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 600;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary); flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .menu-item:hover .menu-item-num {
+      border-color: var(--accent); color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .menu-item-num.done {
+      background: rgba(52,211,153,0.1); border-color: var(--green);
+      color: var(--green);
+    }
+    .menu-item-title {
+      font-size: 0.9rem; font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .main-wrap {
+      position: relative; z-index: 2; padding-top: 64px; min-height: 100vh;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; padding: 80px 24px 60px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; overflow: hidden;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 99px;
+      background: var(--accent-glow); border: 1px solid rgba(124,92,252,0.2);
+      color: var(--accent-light); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-light) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      max-width: 800px;
+      animation: fadeUp 0.6s 0.2s both;
+    }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--text-secondary);
+      margin-top: 16px; max-width: 500px; line-height: 1.6;
+      animation: fadeUp 0.6s 0.3s both;
+    }
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-top: 32px;
+      animation: fadeUp 0.6s 0.4s both;
+    }
+    .hero-tag {
+      padding: 6px 14px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 500; background: var(--bg-card);
+      border: 1px solid var(--border); color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+    .hero-tag:hover {
+      border-color: var(--accent); color: var(--accent-light);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── CONTENT AREA ─── */
+    .content-area {
+      max-width: 860px; margin: 0 auto; padding: 0 24px 100px;
+    }
+
+    /* ─── SECTION CARDS ─── */
+    .section-card {
+      margin-bottom: 16px; border-radius: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.4s;
+      position: relative;
+    }
+    .section-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 16px;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow), transparent 40%);
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    .section-card:hover { border-color: var(--border-hover); }
+    .section-card:hover::before { opacity: 1; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px; cursor: pointer; user-select: none;
+    }
+    .section-header:hover { background: var(--bg-card-hover); }
+
+    .section-num {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem; font-weight: 700;
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      color: var(--text-tertiary); flex-shrink: 0;
+      transition: all 0.4s;
+    }
+    .section-num.done {
+      background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3);
+      color: var(--green);
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem; font-weight: 600;
+      letter-spacing: -0.01em; flex: 1;
+      color: var(--text-primary);
+      transition: color 0.3s;
+    }
+
+    .section-check {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 2px solid var(--border);
+      color: transparent; cursor: pointer; flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .section-check:hover { border-color: var(--accent); }
+    .section-check.done {
+      background: var(--green); border-color: var(--green);
+      color: white;
+    }
+
+    .section-chevron {
+      width: 20px; height: 20px; color: var(--text-tertiary);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+    .section-chevron.open { transform: rotate(180deg); }
+
+    .section-body {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-body.open { grid-template-rows: 1fr; }
+    .section-body-inner { overflow: hidden; }
+    .section-content {
+      padding: 0 24px 24px;
+      color: var(--text-secondary);
+      font-size: 0.92rem; line-height: 1.75;
+    }
+
+    /* ─── CONTENT COMPONENTS ─── */
+    /* Definition */
+    .def-card {
+      position: relative; padding: 20px 24px; margin: 16px 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-glow), transparent 60%);
+      border: 1px solid rgba(124,92,252,0.15);
+      font-weight: 500; color: var(--text-primary);
+      transition: all 0.3s;
+    }
+    .def-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent); border-radius: 3px 0 0 3px;
+    }
+    .def-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+
+    /* Lists */
+    .content-list { list-style: none; margin: 12px 0; }
+    .content-list li {
+      position: relative; padding: 8px 0 8px 28px;
+      color: var(--text-secondary); font-size: 0.92rem;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .content-list li:last-child { border-bottom: none; }
+    .content-list li:hover { color: var(--text-primary); padding-left: 32px; }
+    .content-list li::before {
+      content: ''; position: absolute; left: 8px; top: 16px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); opacity: 0.6;
+      transition: all 0.2s;
+    }
+    .content-list li:hover::before { opacity: 1; box-shadow: 0 0 8px var(--accent-glow-strong); }
+
+    /* Piège */
+    .piege {
+      position: relative; padding: 20px 24px; margin: 16px 0;
+      border-radius: 12px;
+      background: rgba(251,191,36,0.04);
+      border: 1px solid rgba(251,191,36,0.15);
+      transition: all 0.3s;
+    }
+    .piege::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--amber); border-radius: 3px 0 0 3px;
+    }
+    .piege:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(251,191,36,0.08); }
+    .piege-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--amber); margin-bottom: 12px;
+    }
+
+    /* Advantage */
+    .adv-card {
+      position: relative; padding: 20px 24px; margin: 16px 0;
+      border-radius: 12px;
+      background: rgba(52,211,153,0.04);
+      border: 1px solid rgba(52,211,153,0.15);
+      transition: all 0.3s;
+    }
+    .adv-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--green); border-radius: 3px 0 0 3px;
+    }
+    .adv-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(52,211,153,0.08); }
+
+    /* Disadvantage */
+    .disadv-card {
+      position: relative; padding: 20px 24px; margin: 16px 0;
+      border-radius: 12px;
+      background: rgba(248,113,113,0.04);
+      border: 1px solid rgba(248,113,113,0.15);
+      transition: all 0.3s;
+    }
+    .disadv-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--red); border-radius: 3px 0 0 3px;
+    }
+    .disadv-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(248,113,113,0.08); }
+
+    /* Memo */
+    .memo-block {
+      position: relative; padding: 20px 24px; margin: 16px 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-glow), rgba(34,211,238,0.04));
+      border: 1px solid rgba(124,92,252,0.2);
+      transition: all 0.3s;
+    }
+    .memo-block:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+    .memo-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent-light); margin-bottom: 12px;
+    }
+
+    .card-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 12px;
+    }
+    .card-label.green { color: var(--green); }
+    .card-label.red { color: var(--red); }
+
+    /* Tables */
+    .tbl-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); }
+    .tbl-wrap table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .tbl-wrap th {
+      padding: 12px 16px; text-align: left;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-tertiary);
+      background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+    }
+    .tbl-wrap td {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .tbl-wrap tr:last-child td { border-bottom: none; }
+    .tbl-wrap tr:hover td { background: var(--accent-glow); color: var(--text-primary); }
+
+    /* H3, H4 in content */
+    .content-h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--text-primary);
+      margin: 28px 0 12px; letter-spacing: -0.01em;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+    .content-h4 {
+      font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+      margin: 20px 0 8px; opacity: 0.9;
+    }
+    .content-p { color: var(--text-secondary); margin: 8px 0; line-height: 1.75; }
+
+    /* Search highlighting */
+    mark {
+      background: var(--accent-glow-strong); color: var(--accent-light);
+      border-radius: 3px; padding: 1px 4px;
+    }
+
+    /* ─── FAB ─── */
+    .fab {
+      position: fixed; bottom: 32px; right: 32px; z-index: 100;
+      width: 52px; height: 52px; border-radius: 16px;
+      background: var(--accent); color: white; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 8px 30px var(--accent-glow-strong);
+      transition: all 0.3s;
+      opacity: 0; pointer-events: none; transform: translateY(20px);
+    }
+    .fab.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .fab:hover { transform: translateY(-4px); box-shadow: 0 12px 40px var(--accent-glow-strong); }
+
+    /* ─── NO RESULTS ─── */
+    .no-results {
+      text-align: center; padding: 80px 24px;
+      color: var(--text-tertiary); font-size: 1rem;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .hero { padding: 60px 16px 40px; }
+      .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+      .content-area { padding: 0 16px 80px; }
+      .section-header { padding: 16px; gap: 10px; }
+      .section-content { padding: 0 16px 16px; }
+      .search-kbd { display: none; }
+      .progress-info { display: none; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .cursor-dot, .cursor-ring { display: none; }
+    }
+
+    @media print { .no-print { display: none !important; } }
   </style>
 </head>
-<body class="bg-surface-50">
-<div id="app" v-cloak class="min-h-screen bg-surface-50 dark:bg-surface-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+<body>
+<div id="app" v-cloak>
+  <!-- Atmospheric layers -->
+  <div class="mesh-bg"></div>
+  <div class="noise-overlay"></div>
 
-  <!-- Top Bar -->
-  <header class="no-print fixed top-0 left-0 right-0 z-50 h-14 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 flex items-center px-4 gap-3">
-    <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+  <!-- Custom cursor -->
+  <div class="cursor-dot no-print" ref="cursorDot"></div>
+  <div class="cursor-ring no-print" ref="cursorRing"></div>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress no-print" :style="{ transform: 'scaleX(' + scrollProgress + ')' }"></div>
+
+  <!-- ═══ TOP NAVIGATION ═══ -->
+  <nav class="top-nav no-print">
+    <button class="icon-btn" @click="menuOpen = true" title="Navigation">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="flex items-center gap-2 mr-2">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-sm">M2</div>
-      <select v-model="activeModule" class="font-bold text-lg bg-transparent text-brand-600 dark:text-brand-400 outline-none cursor-pointer appearance-none pr-4" style="background-image: url('data:image/svg+xml;utf8,<svg fill=%22none%22 stroke=%22currentColor%22 viewBox=%220 0 24 24%22 xmlns=%22http://www.w3.org/2000/svg%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22></path></svg>'); background-repeat: no-repeat; background-position: right center; background-size: 16px;">
-        <option value="M201" class="text-gray-800 dark:text-gray-200 bg-white dark:bg-surface-800">M201 Réseaux</option>
-        <option value="M205" class="text-gray-800 dark:text-gray-200 bg-white dark:bg-surface-800">M205 Sécurité</option>
-      </select>
+
+    <span class="nav-logo">M2</span>
+
+    <div class="module-switcher">
+      <button class="module-btn" :class="{ active: activeModule === 'M201' }" @click="activeModule = 'M201'">Réseaux</button>
+      <button class="module-btn" :class="{ active: activeModule === 'M205' }" @click="activeModule = 'M205'">Sécurité</button>
     </div>
-    <div class="flex-1 max-w-md mx-auto relative">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input v-model="searchQuery" type="text" placeholder="Rechercher un concept... (Ctrl+K)" @keydown.escape="searchQuery=''"
-        class="w-full pl-10 pr-4 py-1.5 rounded-lg bg-gray-100 dark:bg-surface-700 border border-transparent focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 outline-none text-sm transition">
+
+    <div class="search-box">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input v-model="searchQuery" type="text" placeholder="Rechercher..." @keydown.escape="searchQuery = ''">
+      <span class="search-kbd">Ctrl K</span>
     </div>
-    <div class="flex items-center gap-2">
-      <span class="text-xs text-gray-400 hidden sm:block">{{ completedSections }}/{{ totalSections }}</span>
-      <div class="w-24 h-1.5 bg-gray-200 dark:bg-surface-700 rounded-full overflow-hidden hidden sm:block">
-        <div class="h-full bg-gradient-to-r from-brand-500 to-brand-400 rounded-full transition-all duration-500" :style="{width: progressPercent+'%'}"></div>
+
+    <div class="nav-controls">
+      <div class="progress-info">
+        <span>{{ completedSections }}/{{ totalSections }}</span>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" :style="{ width: progressPercent + '%' }"></div>
+        </div>
+        <span>{{ progressPercent }}%</span>
       </div>
-      <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
-        <svg v-if="darkMode" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        <svg v-else class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      <button class="icon-btn" @click="lightMode = !lightMode" :title="lightMode ? 'Mode sombre' : 'Mode clair'">
+        <svg v-if="!lightMode" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg v-else width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
       </button>
     </div>
-  </header>
+  </nav>
 
-  <!-- Sidebar -->
-  <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-    class="no-print fixed top-14 left-0 bottom-0 w-72 bg-white/90 dark:bg-surface-800/90 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 z-40 overflow-y-auto transition-transform duration-300 pb-8">
-    <nav class="p-3 space-y-0.5">
-      <template v-for="(sec, idx) in filteredSections" :key="sec.id">
-        <a :href="'#'+sec.id" @click="setActive(sec.id); sidebarOpen=false"
-          class="sidebar-link flex items-center gap-2 px-3 py-2 rounded-lg text-sm border-l-2 border-transparent"
-          :class="{'active': activeSection === sec.id}">
-          <span class="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold shrink-0"
-            :class="checked[sec.id] ? 'bg-green-500/20 text-green-400' : 'bg-brand-500/10 text-brand-400'">
-            <span v-if="checked[sec.id]">✓</span><span v-else>{{ sec.num }}</span>
-          </span>
-          <span class="truncate" v-html="highlight(sec.title)"></span>
-        </a>
-      </template>
-    </nav>
-  </aside>
+  <!-- ═══ FULLSCREEN MENU ═══ -->
+  <div class="menu-overlay" :class="{ open: menuOpen }">
+    <button class="menu-close" @click="menuOpen = false">✕</button>
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary);">
+        Chapitres — {{ activeModule === 'M201' ? 'Réseaux' : 'Sécurité' }}
+      </h2>
+      <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 4px;">{{ totalSections }} chapitres • {{ completedSections }} terminés</p>
+    </div>
+    <div class="menu-grid">
+      <a v-for="sec in allSections" :key="sec.id" :href="'#' + sec.id" class="menu-item" @click="menuOpen = false">
+        <span class="menu-item-num" :class="{ done: checked[sec.id] }">
+          <template v-if="checked[sec.id]">✓</template>
+          <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
+        </span>
+        <span class="menu-item-title">{{ sec.title }}</span>
+      </a>
+    </div>
+  </div>
 
-  <!-- Overlay -->
-  <div v-if="sidebarOpen" @click="sidebarOpen=false" class="lg:hidden fixed inset-0 bg-black/40 z-30 backdrop-blur-sm"></div>
-
-  <!-- Main Content -->
-  <main :class="sidebarOpen ? 'lg:ml-72' : 'ml-0'" class="pt-14 min-h-screen transition-all duration-300">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-
-      <!-- Hero -->
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 p-8 text-white">
-        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%221%22 fill=%22white%22/></svg>'); background-size: 20px 20px;"></div>
-        <h1 class="text-3xl sm:text-4xl font-black mb-2 relative">Version fusionnée complète — {{ activeModule === 'M201' ? 'Réseaux' : 'Sécurité' }} OFPPT</h1>
-        <p class="text-brand-200 relative">Module {{ activeModule }} • {{ totalSections }} chapitres • Support de révision optimisé</p>
-        <div class="mt-4 flex flex-wrap gap-2 relative">
-          <template v-if="activeModule === 'M201'">
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">OSI & TCP/IP</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VLAN & Switching</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Routage</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Sécurité</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WLAN</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">WAN & VPN</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VoIP</span>
-          </template>
-          <template v-else>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Concepts & CIA+</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Attaques L2/L3</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Pare-feu & IDS/IPS</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">VPN & IPsec</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Cryptographie & PKI</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-medium">Cybercriminalité</span>
-          </template>
-        </div>
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="main-wrap">
+    <!-- Hero -->
+    <div class="hero">
+      <span class="hero-badge">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Module {{ activeModule }}
+      </span>
+      <h1>{{ activeModule === 'M201' ? 'Réseaux Informatiques' : 'Sécurité Informatique' }}</h1>
+      <p class="hero-sub">{{ totalSections }} chapitres structurés pour la révision • OFPPT TRI / ID-SR</p>
+      <div class="hero-tags">
+        <template v-if="activeModule === 'M201'">
+          <span class="hero-tag">OSI & TCP/IP</span>
+          <span class="hero-tag">VLAN & Switching</span>
+          <span class="hero-tag">Routage</span>
+          <span class="hero-tag">Sécurité</span>
+          <span class="hero-tag">WLAN</span>
+          <span class="hero-tag">WAN & VPN</span>
+          <span class="hero-tag">VoIP</span>
+        </template>
+        <template v-else>
+          <span class="hero-tag">CIA+</span>
+          <span class="hero-tag">Attaques L2/L3</span>
+          <span class="hero-tag">Pare-feu & IDS/IPS</span>
+          <span class="hero-tag">VPN & IPsec</span>
+          <span class="hero-tag">Cryptographie & PKI</span>
+          <span class="hero-tag">Cybercriminalité</span>
+        </template>
       </div>
+    </div>
 
-      <!-- Sections are rendered from sections.js -->
-      <template v-for="sec in filteredSections" :key="sec.id">
-        <section :id="sec.id" class="section-animate scroll-mt-20">
-          <div class="flex items-center gap-3 mb-4">
-            <button @click="toggleCheck(sec.id)" class="w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all shrink-0"
-              :class="checked[sec.id] ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark:border-gray-600 hover:border-brand-400'">
-              <svg v-if="checked[sec.id]" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+    <!-- Content -->
+    <div class="content-area">
+      <template v-for="(sec, idx) in filteredSections" :key="sec.id">
+        <section :id="sec.id" class="section-card reveal" :ref="el => { if(el) revealEls[idx] = el }"
+          @mousemove="handleCardGlow($event, idx)">
+          <div class="section-header" @click="toggleSection(sec.id)">
+            <span class="section-num" :class="{ done: checked[sec.id] }">
+              <template v-if="checked[sec.id]">✓</template>
+              <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
+            </span>
+            <span class="section-title" v-html="highlight(sec.title)"></span>
+            <button class="section-check" :class="{ done: checked[sec.id] }" @click.stop="toggleCheck(sec.id)">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </button>
-            <h2 @click="toggleSection(sec.id)" class="text-xl sm:text-2xl font-bold flex-1 cursor-pointer select-none flex items-center gap-2 group">
-              <span class="text-brand-400 font-mono mr-1">{{ sec.num }}.</span>
-              <span v-html="highlight(sec.title)"></span>
-              <svg :class="{'rotate-180': !collapsed[sec.id]}" class="w-5 h-5 text-gray-400 group-hover:text-brand-500 transition-all duration-300 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </h2>
+            <svg class="section-chevron" :class="{ open: !collapsed[sec.id] }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div v-show="!collapsed[sec.id]" class="space-y-4 rounded-xl bg-white dark:bg-surface-800 card-glow p-5 sm:p-6" v-html="sec.html"></div>
+          <div class="section-body" :class="{ open: !collapsed[sec.id] }">
+            <div class="section-body-inner">
+              <div class="section-content" v-html="highlight(sec.html)"></div>
+            </div>
+          </div>
         </section>
       </template>
 
-      <div v-if="filteredSections.length === 0" class="text-center py-20 text-gray-400">
-        <svg class="w-16 h-16 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <p class="text-lg">Aucun résultat pour « {{ searchQuery }} »</p>
+      <div v-if="filteredSections.length === 0" class="no-results">
+        <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 16px; opacity: 0.3;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <p>Aucun résultat pour « {{ searchQuery }} »</p>
       </div>
-
     </div>
-  </main>
+  </div>
 
-  <!-- Back to top -->
-  <button v-show="showBackToTop" @click="scrollToTop" class="no-print fixed bottom-6 right-6 w-12 h-12 rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 flex items-center justify-center hover:bg-brand-500 transition-all z-50">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+  <!-- FAB -->
+  <button class="fab no-print" :class="{ visible: showBackToTop }" @click="scrollToTop">
+    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
   </button>
 </div>
 
-<!-- Sections data loaded from external JS files -->
 <script src="helpers.js"></script>
 <script src="sections1.js"></script>
 <script src="sections2.js"></script>
