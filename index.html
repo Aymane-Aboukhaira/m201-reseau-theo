@@ -53,12 +53,12 @@
     @media print { .no-print { display: none !important; } .print-break { page-break-before: always; } }
   </style>
 </head>
-<body class="dark">
+<body class="bg-surface-50">
 <div id="app" v-cloak class="min-h-screen bg-surface-50 dark:bg-surface-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
 
   <!-- Top Bar -->
   <header class="no-print fixed top-0 left-0 right-0 z-50 h-14 bg-white/80 dark:bg-surface-800/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 flex items-center px-4 gap-3">
-    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
+    <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-700 transition">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     <div class="flex items-center gap-2">
@@ -83,7 +83,7 @@
   </header>
 
   <!-- Sidebar -->
-  <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+  <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     class="no-print fixed top-14 left-0 bottom-0 w-72 bg-white/90 dark:bg-surface-800/90 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 z-40 overflow-y-auto transition-transform duration-300 pb-8">
     <nav class="p-3 space-y-0.5">
       <template v-for="(sec, idx) in filteredSections" :key="sec.id">
@@ -104,7 +104,7 @@
   <div v-if="sidebarOpen" @click="sidebarOpen=false" class="lg:hidden fixed inset-0 bg-black/40 z-30 backdrop-blur-sm"></div>
 
   <!-- Main Content -->
-  <main class="lg:ml-72 pt-14 min-h-screen">
+  <main :class="sidebarOpen ? 'lg:ml-72' : 'ml-0'" class="pt-14 min-h-screen transition-all duration-300">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
       <!-- Hero -->
@@ -131,12 +131,13 @@
               :class="checked[sec.id] ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark:border-gray-600 hover:border-brand-400'">
               <svg v-if="checked[sec.id]" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </button>
-            <h2 class="text-xl sm:text-2xl font-bold">
+            <h2 @click="toggleSection(sec.id)" class="text-xl sm:text-2xl font-bold flex-1 cursor-pointer select-none flex items-center gap-2 group">
               <span class="text-brand-400 font-mono mr-1">{{ sec.num }}.</span>
               <span v-html="highlight(sec.title)"></span>
+              <svg :class="{'rotate-180': !collapsed[sec.id]}" class="w-5 h-5 text-gray-400 group-hover:text-brand-500 transition-all duration-300 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </h2>
           </div>
-          <div class="space-y-4 rounded-xl bg-white dark:bg-surface-800 card-glow p-5 sm:p-6" v-html="sec.html"></div>
+          <div v-show="!collapsed[sec.id]" class="space-y-4 rounded-xl bg-white dark:bg-surface-800 card-glow p-5 sm:p-6" v-html="sec.html"></div>
         </section>
       </template>
 

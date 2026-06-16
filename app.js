@@ -2,12 +2,13 @@ const { createApp, ref, computed, onMounted, onUnmounted, watch, nextTick } = Vu
 
 createApp({
   setup() {
-    const darkMode = ref(true);
-    const sidebarOpen = ref(false);
+    const darkMode = ref(false);
+    const sidebarOpen = ref(window.innerWidth >= 1024);
     const searchQuery = ref('');
     const activeSection = ref('');
     const showBackToTop = ref(false);
     const checked = ref(JSON.parse(localStorage.getItem('m201-checked') || '{}'));
+    const collapsed = ref(JSON.parse(localStorage.getItem('m201-collapsed') || '{}'));
 
     // sections from sections.js
     const allSections = window.M201_SECTIONS || [];
@@ -27,6 +28,10 @@ createApp({
     function toggleCheck(id) {
       checked.value[id] = !checked.value[id];
       localStorage.setItem('m201-checked', JSON.stringify(checked.value));
+    }
+    function toggleSection(id) {
+      collapsed.value[id] = !collapsed.value[id];
+      localStorage.setItem('m201-collapsed', JSON.stringify(collapsed.value));
     }
     function setActive(id) { activeSection.value = id; }
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -63,8 +68,8 @@ createApp({
 
     onUnmounted(() => { if (observer) observer.disconnect(); });
 
-    return { darkMode, sidebarOpen, searchQuery, activeSection, showBackToTop, checked,
+    return { darkMode, sidebarOpen, searchQuery, activeSection, showBackToTop, checked, collapsed,
       filteredSections, totalSections, completedSections, progressPercent,
-      toggleCheck, setActive, scrollToTop, highlight };
+      toggleCheck, toggleSection, setActive, scrollToTop, highlight };
   }
 }).mount('#app');
