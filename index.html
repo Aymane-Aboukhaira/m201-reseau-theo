@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>M201 / M205 — OFPPT Revision Platform</title>
-  <meta name="description"
-    content="Support de révision complet pour les modules M201 (Réseaux) et M205 (Sécurité) OFPPT.">
+  <meta name="description" content="Support de révision complet pour les modules M201 (Réseaux) et M205 (Sécurité) OFPPT.">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════════════════════════════
        AWWWARDS-WINNING DESIGN SYSTEM
@@ -23,53 +19,40 @@
       --bg-secondary: #0c0c14;
       --bg-card: #111119;
       --bg-card-hover: #16161f;
-      --border: rgba(255, 255, 255, 0.06);
-      --border-hover: rgba(255, 255, 255, 0.12);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
       --text-primary: #f0f0f5;
       --text-secondary: #8888a0;
       --text-tertiary: #55556a;
       --accent: #7c5cfc;
       --accent-light: #a78bfa;
-      --accent-glow: rgba(124, 92, 252, 0.15);
-      --accent-glow-strong: rgba(124, 92, 252, 0.35);
+      --accent-glow: rgba(124,92,252,0.15);
+      --accent-glow-strong: rgba(124,92,252,0.35);
       --green: #34d399;
       --amber: #fbbf24;
       --red: #f87171;
       --cyan: #22d3ee;
     }
-
     .light-mode {
       --bg-primary: #f8f9fc;
       --bg-secondary: #ffffff;
       --bg-card: #ffffff;
       --bg-card-hover: #f3f4f8;
-      --border: rgba(0, 0, 0, 0.06);
-      --border-hover: rgba(0, 0, 0, 0.12);
+      --border: rgba(0,0,0,0.06);
+      --border-hover: rgba(0,0,0,0.12);
       --text-primary: #111119;
       --text-secondary: #55556a;
       --text-tertiary: #9999aa;
       --accent: #6d4de8;
       --accent-light: #7c5cfc;
-      --accent-glow: rgba(109, 77, 232, 0.08);
-      --accent-glow-strong: rgba(109, 77, 232, 0.2);
+      --accent-glow: rgba(109,77,232,0.08);
+      --accent-glow-strong: rgba(109,77,232,0.2);
     }
 
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    [v-cloak] { display: none; }
 
-    [v-cloak] {
-      display: none;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-primary);
@@ -80,85 +63,45 @@
     }
 
     /* Scrollbar */
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) transparent;
-    }
-
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 99px;
-    }
+    * { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
     /* ─── ANIMATED MESH GRADIENT BACKGROUND ─── */
     .mesh-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124, 92, 252, 0.08), transparent 50%),
-        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34, 211, 238, 0.06), transparent 50%),
-        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167, 139, 250, 0.04), transparent 60%);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,92,252,0.08), transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34,211,238,0.06), transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167,139,250,0.04), transparent 60%);
       animation: meshMove 20s ease-in-out infinite alternate;
     }
-
     .light-mode .mesh-bg {
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124, 92, 252, 0.06), transparent 50%),
-        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34, 211, 238, 0.04), transparent 50%),
-        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167, 139, 250, 0.03), transparent 60%);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,92,252,0.06), transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(34,211,238,0.04), transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167,139,250,0.03), transparent 60%);
     }
-
     @keyframes meshMove {
-      0% {
-        transform: scale(1) translate(0, 0);
-      }
-
-      33% {
-        transform: scale(1.05) translate(-2%, 3%);
-      }
-
-      66% {
-        transform: scale(0.98) translate(2%, -2%);
-      }
-
-      100% {
-        transform: scale(1.02) translate(-1%, 1%);
-      }
+      0% { transform: scale(1) translate(0,0); }
+      33% { transform: scale(1.05) translate(-2%, 3%); }
+      66% { transform: scale(0.98) translate(2%, -2%); }
+      100% { transform: scale(1.02) translate(-1%, 1%); }
     }
 
     /* Noise texture overlay */
     .noise-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      opacity: 0.03;
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
       background-repeat: repeat;
       background-size: 256px 256px;
     }
-
-    .light-mode .noise-overlay {
-      opacity: 0.015;
-    }
+    .light-mode .noise-overlay { opacity: 0.015; }
 
     /* ─── SCROLL PROGRESS ─── */
     .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      z-index: 999;
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 999;
       background: linear-gradient(90deg, var(--accent), var(--cyan));
       transform-origin: 0% 50%;
       box-shadow: 0 0 20px var(--accent-glow-strong);
@@ -166,1277 +109,775 @@
 
     /* ─── CUSTOM CURSOR ─── */
     .cursor-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      z-index: 10000;
-      pointer-events: none;
-      transition: transform 0.15s ease, opacity 0.15s;
+      width: 8px; height: 8px; background: var(--accent);
+      border-radius: 50%; position: fixed; z-index: 10000;
+      pointer-events: none; transition: transform 0.15s ease, opacity 0.15s;
       mix-blend-mode: difference;
     }
-
     .cursor-ring {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border: 1.5px solid var(--accent-light);
-      border-radius: 50%;
-      position: fixed;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.5;
+      border-radius: 50%; position: fixed; z-index: 9999;
+      pointer-events: none; opacity: 0.5;
       transition: width 0.3s, height 0.3s, opacity 0.3s;
     }
-
-    @media (hover: none) {
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-    }
+    @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
 
     /* ─── TOP NAVIGATION ─── */
     .top-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       height: 64px;
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      gap: 16px;
-      background: rgba(6, 6, 10, 0.6);
+      display: flex; align-items: center; padding: 0 24px; gap: 16px;
+      background: rgba(6,6,10,0.6);
       backdrop-filter: blur(24px) saturate(1.4);
       border-bottom: 1px solid var(--border);
       transition: background 0.3s;
     }
-
-    .light-mode .top-nav {
-      background: rgba(248, 249, 252, 0.7);
-    }
+    .light-mode .top-nav { background: rgba(248,249,252,0.7); }
 
     .nav-logo {
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: -0.03em;
+      font-weight: 700; font-size: 1.25rem; letter-spacing: -0.03em;
       background: linear-gradient(135deg, var(--accent-light), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .module-switcher {
-      display: flex;
-      background: var(--bg-card);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      overflow: hidden;
+      display: flex; background: var(--bg-card); border-radius: 8px;
+      border: 1px solid var(--border); overflow: hidden;
     }
-
     .module-btn {
-      padding: 6px 16px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      color: var(--text-tertiary);
-      transition: all 0.3s;
-      font-family: inherit;
-      letter-spacing: 0.02em;
+      padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; border: none; background: transparent;
+      color: var(--text-tertiary); transition: all 0.3s;
+      font-family: inherit; letter-spacing: 0.02em;
     }
-
     .module-btn.active {
-      background: var(--accent);
-      color: white;
+      background: var(--accent); color: white;
       box-shadow: 0 0 20px var(--accent-glow-strong);
     }
 
     .search-box {
-      flex: 1;
-      max-width: 400px;
-      position: relative;
+      flex: 1; max-width: 400px; position: relative;
     }
-
     .search-box input {
-      width: 100%;
-      padding: 8px 16px 8px 40px;
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-family: inherit;
-      outline: none;
+      width: 100%; padding: 8px 16px 8px 40px;
+      background: var(--bg-card); color: var(--text-primary);
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.85rem; font-family: inherit; outline: none;
       transition: border-color 0.3s, box-shadow 0.3s;
     }
-
     .search-box input:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-glow);
     }
-
-    .search-box input::placeholder {
-      color: var(--text-tertiary);
-    }
-
+    .search-box input::placeholder { color: var(--text-tertiary); }
     .search-box svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: var(--text-tertiary);
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px; color: var(--text-tertiary);
     }
-
     .search-kbd {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.65rem;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: var(--bg-secondary);
-      color: var(--text-tertiary);
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;
+      padding: 2px 6px; border-radius: 4px;
+      background: var(--bg-secondary); color: var(--text-tertiary);
       border: 1px solid var(--border);
     }
 
-    .nav-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-left: auto;
-    }
-
+    .nav-controls { display: flex; align-items: center; gap: 12px; margin-left: auto; }
     .progress-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
+      display: flex; align-items: center; gap: 8px; font-size: 0.8rem;
       color: var(--text-secondary);
     }
-
     .progress-bar-outer {
-      width: 100px;
-      height: 4px;
-      border-radius: 99px;
-      background: var(--bg-card);
-      overflow: hidden;
+      width: 100px; height: 4px; border-radius: 99px;
+      background: var(--bg-card); overflow: hidden;
     }
-
     .progress-bar-inner {
-      height: 100%;
-      border-radius: 99px;
+      height: 100%; border-radius: 99px;
       background: linear-gradient(90deg, var(--accent), var(--cyan));
       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
       transition: all 0.3s;
     }
-
     .icon-btn:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-hover);
+      background: var(--bg-card-hover); border-color: var(--border-hover);
       color: var(--text-primary);
     }
 
     /* ─── FULLSCREEN MENU OVERLAY ─── */
     .menu-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(6, 6, 10, 0.95);
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(6,6,10,0.95);
       backdrop-filter: blur(40px);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       padding: 80px 40px 40px;
       overflow-y: auto;
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    .menu-overlay.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .light-mode .menu-overlay {
-      background: rgba(248, 249, 252, 0.97);
-    }
+    .menu-overlay.open { opacity: 1; pointer-events: all; }
+    .light-mode .menu-overlay { background: rgba(248,249,252,0.97); }
 
     .menu-close {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1.2rem;
+      position: absolute; top: 20px; right: 24px;
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s; font-size: 1.2rem;
     }
-
-    .menu-close:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
-    }
+    .menu-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
 
     .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 4px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 4px; max-width: 1200px; margin: 0 auto; width: 100%;
     }
-
     .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 18px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-      color: var(--text-primary);
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px; border-radius: 12px;
+      cursor: pointer; transition: all 0.2s;
+      text-decoration: none; color: var(--text-primary);
     }
-
-    .menu-item:hover {
-      background: var(--accent-glow);
-    }
-
+    .menu-item:hover { background: var(--accent-glow); }
     .menu-item-num {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      flex-shrink: 0;
+      font-size: 0.75rem; font-weight: 600;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary); flex-shrink: 0;
       transition: all 0.3s;
     }
-
     .menu-item:hover .menu-item-num {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--accent); color: var(--accent);
       box-shadow: 0 0 12px var(--accent-glow);
     }
-
     .menu-item-num.done {
-      background: rgba(52, 211, 153, 0.1);
-      border-color: var(--green);
+      background: rgba(52,211,153,0.1); border-color: var(--green);
       color: var(--green);
     }
-
     .menu-item-title {
-      font-size: 0.9rem;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.9rem; font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     /* ─── MAIN LAYOUT ─── */
     .main-wrap {
-      position: relative;
-      z-index: 2;
-      padding-top: 64px;
-      min-height: 100vh;
+      position: relative; z-index: 2; padding-top: 64px; min-height: 100vh;
     }
 
     /* ─── HERO ─── */
     .hero {
-      position: relative;
-      padding: 80px 24px 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
+      position: relative; padding: 80px 24px 60px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; overflow: hidden;
     }
-
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      border-radius: 99px;
-      background: var(--accent-glow);
-      border: 1px solid rgba(124, 92, 252, 0.2);
-      color: var(--accent-light);
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 99px;
+      background: var(--accent-glow); border: 1px solid rgba(124,92,252,0.2);
+      color: var(--accent-light); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
       margin-bottom: 24px;
       animation: fadeUp 0.6s 0.1s both;
     }
-
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(2.5rem, 7vw, 5rem);
-      font-weight: 700;
-      line-height: 1.05;
+      font-weight: 700; line-height: 1.05;
       letter-spacing: -0.04em;
       background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-light) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
       max-width: 800px;
       animation: fadeUp 0.6s 0.2s both;
     }
-
     .hero-sub {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      margin-top: 16px;
-      max-width: 500px;
-      line-height: 1.6;
+      font-size: 1.1rem; color: var(--text-secondary);
+      margin-top: 16px; max-width: 500px; line-height: 1.6;
       animation: fadeUp 0.6s 0.3s both;
     }
-
     .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 32px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-top: 32px;
       animation: fadeUp 0.6s 0.4s both;
     }
-
     .hero-tag {
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
+      padding: 6px 14px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 500; background: var(--bg-card);
+      border: 1px solid var(--border); color: var(--text-secondary);
       transition: all 0.3s;
     }
-
     .hero-tag:hover {
-      border-color: var(--accent);
-      color: var(--accent-light);
+      border-color: var(--accent); color: var(--accent-light);
       box-shadow: 0 0 15px var(--accent-glow);
     }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ─── CONTENT AREA ─── */
     .content-area {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 24px 100px;
+      max-width: 860px; margin: 0 auto; padding: 0 24px 100px;
     }
 
     /* ─── CHAPTER CARDS (compact clickable grid) ─── */
     .chapters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
       gap: 10px;
     }
-
-    @media (max-width: 500px) {
-      .chapters-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 500px) { .chapters-grid { grid-template-columns: 1fr; } }
 
     .chapter-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
-      border-radius: 14px;
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px; border-radius: 14px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.3s;
-      position: relative;
+      cursor: pointer; user-select: none;
+      transition: all 0.3s; position: relative;
     }
-
     .chapter-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 14px;
+      content: ''; position: absolute; inset: 0; border-radius: 14px;
       background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow), transparent 40%);
-      opacity: 0;
-      transition: opacity 0.4s;
-      pointer-events: none;
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
     }
-
-    .chapter-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
-    }
-
-    .chapter-card:hover::before {
-      opacity: 1;
-    }
-
-    .chapter-card.active-card {
-      border-color: var(--accent);
-      box-shadow: 0 0 30px var(--accent-glow);
-    }
+    .chapter-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .chapter-card:hover::before { opacity: 1; }
+    .chapter-card.active-card { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
 
     .ch-num {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text-tertiary);
-      flex-shrink: 0;
-      transition: all 0.3s;
+      font-size: 0.8rem; font-weight: 700;
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      color: var(--text-tertiary); flex-shrink: 0; transition: all 0.3s;
     }
-
     .ch-num.done {
-      background: rgba(52, 211, 153, 0.08);
-      border-color: rgba(52, 211, 153, 0.3);
+      background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3);
       color: var(--green);
     }
-
     .ch-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      flex: 1;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.95rem; font-weight: 600; flex: 1;
+      color: var(--text-primary); letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .ch-arrow {
-      width: 18px;
-      height: 18px;
-      color: var(--text-tertiary);
-      flex-shrink: 0;
-      transition: transform 0.3s, color 0.3s;
+      width: 18px; height: 18px; color: var(--text-tertiary);
+      flex-shrink: 0; transition: transform 0.3s, color 0.3s;
     }
+    .chapter-card:hover .ch-arrow { transform: translateX(3px); color: var(--accent-light); }
 
-    .chapter-card:hover .ch-arrow {
-      transform: translateX(3px);
-      color: var(--accent-light);
+    /* Card stagger animation (no IntersectionObserver needed) */
+    .chapters-grid .chapter-card {
+      animation: cardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .ch-check {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: 2px solid var(--border);
-      color: transparent;
-      cursor: pointer;
-      flex-shrink: 0;
+      width: 24px; height: 24px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 2px solid var(--border);
+      color: transparent; cursor: pointer; flex-shrink: 0;
       transition: all 0.3s;
     }
-
-    .ch-check:hover {
-      border-color: var(--accent);
-    }
-
-    .ch-check.done {
-      background: var(--green);
-      border-color: var(--green);
-      color: white;
-    }
+    .ch-check:hover { border-color: var(--accent); }
+    .ch-check.done { background: var(--green); border-color: var(--green); color: white; }
 
     /* ─── DETAIL PANEL (slides in from right) ─── */
     .panel-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
       transition: opacity 0.4s;
     }
-
-    .panel-backdrop.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .panel-backdrop.open { opacity: 1; pointer-events: all; }
 
     .detail-panel {
-      position: fixed;
-      z-index: 301;
-      top: 50%;
-      left: 50%;
+      position: fixed; z-index: 301;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(0.95);
       width: min(780px, calc(100vw - 32px));
       height: min(85vh, calc(100vh - 48px));
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
       overflow: hidden;
     }
-
-    .detail-panel.open {
-      opacity: 1;
-      pointer-events: all;
-      transform: translate(-50%, -50%) scale(1);
-    }
+    .detail-panel.open { opacity: 1; pointer-events: all; transform: translate(-50%, -50%) scale(1); }
 
     .panel-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-
     .panel-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1rem;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s; font-size: 1rem;
     }
+    .panel-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
 
-    .panel-close:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
-    }
-
-    .panel-title-area {
-      flex: 1;
-      min-width: 0;
-    }
-
+    .panel-title-area { flex: 1; min-width: 0; }
     .panel-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em;
       color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .panel-subtitle {
-      font-size: 0.75rem;
-      color: var(--text-tertiary);
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 2px;
+      font-size: 0.75rem; color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace; margin-top: 2px;
     }
 
     .panel-nav-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
       transition: all 0.3s;
     }
-
-    .panel-nav-btn:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
-      border-color: var(--border-hover);
-    }
-
-    .panel-nav-btn:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-
-    .panel-nav-btn:disabled:hover {
-      background: var(--bg-card);
-      color: var(--text-secondary);
-    }
+    .panel-nav-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-hover); }
+    .panel-nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .panel-nav-btn:disabled:hover { background: var(--bg-card); color: var(--text-secondary); }
 
     .panel-check-btn {
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      padding: 6px 14px; border-radius: 8px; font-size: 0.78rem;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.3s; display: flex; align-items: center; gap: 6px;
     }
-
     .panel-check-btn.undone {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text-secondary);
     }
-
-    .panel-check-btn.undone:hover {
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-<<<<<<< HEAD
-=======
+    .panel-check-btn.undone:hover { border-color: var(--green); color: var(--green); }
     .panel-check-btn.is-done {
-      background: rgba(52, 211, 153, 0.1);
-      border: 1px solid rgba(52, 211, 153, 0.3);
+      background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
       color: var(--green);
     }
 
->>>>>>> 475270a (Add Cloud (M206) and SDN (M203) modules)
+    .panel-actions { display: flex; align-items: center; gap: 12px; }
+    .panel-nav-group { display: flex; align-items: center; gap: 6px; }
+
     .panel-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px 32px 60px;
-      color: var(--text-secondary);
-      font-size: 0.92rem;
-      line-height: 1.8;
+      flex: 1; overflow-y: auto; padding: 28px 32px 60px;
+      color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8;
     }
-
     @media (max-width: 768px) {
-      .panel-body {
-        padding: 20px 16px 60px;
-      }
-
-      .panel-header {
-        padding: 12px 16px;
-      }
+      .panel-body { padding: 20px 16px 60px; }
+      .panel-header { padding: 12px 16px; }
     }
 
-    body.panel-open {
-      overflow: hidden;
-    }
+    body.panel-open { overflow: hidden; }
 
     /* ─── CONTENT COMPONENTS ─── */
     /* Definition */
     .def-card {
-      position: relative;
-      padding: 20px 24px;
-      margin: 16px 0;
+      position: relative; padding: 20px 24px; margin: 16px 0;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--accent-glow), transparent 60%);
-      border: 1px solid rgba(124, 92, 252, 0.15);
-      font-weight: 500;
-      color: var(--text-primary);
+      border: 1px solid rgba(124,92,252,0.15);
+      font-weight: 500; color: var(--text-primary);
       transition: all 0.3s;
     }
-
     .def-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      border-radius: 3px 0 0 3px;
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent); border-radius: 3px 0 0 3px;
     }
-
-    .def-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--accent-glow);
-    }
+    .def-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
 
     /* Lists */
-    .content-list {
-      list-style: none;
-      margin: 12px 0;
-    }
-
+    .content-list { list-style: none; margin: 12px 0; }
     .content-list li {
-      position: relative;
-      padding: 8px 0 8px 28px;
-      color: var(--text-secondary);
-      font-size: 0.92rem;
+      position: relative; padding: 8px 0 8px 28px;
+      color: var(--text-secondary); font-size: 0.92rem;
       border-bottom: 1px solid var(--border);
       transition: all 0.2s;
     }
-
-    .content-list li:last-child {
-      border-bottom: none;
-    }
-
-    .content-list li:hover {
-      color: var(--text-primary);
-      padding-left: 32px;
-    }
-
+    .content-list li:last-child { border-bottom: none; }
+    .content-list li:hover { color: var(--text-primary); padding-left: 32px; }
     .content-list li::before {
-      content: '';
-      position: absolute;
-      left: 8px;
-      top: 16px;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.6;
+      content: ''; position: absolute; left: 8px; top: 16px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); opacity: 0.6;
       transition: all 0.2s;
     }
-
-    .content-list li:hover::before {
-      opacity: 1;
-      box-shadow: 0 0 8px var(--accent-glow-strong);
-    }
+    .content-list li:hover::before { opacity: 1; box-shadow: 0 0 8px var(--accent-glow-strong); }
 
     /* Piège */
     .piege {
-      position: relative;
-      padding: 20px 24px;
-      margin: 16px 0;
+      position: relative; padding: 20px 24px; margin: 16px 0;
       border-radius: 12px;
-      background: rgba(251, 191, 36, 0.04);
-      border: 1px solid rgba(251, 191, 36, 0.15);
+      background: rgba(251,191,36,0.04);
+      border: 1px solid rgba(251,191,36,0.15);
       transition: all 0.3s;
     }
-
     .piege::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--amber);
-      border-radius: 3px 0 0 3px;
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--amber); border-radius: 3px 0 0 3px;
     }
-
-    .piege:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(251, 191, 36, 0.08);
-    }
-
+    .piege:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(251,191,36,0.08); }
     .piege-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--amber);
-      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--amber); margin-bottom: 12px;
     }
 
     /* Advantage */
     .adv-card {
-      position: relative;
-      padding: 20px 24px;
-      margin: 16px 0;
+      position: relative; padding: 20px 24px; margin: 16px 0;
       border-radius: 12px;
-      background: rgba(52, 211, 153, 0.04);
-      border: 1px solid rgba(52, 211, 153, 0.15);
+      background: rgba(52,211,153,0.04);
+      border: 1px solid rgba(52,211,153,0.15);
       transition: all 0.3s;
     }
-
     .adv-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--green);
-      border-radius: 3px 0 0 3px;
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--green); border-radius: 3px 0 0 3px;
     }
-
-    .adv-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(52, 211, 153, 0.08);
-    }
+    .adv-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(52,211,153,0.08); }
 
     /* Disadvantage */
     .disadv-card {
-      position: relative;
-      padding: 20px 24px;
-      margin: 16px 0;
+      position: relative; padding: 20px 24px; margin: 16px 0;
       border-radius: 12px;
-      background: rgba(248, 113, 113, 0.04);
-      border: 1px solid rgba(248, 113, 113, 0.15);
+      background: rgba(248,113,113,0.04);
+      border: 1px solid rgba(248,113,113,0.15);
       transition: all 0.3s;
     }
-
     .disadv-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--red);
-      border-radius: 3px 0 0 3px;
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--red); border-radius: 3px 0 0 3px;
     }
-
-    .disadv-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(248, 113, 113, 0.08);
-    }
+    .disadv-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(248,113,113,0.08); }
 
     /* Memo */
     .memo-block {
-      position: relative;
-      padding: 20px 24px;
-      margin: 16px 0;
+      position: relative; padding: 20px 24px; margin: 16px 0;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent-glow), rgba(34, 211, 238, 0.04));
-      border: 1px solid rgba(124, 92, 252, 0.2);
+      background: linear-gradient(135deg, var(--accent-glow), rgba(34,211,238,0.04));
+      border: 1px solid rgba(124,92,252,0.2);
       transition: all 0.3s;
     }
-
-    .memo-block:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--accent-glow);
-    }
-
+    .memo-block:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
     .memo-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent-light);
-      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent-light); margin-bottom: 12px;
     }
 
     .card-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 12px;
     }
-
-    .card-label.green {
-      color: var(--green);
-    }
-
-    .card-label.red {
-      color: var(--red);
-    }
+    .card-label.green { color: var(--green); }
+    .card-label.red { color: var(--red); }
 
     /* Tables */
-    .tbl-wrap {
-      overflow-x: auto;
-      margin: 16px 0;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .tbl-wrap table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-
+    .tbl-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); }
+    .tbl-wrap table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
     .tbl-wrap th {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
+      padding: 12px 16px; text-align: left;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-tertiary);
+      background: var(--bg-secondary); border-bottom: 1px solid var(--border);
     }
-
     .tbl-wrap td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-secondary);
-      transition: all 0.2s;
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      color: var(--text-secondary); transition: all 0.2s;
     }
-
-    .tbl-wrap tr:last-child td {
-      border-bottom: none;
-    }
-
-    .tbl-wrap tr:hover td {
-      background: var(--accent-glow);
-      color: var(--text-primary);
-    }
+    .tbl-wrap tr:last-child td { border-bottom: none; }
+    .tbl-wrap tr:hover td { background: var(--accent-glow); color: var(--text-primary); }
 
     /* H3, H4 in content */
     .content-h3 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 28px 0 12px;
-      letter-spacing: -0.01em;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      font-size: 1.1rem; font-weight: 700; color: var(--text-primary);
+      margin: 28px 0 12px; letter-spacing: -0.01em;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
-
     .content-h4 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin: 20px 0 8px;
-      opacity: 0.9;
+      font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+      margin: 20px 0 8px; opacity: 0.9;
     }
-
-    .content-p {
-      color: var(--text-secondary);
-      margin: 8px 0;
-      line-height: 1.75;
-    }
+    .content-p { color: var(--text-secondary); margin: 8px 0; line-height: 1.75; }
 
     /* Search highlighting */
     mark {
-      background: var(--accent-glow-strong);
-      color: var(--accent-light);
-      border-radius: 3px;
-      padding: 1px 4px;
+      background: var(--accent-glow-strong); color: var(--accent-light);
+      border-radius: 3px; padding: 1px 4px;
     }
 
     /* ─── FAB ─── */
     .fab {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      z-index: 100;
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 8px 30px var(--accent-glow-strong);
+      position: fixed; bottom: 32px; right: 32px; z-index: 100;
+      width: 52px; height: 52px; border-radius: 16px;
+      background: var(--accent); color: white; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 8px 30px var(--accent-glow-strong);
       transition: all 0.3s;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(20px);
+      opacity: 0; pointer-events: none; transform: translateY(20px);
     }
-
-    .fab.visible {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateY(0);
-    }
-
-    .fab:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px var(--accent-glow-strong);
-    }
+    .fab.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .fab:hover { transform: translateY(-4px); box-shadow: 0 12px 40px var(--accent-glow-strong); }
 
     /* ─── NO RESULTS ─── */
     .no-results {
-      text-align: center;
-      padding: 80px 24px;
-      color: var(--text-tertiary);
-      font-size: 1rem;
+      text-align: center; padding: 80px 24px;
+      color: var(--text-tertiary); font-size: 1rem;
     }
 
     /* ─── SCROLL REVEAL ─── */
     .reveal {
-      opacity: 0;
-      transform: translateY(30px);
+      opacity: 0; transform: translateY(30px);
       transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .reveal[data-visible="true"] {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-<<<<<<< HEAD
-      .hero { padding: 60px 16px 40px; }
-      .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
-      .content-area { padding: 0 16px 80px; }
-      .section-header { padding: 16px; gap: 10px; }
-      .section-content { padding: 0 16px 16px; }
+      /* Nav: compact, hide search text, stack tighter */
+      .top-nav { height: 56px; padding: 0 12px; gap: 8px; }
+      .nav-logo { font-size: 1.1rem; }
+      .module-switcher { border-radius: 6px; }
+      .module-btn { padding: 5px 10px; font-size: 0.7rem; }
+      .search-box { max-width: none; }
+      .search-box input { padding: 7px 12px 7px 34px; font-size: 0.8rem; border-radius: 8px; }
+      .search-box svg { left: 10px; width: 14px; height: 14px; }
       .search-kbd { display: none; }
       .progress-info { display: none; }
-      .menu-grid { grid-template-columns: 1fr; }
+      .icon-btn { width: 32px; height: 32px; border-radius: 8px; }
+      .nav-controls { gap: 6px; }
+
+      /* Hero: tighter */
+      .hero { padding: 48px 16px 32px; }
+      .hero h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+      .hero-sub { font-size: 0.9rem; margin-top: 12px; }
+      .hero-badge { font-size: 0.65rem; padding: 5px 12px; margin-bottom: 16px; }
+      .hero-tags { gap: 6px; margin-top: 20px; }
+      .hero-tag { padding: 5px 10px; font-size: 0.7rem; }
+
+      /* Chapter cards: single column, touch-friendly */
+      .content-area { padding: 0 12px 80px; }
+      .chapters-grid { grid-template-columns: 1fr; gap: 8px; }
+      .chapter-card { padding: 14px 14px; gap: 10px; border-radius: 12px; }
+      .ch-num { width: 36px; height: 36px; border-radius: 8px; font-size: 0.75rem; }
+      .ch-title { font-size: 0.88rem; }
+      .ch-check { width: 22px; height: 22px; border-radius: 5px; }
+      .ch-arrow { width: 16px; height: 16px; }
+
+      /* Detail panel: Slide up from bottom on mobile */
+      .detail-panel {
+        width: 100vw; height: 100vh;
+        border-radius: 0; border: none;
+        top: 0; left: 0;
+        transform: translateY(100vh); opacity: 1;
+        transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .detail-panel.open { transform: translateY(0); top: 0; left: 0; }
+
+      .panel-header { padding: 16px; gap: 12px; border-bottom: 1px solid var(--border); }
+      .panel-close { width: 36px; height: 36px; border-radius: 10px; font-size: 1.1rem; }
+      .panel-title { font-size: 1.05rem; white-space: normal; line-height: 1.3; }
+      .panel-subtitle { font-size: 0.75rem; margin-top: 4px; }
+      
+      /* Fixed bottom bar for actions */
+      .panel-actions {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border);
+        padding: 12px 16px;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 10;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+      }
+      .panel-check-btn { padding: 8px 16px; font-size: 0.85rem; }
+      .panel-nav-btn { width: 40px; height: 40px; border-radius: 10px; }
+      
+      .panel-body { padding: 20px 16px 90px; font-size: 0.95rem; line-height: 1.7; }
+
+      /* Content inside panel */
+      .def-card, .piege, .adv-card, .disadv-card, .memo-block { padding: 14px 16px; margin: 12px 0; border-radius: 10px; }
+      .content-h3 { font-size: 1rem; margin: 20px 0 8px; }
+      .content-h4 { font-size: 0.9rem; margin: 14px 0 6px; }
+      .content-list li { padding: 6px 0 6px 22px; font-size: 0.86rem; }
+      .content-list li::before { left: 6px; top: 13px; width: 5px; height: 5px; }
+      .tbl-wrap table { font-size: 0.8rem; }
+      .tbl-wrap th { padding: 8px 10px; font-size: 0.65rem; }
+      .tbl-wrap td { padding: 8px 10px; }
+
+      /* Menu overlay */
+      .menu-overlay { padding: 70px 16px 24px; }
+      .menu-grid { grid-template-columns: 1fr; gap: 2px; }
+      .menu-item { padding: 12px 14px; border-radius: 10px; }
+      .menu-item-num { width: 32px; height: 32px; border-radius: 8px; font-size: 0.7rem; }
+      .menu-item-title { font-size: 0.85rem; }
+      .menu-close { top: 14px; right: 14px; width: 36px; height: 36px; }
+
+      /* FAB */
+      .fab { bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 12px; }
+
+      /* Hide custom cursor on touch */
       .cursor-dot, .cursor-ring { display: none; }
     }
 
+    /* Small phones */
+    @media (max-width: 380px) {
+      .module-switcher { display: none; }
+      .hero h1 { font-size: 1.6rem; }
+      .hero-tags { display: none; }
+    }
+
     @media print { .no-print { display: none !important; } }
-=======
-      .hero {
-        padding: 60px 16px 40px;
-      }
-
-      .hero h1 {
-        font-size: clamp(2rem, 8vw, 3rem);
-      }
-
-      .content-area {
-        padding: 0 16px 80px;
-      }
-
-      .section-header {
-        padding: 16px;
-        gap: 10px;
-      }
-
-      .section-content {
-        padding: 0 16px 16px;
-      }
-
-      .search-kbd {
-        display: none;
-      }
-
-      .progress-info {
-        display: none;
-      }
-
-      .menu-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-    }
-
-    @media print {
-      .no-print {
-        display: none !important;
-      }
-    }
->>>>>>> 475270a (Add Cloud (M206) and SDN (M203) modules)
   </style>
 </head>
-
 <body>
-  <div id="app" v-cloak>
-    <!-- Atmospheric layers -->
-    <div class="mesh-bg"></div>
-    <div class="noise-overlay"></div>
+<div id="app" v-cloak>
+  <!-- Atmospheric layers -->
+  <div class="mesh-bg"></div>
+  <div class="noise-overlay"></div>
 
-    <!-- Custom cursor -->
-    <div class="cursor-dot no-print" ref="cursorDot"></div>
-    <div class="cursor-ring no-print" ref="cursorRing"></div>
+  <!-- Custom cursor -->
+  <div class="cursor-dot no-print" ref="cursorDot"></div>
+  <div class="cursor-ring no-print" ref="cursorRing"></div>
 
-    <!-- Scroll progress -->
-    <div class="scroll-progress no-print" :style="{ transform: 'scaleX(' + scrollProgress + ')' }"></div>
+  <!-- Scroll progress -->
+  <div class="scroll-progress no-print" :style="{ transform: 'scaleX(' + scrollProgress + ')' }"></div>
 
-    <!-- ═══ TOP NAVIGATION ═══ -->
-    <nav class="top-nav no-print">
-      <button class="icon-btn" @click="menuOpen = true" title="Navigation">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+  <!-- ═══ TOP NAVIGATION ═══ -->
+  <nav class="top-nav no-print">
+    <button class="icon-btn" @click="menuOpen = true" title="Navigation">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
 
-      <span class="nav-logo">M2</span>
+    <span class="nav-logo">M2</span>
 
-      <div class="module-switcher">
-        <button class="module-btn" :class="{ active: activeModule === 'M201' }"
-          @click="activeModule = 'M201'">Réseaux</button>
-        <button class="module-btn" :class="{ active: activeModule === 'M202' }"
-          @click="activeModule = 'M202'">Windows</button>
-        <button class="module-btn" :class="{ active: activeModule === 'M206' }"
-          @click="activeModule = 'M206'">Cloud</button>
-        <button class="module-btn" :class="{ active: activeModule === 'M203' }"
-          @click="activeModule = 'M203'">SDN</button>
-        <button class="module-btn" :class="{ active: activeModule === 'M205' }"
-          @click="activeModule = 'M205'">Sécurité</button>
-      </div>
+    <div class="module-switcher">
+      <button class="module-btn" :class="{ active: activeModule === 'M201' }" @click="activeModule = 'M201'">Réseaux</button>
+      <button class="module-btn" :class="{ active: activeModule === 'M202' }" @click="activeModule = 'M202'">Windows</button>
+      <button class="module-btn" :class="{ active: activeModule === 'M206' }" @click="activeModule = 'M206'">Cloud</button>
+      <button class="module-btn" :class="{ active: activeModule === 'M203' }" @click="activeModule = 'M203'">SDN</button>
+      <button class="module-btn" :class="{ active: activeModule === 'M205' }" @click="activeModule = 'M205'">Sécurité</button>
+    </div>
 
-      <div class="search-box">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input v-model="searchQuery" type="text" placeholder="Rechercher..." @keydown.escape="searchQuery = ''">
-        <span class="search-kbd">Ctrl K</span>
-      </div>
+    <div class="search-box">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input v-model="searchQuery" type="text" placeholder="Rechercher..." @keydown.escape="searchQuery = ''">
+      <span class="search-kbd">Ctrl K</span>
+    </div>
 
-      <div class="nav-controls">
-        <div class="progress-info">
-          <span>{{ completedSections }}/{{ totalSections }}</span>
-          <div class="progress-bar-outer">
-            <div class="progress-bar-inner" :style="{ width: progressPercent + '%' }"></div>
-          </div>
-          <span>{{ progressPercent }}%</span>
+    <div class="nav-controls">
+      <div class="progress-info">
+        <span>{{ completedSections }}/{{ totalSections }}</span>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" :style="{ width: progressPercent + '%' }"></div>
         </div>
-        <button class="icon-btn" @click="lightMode = !lightMode" :title="lightMode ? 'Mode sombre' : 'Mode clair'">
-          <svg v-if="!lightMode" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-          <svg v-else width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
-        </button>
+        <span>{{ progressPercent }}%</span>
       </div>
-    </nav>
+      <button class="icon-btn" @click="lightMode = !lightMode" :title="lightMode ? 'Mode sombre' : 'Mode clair'">
+        <svg v-if="!lightMode" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg v-else width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+    </div>
+  </nav>
 
-    <!-- ═══ FULLSCREEN MENU ═══ -->
-    <div class="menu-overlay" :class="{ open: menuOpen }">
-      <button class="menu-close" @click="menuOpen = false">✕</button>
-      <div style="margin-bottom: 24px;">
-        <h2
-          style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary);">
-          Chapitres — {{ activeModule === 'M201' ? 'Réseaux' : activeModule === 'M202' ? 'Windows' : activeModule === 'M206' ? 'Cloud' : activeModule === 'M203' ? 'SDN' : 'Sécurité' }}
-        </h2>
-        <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 4px;">{{ totalSections }} chapitres • {{
-          completedSections }} terminés</p>
-      </div>
-      <div class="menu-grid">
-        <a v-for="sec in allSections" :key="sec.id" :href="'#' + sec.id" class="menu-item" @click="menuOpen = false">
-          <span class="menu-item-num" :class="{ done: checked[sec.id] }">
-            <template v-if="checked[sec.id]">✓</template>
-            <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
-          </span>
-          <span class="menu-item-title">{{ sec.title }}</span>
-        </a>
+  <!-- ═══ FULLSCREEN MENU ═══ -->
+  <div class="menu-overlay" :class="{ open: menuOpen }">
+    <button class="menu-close" @click="menuOpen = false">✕</button>
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary);">
+        Chapitres — {{ activeModule === 'M201' ? 'Réseaux' : activeModule === 'M202' ? 'Windows' : activeModule === 'M206' ? 'Cloud' : activeModule === 'M203' ? 'SDN' : 'Sécurité' }}
+      </h2>
+      <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 4px;">{{ totalSections }} chapitres • {{ completedSections }} terminés</p>
+    </div>
+    <div class="menu-grid">
+      <a v-for="sec in allSections" :key="sec.id" :href="'#' + sec.id" class="menu-item" @click="menuOpen = false">
+        <span class="menu-item-num" :class="{ done: checked[sec.id] }">
+          <template v-if="checked[sec.id]">✓</template>
+          <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
+        </span>
+        <span class="menu-item-title">{{ sec.title }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="main-wrap">
+    <!-- Hero -->
+    <div class="hero">
+      <span class="hero-badge">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Module {{ activeModule }}
+      </span>
+      <h1>{{ activeModule === 'M201' ? 'Réseaux Informatiques' : activeModule === 'M202' ? 'Windows' : activeModule === 'M206' ? 'Cloud' : activeModule === 'M203' ? 'SDN' : 'Sécurité Informatique' }}</h1>
+      <p class="hero-sub">{{ totalSections }} chapitres structurés pour la révision • OFPPT TRI / ID-SR</p>
+      <div class="hero-tags">
+        <template v-if="activeModule === 'M201'">
+          <span class="hero-tag">OSI & TCP/IP</span>
+          <span class="hero-tag">VLAN & Switching</span>
+          <span class="hero-tag">Routage</span>
+          <span class="hero-tag">Sécurité</span>
+          <span class="hero-tag">WLAN</span>
+          <span class="hero-tag">WAN & VPN</span>
+          <span class="hero-tag">VoIP</span>
+        </template>
+        <template v-else-if="activeModule === 'M205'">
+          <span class="hero-tag">CIA+</span>
+          <span class="hero-tag">Attaques L2/L3</span>
+          <span class="hero-tag">Pare-feu & IDS/IPS</span>
+          <span class="hero-tag">VPN & IPsec</span>
+          <span class="hero-tag">Cryptographie & PKI</span>
+          <span class="hero-tag">Cybercriminalité</span>
+        </template>
       </div>
     </div>
 
-    <!-- ═══ MAIN CONTENT ═══ -->
-    <div class="main-wrap">
-      <!-- Hero -->
-      <div class="hero">
-        <span class="hero-badge">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          Module {{ activeModule }}
-        </span>
-        <h1>{{ activeModule === 'M201' ? 'Réseaux Informatiques' : 'Sécurité Informatique' }}</h1>
-        <p class="hero-sub">{{ totalSections }} chapitres structurés pour la révision • OFPPT TRI / ID-SR</p>
-        <div class="hero-tags">
-          <template v-if="activeModule === 'M201'">
-            <span class="hero-tag">OSI & TCP/IP</span>
-            <span class="hero-tag">VLAN & Switching</span>
-            <span class="hero-tag">Routage</span>
-            <span class="hero-tag">Sécurité</span>
-            <span class="hero-tag">WLAN</span>
-            <span class="hero-tag">WAN & VPN</span>
-            <span class="hero-tag">VoIP</span>
-          </template>
-          <template v-else>
-            <span class="hero-tag">CIA+</span>
-            <span class="hero-tag">Attaques L2/L3</span>
-            <span class="hero-tag">Pare-feu & IDS/IPS</span>
-            <span class="hero-tag">VPN & IPsec</span>
-            <span class="hero-tag">Cryptographie & PKI</span>
-            <span class="hero-tag">Cybercriminalité</span>
-          </template>
-        </div>
+    <!-- Chapter Cards Grid -->
+    <div class="content-area">
+      <div class="chapters-grid">
+        <template v-for="(sec, idx) in filteredSections" :key="sec.id">
+          <div class="chapter-card" :class="{ 'active-card': openSection && openSection.id === sec.id }"
+            :ref="el => { if(el) revealEls[idx] = el }"
+            :style="{ animationDelay: (idx * 30) + 'ms' }"
+            @mousemove="handleCardGlow($event, idx)"
+            @click="openPanel(sec)">
+            <span class="ch-num" :class="{ done: checked[sec.id] }">
+              <template v-if="checked[sec.id]">✓</template>
+              <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
+            </span>
+            <span class="ch-title" v-html="highlight(sec.title)"></span>
+            <button class="ch-check" :class="{ done: checked[sec.id] }" @click.stop="toggleCheck(sec.id)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </button>
+            <svg class="ch-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </template>
       </div>
 
-      <!-- Chapter Cards Grid -->
-      <div class="content-area">
-        <div class="chapters-grid">
-          <template v-for="(sec, idx) in filteredSections" :key="sec.id">
-            <div class="chapter-card reveal" :class="{ 'active-card': openSection && openSection.id === sec.id }"
-              :ref="el => { if(el) revealEls[idx] = el }" @mousemove="handleCardGlow($event, idx)"
-              @click="openPanel(sec)">
-              <span class="ch-num" :class="{ done: checked[sec.id] }">
-                <template v-if="checked[sec.id]">✓</template>
-                <template v-else>{{ String(sec.num).padStart(2, '0') }}</template>
-              </span>
-              <span class="ch-title" v-html="highlight(sec.title)"></span>
-              <button class="ch-check" :class="{ done: checked[sec.id] }" @click.stop="toggleCheck(sec.id)">
-                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                </svg>
-              </button>
-              <svg class="ch-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </template>
-        </div>
-
-        <div v-if="filteredSections.length === 0" class="no-results">
-          <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            style="margin: 0 auto 16px; opacity: 0.3;">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <p>Aucun résultat pour « {{ searchQuery }} »</p>
-        </div>
+      <div v-if="filteredSections.length === 0" class="no-results">
+        <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 16px; opacity: 0.3;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <p>Aucun résultat pour « {{ searchQuery }} »</p>
       </div>
     </div>
 
@@ -1448,74 +889,68 @@
           <button class="panel-close" @click="closePanel" title="Fermer (Esc)">✕</button>
           <div class="panel-title-area">
             <div class="panel-title">{{ openSection.title }}</div>
-            <div class="panel-subtitle">Chapitre {{ String(openSection.num).padStart(2, '0') }} / {{ totalSections }}
+            <div class="panel-subtitle">Chapitre {{ String(openSection.num).padStart(2, '0') }} / {{ totalSections }}</div>
+          </div>
+          <div class="panel-actions">
+            <button class="panel-check-btn" :class="checked[openSection.id] ? 'is-done' : 'undone'" @click="toggleCheck(openSection.id)">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              {{ checked[openSection.id] ? 'Terminé' : 'Marquer' }}
+            </button>
+            <div class="panel-nav-group">
+              <button class="panel-nav-btn" :disabled="!canGoPrev" @click="goPrev" title="Chapitre précédent">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button class="panel-nav-btn" :disabled="!canGoNext" @click="goNext" title="Chapitre suivant">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
             </div>
           </div>
-          <button class="panel-check-btn" :class="checked[openSection.id] ? 'is-done' : 'undone'"
-            @click="toggleCheck(openSection.id)">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-            </svg>
-            {{ checked[openSection.id] ? 'Terminé' : 'Marquer' }}
-          </button>
-          <button class="panel-nav-btn" :disabled="!canGoPrev" @click="goPrev" title="Chapitre précédent">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button class="panel-nav-btn" :disabled="!canGoNext" @click="goNext" title="Chapitre suivant">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
         </div>
         <div class="panel-body" ref="panelBody">
           <div v-html="openSection.html"></div>
         </div>
       </template>
     </div>
-
-    <!-- FAB -->
-    <button class="fab no-print" :class="{ visible: showBackToTop }" @click="scrollToTop">
-      <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
-      </svg>
-    </button>
   </div>
 
-  <script src="helpers.js"></script>
-  <script src="sections1.js"></script>
-  <script src="sections2.js"></script>
-  <script src="sections3.js"></script>
-  <script src="sections4.js"></script>
-  <script src="sections5.js"></script>
-  <script src="m205_sections1.js"></script>
-  <script src="m205_sections2.js"></script>
-  <script src="m205_sections3.js"></script>
-  <script src="m205_sections4.js"></script>
-  <script src="m205_sections5.js"></script>
-  <script src="m205_sections6.js"></script>
-  <script src="m202_sections1.js"></script>
-  <script src="m202_sections2.js"></script>
-  <script src="m202_sections3.js"></script>
-  <script src="m202_sections4.js"></script>
-  <script src="m202_sections5.js"></script>
-  <script src="m202_sections6.js"></script>
-  <script src="m202_sections7.js"></script>
-  <script src="m206_sections1.js"></script>
-  <script src="m206_sections2.js"></script>
-  <script src="m206_sections3.js"></script>
-  <script src="m206_sections4.js"></script>
-  <script src="m206_sections5.js"></script>
-  <script src="m206_sections6.js"></script>
-  <script src="m203_sections1.js"></script>
-  <script src="m203_sections2.js"></script>
-  <script src="m203_sections3.js"></script>
-  <script src="m203_sections4.js"></script>
-  <script src="m203_sections5.js"></script>
-  <script src="m203_sections6.js"></script>
-  <script src="m203_sections7.js"></script>
-  <script src="app.js"></script>
-</body>
+  <!-- FAB -->
+  <button class="fab no-print" :class="{ visible: showBackToTop }" @click="scrollToTop">
+    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+  </button>
+</div>
 
+<script src="helpers.js"></script>
+<script src="sections1.js"></script>
+<script src="sections2.js"></script>
+<script src="sections3.js"></script>
+<script src="sections4.js"></script>
+<script src="sections5.js"></script>
+<script src="m205_sections1.js"></script>
+<script src="m205_sections2.js"></script>
+<script src="m205_sections3.js"></script>
+<script src="m205_sections4.js"></script>
+<script src="m205_sections5.js"></script>
+<script src="m205_sections6.js"></script>
+<script src="m202_sections1.js"></script>
+<script src="m202_sections2.js"></script>
+<script src="m202_sections3.js"></script>
+<script src="m202_sections4.js"></script>
+<script src="m202_sections5.js"></script>
+<script src="m202_sections6.js"></script>
+<script src="m202_sections7.js"></script>
+<script src="m206_sections1.js"></script>
+<script src="m206_sections2.js"></script>
+<script src="m206_sections3.js"></script>
+<script src="m206_sections4.js"></script>
+<script src="m206_sections5.js"></script>
+<script src="m206_sections6.js"></script>
+<script src="m203_sections1.js"></script>
+<script src="m203_sections2.js"></script>
+<script src="m203_sections3.js"></script>
+<script src="m203_sections4.js"></script>
+<script src="m203_sections5.js"></script>
+<script src="m203_sections6.js"></script>
+<script src="m203_sections7.js"></script>
+<script src="app.js"></script>
+</body>
 </html>
