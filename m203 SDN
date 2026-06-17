@@ -1,0 +1,2097 @@
+Version fusionnée en style **“Extraction structurée des notes”**, basée sur le support SDN EFM, la série EFF SDN, et les questions théoriques SDN : définition, plans, architecture 3 couches, API Nord/Sud, REST/JSON, OpenFlow, OVS, ONOS, Overlay/VXLAN, SD-WAN, SD-Access, LISP, VRF, migration et automatisation.   
+
+# SDN — Extraction structurée des notes
+
+## Version fusionnée complète — Software Defined Networking OFPPT
+
+# 1. Introduction au SDN
+
+## Définition
+
+SDN signifie **Software Defined Networking**.
+C’est une architecture réseau qui sépare le plan de contrôle du plan de données.
+
+## Idée centrale
+
+Dans un réseau traditionnel, chaque équipement décide et transfère.
+Dans un réseau SDN, le contrôleur décide et les équipements appliquent.
+
+## Phrase à mémoriser
+
+**SDN = contrôle centralisé + réseau programmable + automatisation.**
+
+## Problème résolu
+
+Dans un réseau traditionnel, chaque routeur ou switch doit être configuré séparément.
+Chaque équipement possède sa propre intelligence.
+La gestion devient complexe à grande échelle.
+
+## Solution SDN
+
+L’intelligence du réseau est centralisée dans un contrôleur logiciel.
+Les équipements deviennent plus simples.
+Le réseau devient programmable, flexible et automatisé. Le support SDN définit justement SDN comme la séparation du Control Plane et du Data Plane, avec une intelligence centralisée dans un contrôleur logiciel. 
+
+---
+
+# 2. Réseau traditionnel vs SDN
+
+## Réseau traditionnel
+
+Chaque équipement prend ses propres décisions.
+Chaque routeur possède son plan de contrôle.
+Chaque switch/routeur possède aussi son plan de données.
+La configuration se fait équipement par équipement.
+L’administration est plus manuelle.
+La visibilité globale est limitée.
+
+## Réseau SDN
+
+Le contrôleur central prend les décisions.
+Les équipements appliquent les règles reçues.
+Le réseau est programmable via API.
+La configuration est centralisée.
+L’automatisation devient possible.
+La visibilité globale est meilleure.
+
+## Comparaison simple
+
+Réseau traditionnel = intelligence distribuée dans chaque équipement.
+Réseau SDN = intelligence centralisée dans un contrôleur.
+
+## Piège examen
+
+SDN ne veut pas dire que les switches disparaissent.
+Les switches restent présents, mais leur rôle principal devient le transfert selon les règles installées.
+
+---
+
+# 3. Objectifs du SDN
+
+## Simplifier l’administration
+
+Configuration depuis un contrôleur central.
+Moins de configuration manuelle équipement par équipement.
+
+## Améliorer la flexibilité
+
+Les changements réseau peuvent être faits rapidement par logiciel.
+Les politiques peuvent être modifiées depuis une interface centrale.
+
+## Automatiser la gestion
+
+Scripts.
+Applications.
+API.
+Playbooks.
+Politiques centralisées.
+
+## Réduire les coûts
+
+Équipements simplifiés.
+Moins d’intervention humaine.
+Gestion plus rapide.
+Moins d’erreurs de configuration.
+
+## Améliorer la visibilité
+
+Le contrôleur connaît la topologie.
+Le contrôleur peut voir les flux.
+Le contrôleur peut appliquer des politiques globales.
+
+---
+
+# 4. Applications du SDN
+
+## Data Centers
+
+Gestion du trafic entre serveurs et machines virtuelles.
+Réseaux virtuels dynamiques.
+Automatisation des déploiements.
+
+## Cloud Computing
+
+Création rapide de réseaux virtuels.
+Isolation entre clients.
+Intégration avec OpenStack, VMware, Azure, AWS.
+
+## Virtualisation réseau
+
+Plusieurs réseaux virtuels sur la même infrastructure physique.
+Overlay au-dessus de l’underlay.
+
+## WAN d’entreprise
+
+Optimisation des communications entre agences.
+Routage intelligent selon la qualité des liens.
+SD-WAN.
+
+## Campus d’entreprise
+
+Automatisation du réseau d’accès.
+Segmentation par identité.
+SD-Access.
+
+---
+
+# 5. Plans SDN
+
+## Control Plane
+
+Plan de contrôle.
+C’est la partie qui décide.
+
+### Rôle
+
+Calculer les chemins.
+Gérer la topologie.
+Définir les politiques.
+Décider des règles de forwarding.
+Gérer les flux.
+Communiquer avec les applications et équipements.
+
+## Data Plane
+
+Plan de données.
+C’est la partie qui transfère.
+
+### Rôle
+
+Transférer les paquets.
+Appliquer les règles installées.
+Utiliser les tables de flux.
+Envoyer certains paquets au contrôleur si aucune règle ne correspond.
+
+## Management Plane
+
+Plan de gestion.
+Sert à configurer, superviser et administrer les équipements.
+
+### Rôle
+
+Configuration.
+Monitoring.
+Logs.
+Supervision.
+Administration.
+
+## Découplage SDN
+
+Le Control Plane est déplacé vers le contrôleur.
+Le Data Plane reste dans les switches/routeurs.
+Le contrôleur installe les règles dans les équipements.
+
+## Piège
+
+Control Plane = décision.
+Data Plane = transfert.
+Management Plane = administration.
+
+---
+
+# 6. Architecture SDN en 3 couches
+
+## Couche application
+
+Contient les applications réseau.
+
+### Exemples
+
+Sécurité.
+Supervision.
+Load balancing.
+Orchestration.
+QoS.
+Analyse trafic.
+Automatisation.
+
+## Couche contrôle
+
+Contient le contrôleur SDN.
+C’est le cerveau du réseau.
+
+### Rôle
+
+Recevoir les demandes des applications.
+Analyser la topologie.
+Calculer les chemins.
+Installer les règles dans les équipements.
+Superviser l’état du réseau.
+
+## Couche infrastructure
+
+Contient les équipements réseau.
+
+### Exemples
+
+Switches physiques.
+Routeurs.
+Open vSwitch.
+Switches OpenFlow.
+Équipements de forwarding.
+
+## Relation entre couches
+
+Application → demande un service réseau.
+Contrôleur → décide et traduit la demande.
+Infrastructure → applique les règles et transfère le trafic.
+
+Le support SDN structure l’architecture autour de trois couches : Application, Contrôle et Infrastructure. 
+
+---
+
+# 7. API Nord et API Sud
+
+## API Nord
+
+Northbound API.
+Interface entre la couche application et le contrôleur SDN.
+
+## Rôle API Nord
+
+Permet aux applications de demander des services réseau au contrôleur.
+Expose les fonctions du contrôleur aux applications.
+Permet l’automatisation et la programmabilité.
+
+## Exemples API Nord
+
+REST API.
+JSON.
+Python scripts.
+Applications de sécurité.
+Applications de monitoring.
+
+## API Sud
+
+Southbound API.
+Interface entre le contrôleur SDN et les équipements réseau.
+
+## Rôle API Sud
+
+Permet au contrôleur de communiquer avec les switches et routeurs.
+Permet d’installer des règles de forwarding.
+Permet de récupérer l’état des équipements.
+
+## Exemples API Sud
+
+OpenFlow.
+NETCONF.
+OVSDB.
+P4Runtime selon architectures modernes.
+
+## Comparaison
+
+API Nord = applications ↔ contrôleur.
+API Sud = contrôleur ↔ équipements.
+
+## Piège
+
+REST/JSON est généralement lié à l’API Nord.
+OpenFlow est généralement lié à l’API Sud.
+
+---
+
+# 8. API REST, JSON et Postman
+
+## REST API
+
+Interface web utilisant HTTP.
+Permet aux applications de communiquer avec le contrôleur SDN.
+
+## Méthodes REST
+
+### GET
+
+Récupérer une information.
+Ne modifie pas la ressource.
+
+### POST
+
+Créer une nouvelle ressource.
+Envoyer une configuration.
+
+### PUT
+
+Modifier ou remplacer une ressource existante.
+
+### DELETE
+
+Supprimer une ressource.
+
+## JSON
+
+Format léger de données.
+Lisible par humain et machine.
+Utilisé souvent avec REST API.
+
+## Rôle de JSON en SDN
+
+Échanger des informations structurées.
+Décrire des objets réseau.
+Transporter des réponses API.
+
+## Postman
+
+Outil permettant de tester des API REST.
+
+### Usage en SDN
+
+Envoyer une requête au contrôleur.
+Afficher la topologie.
+Lister les switches.
+Lister les hôtes.
+Voir les flux.
+Tester GET, POST, PUT, DELETE.
+
+## Dans une figure SDN
+
+Postman appartient au plan d’application.
+Il envoie des requêtes API vers le contrôleur.
+
+---
+
+# 9. Contrôleur SDN
+
+## Définition
+
+Le contrôleur SDN est le cerveau du réseau.
+
+## Rôle
+
+Centraliser le plan de contrôle.
+Avoir une vue globale du réseau.
+Prendre les décisions.
+Installer les règles dans les équipements.
+Exposer des API aux applications.
+Collecter l’état du réseau.
+
+## Fonctions
+
+Découverte topologie.
+Calcul des chemins.
+Gestion des flux.
+Gestion des politiques.
+Automatisation.
+Communication nord/sud.
+
+## Avantages
+
+Administration centralisée.
+Meilleure visibilité.
+Automatisation.
+Cohérence des règles.
+Déploiement rapide.
+
+## Risque
+
+Point critique de contrôle.
+Doit être sécurisé et redondé.
+Un contrôleur mal protégé peut compromettre tout le réseau.
+
+---
+
+# 10. Contrôle centralisé, distribué et hybride
+
+## Contrôle centralisé
+
+Un contrôleur central prend les décisions.
+
+### Avantages
+
+Vue globale.
+Administration simple.
+Politiques cohérentes.
+
+### Inconvénients
+
+Risque de point unique de panne si non redondé.
+Scalabilité à bien concevoir.
+
+## Contrôle distribué
+
+Plusieurs contrôleurs ou équipements partagent les décisions.
+
+### Avantages
+
+Résilience.
+Scalabilité.
+Moins de dépendance à un seul contrôleur.
+
+### Inconvénients
+
+Coordination plus complexe.
+Cohérence plus difficile.
+
+## Contrôle hybride
+
+Combinaison du réseau traditionnel et du SDN.
+Certains équipements restent traditionnels.
+Certaines fonctions sont pilotées par contrôleur SDN.
+
+## Piège
+
+Migration SDN est souvent progressive, donc l’architecture hybride est fréquente.
+
+---
+
+# 11. Contrôleurs SDN
+
+## OpenDaylight
+
+Contrôleur SDN open source.
+Utilisé en recherche et entreprise.
+Supporte plusieurs protocoles.
+Architecture modulaire.
+
+## OpenContrail
+
+Solution SDN orientée cloud et virtualisation réseau.
+Souvent associée aux environnements de datacenter/cloud.
+
+## ONOS
+
+Open Network Operating System.
+Contrôleur open source.
+Adapté aux grands réseaux et opérateurs.
+
+## Ryu
+
+Contrôleur SDN en Python.
+Simple pour labs, apprentissage et expérimentation.
+
+## Cisco DNA Center
+
+Contrôleur/orchestrateur utilisé dans SD-Access.
+Permet automatisation, assurance et politiques campus.
+
+## Comparaison simple
+
+OpenDaylight = contrôleur SDN généraliste open source.
+ONOS = contrôleur pour grandes infrastructures/opérateurs.
+Ryu = apprentissage/lab Python.
+Cisco DNA Center = SD-Access campus Cisco.
+
+---
+
+# 12. Acteurs SDN
+
+## ONF
+
+Open Networking Foundation.
+Organisation importante dans l’évolution du SDN et d’OpenFlow.
+
+## Rôle ONF
+
+Promouvoir les réseaux programmables.
+Développer et standardiser OpenFlow.
+Encourager l’interopérabilité SDN.
+
+## IETF
+
+Internet Engineering Task Force.
+Organisme de standardisation des protocoles Internet.
+
+## Rôle IETF
+
+Normaliser de nombreux protocoles réseau.
+Publier des RFC.
+Participer à des protocoles utilisés dans architectures SDN.
+
+---
+
+# 13. OpenFlow
+
+## Définition
+
+OpenFlow est un protocole SDN utilisé comme API Sud.
+
+## Rôle
+
+Permet la communication entre le contrôleur SDN et les switches OpenFlow.
+Permet au contrôleur d’installer, modifier ou supprimer des règles de flux.
+
+## Principe
+
+Le switch contient des tables de flux.
+Chaque règle indique quoi faire avec les paquets correspondants.
+Le contrôleur installe les règles.
+Le switch applique les actions.
+
+## Type
+
+Protocole Southbound.
+Communication contrôleur ↔ switches.
+
+## Utilité
+
+Programmabilité du forwarding.
+Contrôle centralisé des flux.
+Automatisation des règles réseau.
+
+Le support SDN place OpenFlow dans la partie “réseaux OpenFlow” avec définition, principe de fonctionnement, anatomie d’un switch OpenFlow et traitement d’un paquet. 
+
+---
+
+# 14. Anatomie d’un switch OpenFlow
+
+## Flow Table
+
+Table contenant les règles de flux.
+
+## Règle de flux
+
+Une règle contient généralement :
+
+match ;
+actions ;
+counters ;
+priority ;
+timeouts.
+
+## Match
+
+Critères de correspondance.
+
+### Exemples
+
+Port d’entrée.
+Adresse MAC source.
+Adresse MAC destination.
+Adresse IP source.
+Adresse IP destination.
+Protocole.
+Port TCP/UDP.
+VLAN.
+
+## Action
+
+Ce que le switch doit faire si le paquet correspond.
+
+### Exemples
+
+Forward vers un port.
+Drop.
+Envoyer au contrôleur.
+Modifier un champ.
+Inonder.
+Encapsuler selon contexte.
+
+## Counters
+
+Compteurs statistiques.
+
+### Exemples
+
+Nombre de paquets.
+Nombre d’octets.
+Durée du flux.
+
+## Priority
+
+Priorité de la règle.
+Si plusieurs règles correspondent, la plus prioritaire est utilisée.
+
+## Timeout
+
+Durée de validité de la règle.
+
+---
+
+# 15. Traitement d’un paquet OpenFlow
+
+## Étape 1
+
+Un hôte envoie un paquet.
+
+## Étape 2
+
+Le paquet arrive sur le switch OpenFlow.
+
+## Étape 3
+
+Le switch cherche une règle correspondante dans sa Flow Table.
+
+## Étape 4
+
+Si une règle existe, le switch applique l’action.
+
+## Étape 5
+
+Si aucune règle n’existe, le switch peut envoyer le paquet au contrôleur.
+
+## Étape 6
+
+Le contrôleur analyse le paquet et la topologie.
+
+## Étape 7
+
+Le contrôleur calcule une décision.
+
+## Étape 8
+
+Le contrôleur installe une Flow Rule dans le switch.
+
+## Étape 9
+
+Le switch applique la règle.
+
+## Étape 10
+
+Les paquets suivants du même flux sont traités directement par le switch.
+
+## Piège
+
+Le contrôleur ne traite pas tous les paquets un par un.
+Après installation de la règle, le switch traite localement les paquets du même flux.
+
+---
+
+# 16. Messages OpenFlow
+
+## Packet-In
+
+Message envoyé par le switch au contrôleur lorsqu’il ne sait pas quoi faire d’un paquet.
+
+## Packet-Out
+
+Message envoyé par le contrôleur au switch pour indiquer une action sur un paquet.
+
+## Flow-Mod
+
+Message utilisé par le contrôleur pour ajouter, modifier ou supprimer une règle de flux.
+
+## Stats Request / Reply
+
+Messages pour récupérer les statistiques.
+
+## Port Status
+
+Message indiquant un changement d’état d’un port.
+
+---
+
+# 17. Open vSwitch
+
+## Définition
+
+Open vSwitch, ou OVS, est un switch virtuel open source.
+
+## Rôle
+
+Connecter des machines virtuelles.
+Connecter des conteneurs.
+Créer des réseaux virtuels.
+S’intégrer avec OpenStack, KVM, Xen, VMware selon contextes.
+
+## Utilisation
+
+Cloud.
+Virtualisation.
+OpenStack Neutron.
+Réseaux SDN.
+Labs OpenFlow.
+
+## Position dans les plans SDN
+
+OVS appartient au plan de données.
+Il transfère les paquets selon les règles.
+
+## OVSDB
+
+Protocole ou base de gestion d’Open vSwitch.
+Permet de configurer OVS.
+Utilisé pour gérer bridges, ports, tunnels et paramètres.
+
+## Piège
+
+OVS = switch virtuel.
+OVSDB = gestion/configuration d’OVS.
+OpenFlow = installation de règles de flux.
+
+---
+
+# 18. Classement dans une figure SDN
+
+## OVS
+
+Plan de données.
+Couche infrastructure.
+
+## ONOS
+
+Plan de contrôle.
+Couche contrôle.
+
+## Postman
+
+Plan d’application.
+Permet d’envoyer des requêtes API.
+
+## OpenFlow
+
+API Sud.
+Contrôleur ↔ switch.
+
+## REST API
+
+API Nord.
+Application ↔ contrôleur.
+
+## Infrastructure réseau
+
+Switches, routeurs, OVS, équipements physiques/virtuels.
+
+## Piège figure examen
+
+Ne pas mettre Postman dans le Data Plane.
+Ne pas mettre OVS dans le Control Plane.
+Ne pas mettre OpenFlow comme API Nord.
+
+---
+
+# 19. Réseau programmable
+
+## Définition
+
+Un réseau programmable est un réseau dont le comportement peut être modifié par logiciel via des API.
+
+## Rôle
+
+Créer dynamiquement des règles.
+Automatiser la configuration.
+Adapter le réseau à l’application.
+Réagir aux événements.
+
+## Exemple
+
+Une application de sécurité détecte une attaque.
+Elle demande au contrôleur de bloquer le flux.
+Le contrôleur installe une règle drop dans les switches.
+
+---
+
+# 20. Automatisation SDN
+
+## Définition
+
+L’automatisation SDN consiste à gérer le réseau par scripts, API ou outils d’orchestration.
+
+## Outils
+
+Python.
+Ansible.
+REST API.
+NETCONF.
+OVSDB.
+Postman pour test.
+JSON pour échanges.
+
+## Objectifs
+
+Réduire les erreurs humaines.
+Déployer plus vite.
+Appliquer des politiques cohérentes.
+Réagir automatiquement aux événements.
+Standardiser les configurations.
+
+## Exemple
+
+Créer automatiquement un réseau virtuel.
+Créer automatiquement une politique QoS.
+Bloquer automatiquement une attaque.
+Déployer des règles de flux.
+
+---
+
+# 21. NETCONF
+
+## Définition
+
+NETCONF est un protocole de gestion réseau.
+
+## Rôle
+
+Configurer des équipements réseau de manière structurée.
+Utilise souvent XML.
+Permet des opérations programmables.
+
+## Usage SDN
+
+Automatisation.
+Configuration contrôlée.
+Gestion d’équipements réseau.
+
+---
+
+# 22. REST API vs OpenFlow
+
+## REST API
+
+Communication application ↔ contrôleur.
+Souvent API Nord.
+Utilise HTTP.
+Souvent avec JSON.
+
+## OpenFlow
+
+Communication contrôleur ↔ switch.
+API Sud.
+Installe des règles de forwarding.
+
+## Piège
+
+REST API sert à piloter le contrôleur.
+OpenFlow sert au contrôleur pour piloter les équipements.
+
+---
+
+# 23. Réseaux Overlay
+
+## Définition
+
+Un réseau Overlay est un réseau virtuel construit au-dessus d’un réseau physique existant.
+
+## Rôle
+
+Créer des réseaux logiques indépendants de la topologie physique.
+Transporter des réseaux virtuels sur une infrastructure IP.
+Étendre un réseau logique entre plusieurs serveurs ou datacenters.
+
+## Exemple
+
+Deux VMs sur deux hyperviseurs différents se voient comme dans le même LAN grâce à VXLAN.
+
+## Avantages
+
+Flexibilité.
+Scalabilité.
+Isolation.
+Déploiement rapide.
+Indépendance vis-à-vis de l’underlay.
+
+## Inconvénients
+
+Complexité.
+Encapsulation supplémentaire.
+MTU à adapter.
+Dépannage plus difficile.
+
+Le support SDN consacre une partie aux réseaux Overlay, à Underlay vs Overlay et aux technologies VXLAN, NVGRE et Geneve. 
+
+---
+
+# 24. Réseau Underlay
+
+## Définition
+
+L’Underlay est le réseau physique ou IP qui transporte l’Overlay.
+
+## Composants
+
+Switches physiques.
+Routeurs.
+Liens IP.
+Routage.
+MTU.
+ECMP.
+Infrastructure datacenter.
+
+## Rôle
+
+Transporter les paquets encapsulés.
+Assurer la connectivité IP entre VTEP.
+Fournir bande passante, résilience et routage.
+
+## Piège
+
+Overlay dépend de l’Underlay.
+Si l’Underlay est instable, l’Overlay sera instable.
+
+---
+
+# 25. Overlay vs Underlay
+
+## Overlay
+
+Réseau virtuel.
+Logique.
+Indépendant de la topologie physique.
+Utilise encapsulation.
+Exemples : VXLAN, NVGRE, Geneve.
+
+## Underlay
+
+Réseau physique/IP.
+Transport réel.
+Fournit connectivité entre équipements.
+Exemples : réseau IP datacenter, routage ECMP.
+
+## Comparaison simple
+
+Underlay = routes physiques.
+Overlay = routes virtuelles au-dessus.
+
+## Piège
+
+VXLAN est une technologie Overlay.
+IP routing entre VTEP appartient à l’Underlay.
+
+---
+
+# 26. Transport Layer 2 sur Layer 3
+
+## Problème
+
+Les VLANs classiques sont limités et liés à la couche 2.
+Les datacenters modernes ont besoin d’étendre des réseaux virtuels à grande échelle.
+
+## Solution
+
+Transporter des trames Ethernet couche 2 dans des paquets IP couche 3.
+
+## Exemple
+
+VXLAN encapsule une trame Ethernet dans UDP/IP.
+
+## Objectif
+
+Permettre à deux machines virtuelles distantes d’être dans le même réseau logique même si l’infrastructure physique est routée en IP.
+
+---
+
+# 27. VXLAN
+
+## Définition
+
+VXLAN signifie Virtual Extensible LAN.
+C’est une technologie Overlay qui permet d’étendre des réseaux de couche 2 au-dessus d’un réseau couche 3.
+
+## Rôle
+
+Créer des réseaux virtuels scalables.
+Encapsuler Ethernet dans UDP/IP.
+Isoler les tenants.
+Étendre des segments L2 dans un datacenter.
+
+## Scalabilité
+
+VLAN classique utilise 12 bits.
+Environ 4096 VLANs.
+VXLAN utilise un VNI 24 bits.
+Environ 16 millions de réseaux virtuels.
+
+## Port UDP
+
+VXLAN utilise généralement UDP 4789.
+
+## Piège
+
+VXLAN ne remplace pas l’Underlay.
+VXLAN a besoin d’un Underlay IP fonctionnel.
+
+---
+
+# 28. VNI
+
+## Définition
+
+VNI signifie VXLAN Network Identifier.
+
+## Taille
+
+24 bits.
+
+## Rôle
+
+Identifier le réseau virtuel VXLAN.
+Séparer les tenants.
+Distinguer les segments overlay.
+
+## Exemple
+
+VNI 10010 = réseau Finance.
+VNI 10020 = réseau RH.
+
+## Piège
+
+VNI dans VXLAN joue un rôle comparable au VLAN ID, mais avec une scalabilité beaucoup plus grande.
+
+---
+
+# 29. VTEP
+
+## Définition
+
+VTEP signifie VXLAN Tunnel Endpoint.
+
+## Rôle
+
+Encapsuler les trames Ethernet dans VXLAN.
+Décapsuler les paquets VXLAN.
+Faire la jonction entre réseau overlay et underlay.
+
+## Où se trouve le VTEP
+
+Dans un hyperviseur.
+Dans un switch ToR.
+Dans un équipement réseau supportant VXLAN.
+
+## Fonctionnement
+
+Reçoit une trame Ethernet.
+Ajoute l’en-tête VXLAN avec VNI.
+Ajoute UDP.
+Ajoute IP.
+Envoie vers le VTEP distant.
+Le VTEP distant décapsule.
+Il remet la trame originale au bon réseau virtuel.
+
+---
+
+# 30. MAC-in-UDP
+
+## Définition
+
+MAC-in-UDP est le principe d’encapsulation VXLAN.
+
+## Fonctionnement
+
+Une trame Ethernet complète est encapsulée dans VXLAN.
+VXLAN est encapsulé dans UDP.
+UDP est encapsulé dans IP.
+Le réseau underlay route le paquet IP.
+
+## Structure simplifiée
+
+Trame Ethernet originale.
+En-tête VXLAN.
+En-tête UDP.
+En-tête IP.
+En-tête Ethernet underlay.
+
+## Piège
+
+L’underlay ne voit pas les MAC originales des VMs comme destination principale.
+Il route entre IP des VTEP.
+
+---
+
+# 31. Communication VXLAN entre deux VMs
+
+## Scénario
+
+VM1 sur hyperviseur A veut communiquer avec VM2 sur hyperviseur B.
+
+## Étapes
+
+VM1 génère une trame Ethernet.
+VTEP A reçoit la trame.
+VTEP A identifie le VNI.
+VTEP A encapsule avec VXLAN.
+VTEP A ajoute UDP et IP.
+L’underlay route le paquet vers VTEP B.
+VTEP B reçoit le paquet.
+VTEP B vérifie le VNI.
+VTEP B décapsule.
+VTEP B transmet la trame originale à VM2.
+
+## Résultat
+
+VM1 et VM2 communiquent comme si elles étaient dans le même LAN, même si elles sont sur des hyperviseurs différents. Le corrigé SDN décrit précisément ce scénario VXLAN avec VTEP A, VTEP B, VNI, UDP 4789, underlay et décapsulation. 
+
+---
+
+# 32. Pourquoi VXLAN utilise UDP
+
+## Raison
+
+UDP permet un transport simple sans connexion.
+UDP facilite l’équilibrage ECMP dans l’underlay.
+Les équipements peuvent utiliser les ports UDP pour répartir le trafic.
+
+## Pas TCP
+
+TCP ajouterait de la lourdeur.
+TCP créerait des problèmes de double contrôle de congestion.
+VXLAN transporte déjà des flux qui peuvent eux-mêmes être TCP.
+
+## Piège
+
+VXLAN utilise UDP pour scalabilité et ECMP, pas parce qu’il veut garantir la livraison.
+
+---
+
+# 33. ECMP et Jumbo Frames
+
+## ECMP
+
+Equal-Cost Multi-Path.
+Permet d’utiliser plusieurs chemins de coût égal dans l’underlay.
+
+### Rôle
+
+Répartir le trafic VXLAN.
+Améliorer la bande passante.
+Améliorer la résilience.
+
+## Jumbo Frames
+
+Trames de grande taille.
+Utiles car VXLAN ajoute de l’encapsulation.
+
+### Rôle
+
+Éviter la fragmentation.
+Supporter l’overhead VXLAN.
+Améliorer les performances.
+
+## Piège
+
+VXLAN augmente la taille du paquet.
+Il faut adapter la MTU dans l’underlay.
+
+---
+
+# 34. VLAN vs VXLAN
+
+## VLAN
+
+12 bits.
+Environ 4096 VLANs.
+Couche 2 traditionnelle.
+Adapté à réseaux plus petits.
+Limité en scalabilité datacenter.
+
+## VXLAN
+
+24 bits.
+Environ 16 millions de réseaux virtuels.
+Overlay L2 sur L3.
+Adapté aux datacenters et clouds.
+Meilleure scalabilité multi-tenant.
+
+## Comparaison simple
+
+VLAN = segmentation traditionnelle.
+VXLAN = segmentation massive pour cloud/datacenter.
+
+## Piège
+
+VXLAN n’est pas juste “un VLAN plus grand”.
+VXLAN est une encapsulation overlay au-dessus d’un réseau IP.
+
+---
+
+# 35. NVGRE et Geneve
+
+## NVGRE
+
+Network Virtualization using Generic Routing Encapsulation.
+Technologie overlay.
+Utilise GRE.
+Associée historiquement à Microsoft.
+
+## Geneve
+
+Generic Network Virtualization Encapsulation.
+Technologie overlay moderne.
+Flexible et extensible.
+
+## Comparaison
+
+VXLAN = très utilisé dans datacenters et clouds.
+NVGRE = overlay via GRE.
+Geneve = plus extensible pour environnements modernes.
+
+---
+
+# 36. Limites du WAN traditionnel
+
+## Problèmes
+
+Dépendance à MPLS coûteux.
+Configuration manuelle.
+Peu de flexibilité.
+Mauvaise visibilité applicative.
+Changement lent.
+Difficulté à gérer plusieurs liens.
+Failover parfois complexe.
+
+## Besoin moderne
+
+Utiliser plusieurs liens.
+Optimiser par application.
+Réduire les coûts.
+Améliorer la disponibilité.
+Centraliser les politiques.
+
+---
+
+# 37. CPE, vCPE et uCPE
+
+## CPE
+
+Customer Premises Equipment.
+Équipement physique chez le client.
+
+### Exemples
+
+Routeur WAN.
+Firewall.
+Modem.
+Appliance opérateur.
+
+## vCPE
+
+Virtual Customer Premises Equipment.
+Fonction CPE virtualisée.
+
+### Principe
+
+Remplacer des appliances physiques par des fonctions virtuelles.
+
+### Exemples
+
+Firewall virtuel.
+Routeur virtuel.
+WAN optimizer virtuel.
+
+## uCPE
+
+Universal Customer Premises Equipment.
+Boîtier physique universel capable d’héberger plusieurs VNFs.
+
+### Rôle
+
+Plateforme physique standardisée.
+Héberge vCPE et autres fonctions réseau virtuelles.
+Réduit le besoin de plusieurs boîtiers dédiés.
+
+## Comparaison
+
+vCPE = ce qu’on virtualise.
+uCPE = où on virtualise.
+
+## Piège
+
+vCPE n’est pas le boîtier physique.
+uCPE est le boîtier physique qui héberge les fonctions virtualisées.
+
+---
+
+# 38. Réseau WAN hybride
+
+## Définition
+
+WAN utilisant plusieurs types de liens.
+
+## Liens possibles
+
+MPLS.
+Internet haut débit.
+4G/5G.
+Fibre.
+LTE.
+Satellite selon contexte.
+
+## Objectif
+
+Combiner coût, performance et disponibilité.
+
+## Exemple
+
+Une agence utilise MPLS pour applications critiques et Internet fibre pour trafic cloud.
+
+---
+
+# 39. SD-WAN
+
+## Définition
+
+SD-WAN signifie Software Defined Wide Area Network.
+C’est l’application des principes SDN au réseau WAN.
+
+## Rôle
+
+Centraliser la gestion du WAN.
+Optimiser le trafic inter-sites.
+Utiliser plusieurs liens intelligemment.
+Réduire la dépendance MPLS.
+Appliquer des politiques par application.
+
+Le support associe le SD-WAN aux WAN d’entreprise et à l’optimisation des communications inter-agences. 
+
+## Composants
+
+Contrôleur centralisé.
+Routeurs/edge SD-WAN.
+Overlay sécurisé.
+Politiques applicatives.
+Portail d’administration.
+
+## Fonctionnalités
+
+Sélection dynamique du chemin.
+Application awareness.
+Chiffrement des tunnels.
+QoS.
+Load balancing.
+Failover automatique.
+ZTP.
+Supervision centralisée.
+Optimisation WAN.
+
+## Application awareness
+
+Le SD-WAN reconnaît les applications.
+Il choisit le lien selon les besoins de l’application.
+
+### Exemple
+
+VoIP → lien faible latence.
+Backup → lien économique.
+ERP → lien fiable.
+Web → Internet local.
+
+---
+
+# 40. SD-WAN vs WAN traditionnel
+
+## WAN traditionnel
+
+Configuration manuelle.
+Dépendance à MPLS.
+Peu de visibilité applicative.
+Politiques difficiles à appliquer partout.
+Coût élevé.
+
+## SD-WAN
+
+Contrôle centralisé.
+Utilisation de liens hybrides.
+Politiques par application.
+Failover automatique.
+Meilleure visibilité.
+Coût optimisé.
+
+## Piège
+
+SD-WAN n’est pas seulement un VPN.
+C’est une solution de gestion intelligente du WAN.
+
+---
+
+# 41. SD-Access
+
+## Définition
+
+SD-Access est une architecture SDN appliquée au réseau campus.
+
+## Rôle
+
+Automatiser le réseau d’accès.
+Segmenter les utilisateurs.
+Appliquer la sécurité par identité.
+Simplifier l’administration du campus.
+
+## Domaine d’utilisation
+
+Entreprises.
+Universités.
+Campus.
+Grands LAN.
+Réseaux d’accès filaires et sans fil.
+
+## Valeur ajoutée
+
+Automatisation.
+Segmentation.
+Sécurité par identité.
+Politiques centralisées.
+Réduction de la configuration manuelle.
+
+---
+
+# 42. Composants SD-Access
+
+## Cisco DNA Center
+
+Contrôleur/orchestrateur.
+Automatise la configuration.
+Applique les politiques.
+Supervise le réseau.
+
+## Control Plane Node
+
+Gère les informations de localisation.
+Utilise LISP.
+Associe identité logique et localisation réseau.
+
+## Edge Nodes
+
+Points d’entrée des utilisateurs dans la fabric.
+Connectent les clients.
+Appliquent les politiques.
+
+## Border Nodes
+
+Connectent la fabric SD-Access vers l’extérieur.
+Interconnectent campus, data center, WAN, Internet.
+
+## Intermediate Nodes
+
+Transport dans la fabric.
+Assurent la connectivité underlay entre nodes.
+
+## Fabric
+
+Architecture logique SD-Access.
+Combine overlay, underlay, contrôle et politiques.
+
+## VRF
+
+Sépare les tables de routage.
+Permet la segmentation.
+
+---
+
+# 43. LISP
+
+## Définition
+
+LISP signifie Locator/ID Separation Protocol.
+
+## Rôle
+
+Séparer l’identité d’un appareil de sa localisation dans le réseau.
+
+## Dans SD-Access
+
+LISP sert de protocole de contrôle.
+Il indique où se trouve un endpoint.
+Il permet de retrouver le bon Edge Node pour joindre un utilisateur ou une machine.
+
+## Principe
+
+Un appareil garde son identité.
+Sa localisation réseau peut changer.
+Le réseau sait retrouver sa position actuelle.
+
+---
+
+# 44. EID et RLOC
+
+## EID
+
+Endpoint Identifier.
+Identité de l’appareil.
+Ne change pas quand l’appareil se déplace.
+
+## RLOC
+
+Routing Locator.
+Localisation de l’appareil dans le réseau.
+Change selon la position dans le réseau.
+
+## Comparaison
+
+EID = qui est l’appareil.
+RLOC = où se trouve l’appareil.
+
+## Exemple
+
+Un utilisateur se déplace dans le campus.
+Son EID reste le même.
+Son RLOC change selon l’Edge Node auquel il est connecté.
+
+La synthèse SDN rappelle justement : EID = identité de l’appareil, RLOC = localisation de l’appareil ; EID ne change pas quand l’appareil se déplace, RLOC change selon la position. 
+
+---
+
+# 45. VRF
+
+## Définition
+
+VRF signifie Virtual Routing and Forwarding.
+
+## Rôle
+
+Avoir plusieurs tables de routage indépendantes sur le même équipement.
+
+## Avantages
+
+Segmentation logique.
+Séparation des groupes.
+Isolation des flux.
+Sécurité renforcée.
+Mutualisation de l’infrastructure.
+
+## Dans SD-Access
+
+Séparer les utilisateurs ou services.
+Créer des segments indépendants.
+Appliquer des politiques différentes.
+
+## Exemple
+
+VRF Finance.
+VRF Invités.
+VRF Administration.
+VRF IoT.
+
+## Piège
+
+VRF ne chiffre pas.
+VRF segmente les tables de routage.
+
+---
+
+# 46. Segmentation SD-Access
+
+## Objectif
+
+Limiter les communications inutiles.
+Isoler les groupes d’utilisateurs.
+Appliquer des politiques selon l’identité.
+
+## Types de séparation
+
+VRF.
+Groupes de sécurité.
+Politiques d’accès.
+Identité utilisateur.
+VLAN selon contexte.
+Overlay fabric.
+
+## Exemple
+
+Invité ne peut accéder qu’à Internet.
+Finance peut accéder aux serveurs comptables.
+IoT ne peut pas accéder aux postes utilisateurs.
+
+---
+
+# 47. SD-Access vs réseau campus traditionnel
+
+## Campus traditionnel
+
+VLANs.
+ACLs manuelles.
+Configuration switch par switch.
+Segmentation plus lourde.
+Mobilité utilisateur difficile.
+
+## SD-Access
+
+Politiques centralisées.
+Segmentation par identité.
+Automatisation.
+Fabric overlay.
+Mobilité simplifiée.
+
+## Piège
+
+SD-Access n’est pas seulement “VLAN automatique”.
+C’est une architecture complète de campus programmable.
+
+---
+
+# 48. Migration vers SDN
+
+## Pourquoi progressive
+
+Une entreprise ne remplace pas tout son réseau directement.
+Elle doit tester la compatibilité.
+Elle doit éviter les interruptions.
+Elle doit intégrer l’existant.
+Elle doit former l’équipe.
+
+## Étapes de migration
+
+Audit.
+POC.
+Pilot.
+Déploiement.
+Optimisation.
+
+La banque de questions SDN liste ces points de migration comme questions à maîtriser : migration progressive, POC, Pilot et cinq étapes de migration vers SDN. 
+
+---
+
+# 49. Audit
+
+## Définition
+
+Analyse de l’infrastructure existante.
+
+## Vérifier
+
+Équipements.
+Versions logicielles.
+Protocoles.
+Topologie.
+Applications critiques.
+Contraintes métier.
+Compatibilité SDN.
+Sécurité.
+Besoins d’automatisation.
+
+## Objectif
+
+Savoir ce qui peut migrer.
+Identifier les risques.
+Préparer la stratégie.
+
+---
+
+# 50. POC
+
+## Définition
+
+Proof of Concept.
+Test limité dans un environnement de laboratoire.
+
+## Rôle
+
+Valider la technologie.
+Tester les fonctions.
+Tester l’intégration.
+Réduire les risques.
+Former l’équipe.
+
+## Piège
+
+POC n’est pas encore production.
+
+---
+
+# 51. Pilot
+
+## Définition
+
+Déploiement limité dans une partie réelle du réseau.
+
+## Rôle
+
+Tester en conditions réelles.
+Mesurer performance.
+Valider sécurité.
+Vérifier support utilisateur.
+Préparer généralisation.
+
+## Exemple
+
+Un bâtiment.
+Une agence.
+Un VLAN.
+Un petit groupe d’utilisateurs.
+
+---
+
+# 52. Déploiement
+
+## Définition
+
+Extension de la solution SDN à une plus grande partie du réseau.
+
+## Actions
+
+Appliquer les politiques.
+Migrer progressivement les sites.
+Superviser.
+Documenter.
+Former les équipes.
+Prévoir rollback.
+
+---
+
+# 53. Optimisation
+
+## Définition
+
+Phase d’amélioration après déploiement.
+
+## Objectifs
+
+Améliorer performances.
+Corriger anomalies.
+Optimiser chemins.
+Ajuster politiques.
+Réduire coûts.
+Renforcer sécurité.
+Automatiser davantage.
+
+---
+
+# 54. Sécurité SDN
+
+## Avantages sécurité
+
+Politiques centralisées.
+Réaction rapide.
+Segmentation dynamique.
+Visibilité globale.
+Automatisation des blocages.
+
+## Risques sécurité
+
+Contrôleur compromis.
+API mal protégée.
+Mauvaise authentification.
+Règles trop permissives.
+Canal contrôleur-switch non sécurisé.
+Erreur de politique globale.
+
+## Mesures
+
+Authentification forte.
+RBAC.
+HTTPS/TLS pour API.
+Journalisation.
+Redondance contrôleur.
+Sauvegarde configurations.
+Segmentation.
+Mise à jour contrôleur.
+Limitation des accès API.
+
+## Piège
+
+SDN peut améliorer la sécurité, mais le contrôleur devient un élément critique à protéger.
+
+---
+
+# 55. Disponibilité SDN
+
+## Besoin
+
+Le contrôleur est central.
+Il doit être disponible.
+
+## Solutions
+
+Cluster de contrôleurs.
+Redondance.
+Haute disponibilité.
+Sauvegarde de configuration.
+Plan de secours.
+Contrôle distribué ou hybride.
+
+## Data Plane en cas de panne contrôleur
+
+Les règles déjà installées peuvent continuer à fonctionner selon configuration.
+Les nouveaux flux peuvent poser problème si le switch dépend du contrôleur.
+
+## Piège
+
+La panne du contrôleur n’arrête pas forcément tous les paquets existants, mais elle peut empêcher de nouvelles décisions.
+
+---
+
+# 56. Scalabilité SDN
+
+## Problèmes possibles
+
+Trop de flux.
+Trop de switches.
+Trop de requêtes au contrôleur.
+Trop d’événements.
+Latence contrôleur.
+Taille des tables.
+
+## Solutions
+
+Contrôleurs distribués.
+Cluster.
+Règles agrégées.
+Politiques par groupe.
+Traitement local des flux connus.
+Optimisation des tables.
+
+---
+
+# 57. SDN et Cloud
+
+## Relation
+
+Le cloud a besoin de réseaux virtuels dynamiques.
+SDN permet de créer, supprimer et modifier les réseaux rapidement.
+
+## Exemples
+
+OpenStack Neutron.
+VMware NSX.
+Azure VNet.
+AWS VPC.
+Kubernetes networking.
+
+## Rôle
+
+Créer réseaux par tenant.
+Isoler clients.
+Automatiser les déploiements.
+Connecter VMs et conteneurs.
+
+---
+
+# 58. SDN et OpenStack
+
+## Neutron
+
+Service réseau d’OpenStack.
+Gère réseaux, sous-réseaux, routeurs, ports, floating IPs et security groups.
+
+## OVS
+
+Souvent utilisé comme switch virtuel.
+Connecte les VMs.
+Gère bridges et tunnels.
+
+## VXLAN dans OpenStack
+
+Utilisé pour créer des réseaux overlay entre compute nodes.
+Permet multi-tenancy et scalabilité.
+
+## Piège
+
+OpenStack Neutron est un service cloud.
+OVS est le switch virtuel.
+VXLAN est le tunnel overlay.
+
+---
+
+# 59. Protocoles et outils SDN
+
+## OpenFlow
+
+Protocole SDN Southbound.
+Communication contrôleur ↔ switches.
+
+## VXLAN
+
+Technologie overlay.
+Encapsulation L2 sur L3.
+Utilise VNI.
+
+## NVGRE
+
+Technologie overlay via GRE.
+
+## Geneve
+
+Encapsulation overlay flexible.
+
+## LISP
+
+Sépare identité et localisation.
+
+## VRF
+
+Tables de routage indépendantes.
+
+## OVSDB
+
+Gestion d’Open vSwitch.
+
+## NETCONF
+
+Configuration réseau structurée.
+
+## REST API
+
+Communication applicative avec contrôleur.
+
+## OpenDaylight
+
+Contrôleur SDN open source.
+
+## ONOS
+
+Contrôleur pour grandes infrastructures.
+
+## Ryu
+
+Contrôleur Python pour lab et apprentissage.
+
+## Open vSwitch
+
+Switch virtuel.
+
+## Ansible
+
+Automatisation de configuration.
+
+## Python
+
+Scripts d’automatisation et applications SDN.
+
+La synthèse SDN récapitule précisément ces protocoles et outils : OpenFlow, VXLAN, NVGRE, LISP, VRF, OVSDB, NetConf, REST API, OpenDaylight, ONOS, Ryu, OVS, Ansible et Python. 
+
+---
+
+# 60. Questions de figure SDN
+
+## Termes à placer
+
+Application.
+NBI.
+Contrôleur.
+SBI.
+OpenFlow.
+Infrastructure réseau.
+OVS.
+ONOS.
+Postman.
+
+## Placement mental
+
+Applications en haut.
+API Nord entre applications et contrôleur.
+Contrôleur au centre.
+API Sud entre contrôleur et infrastructure.
+OpenFlow sur l’API Sud.
+Switches/OVS en bas.
+Postman côté application.
+
+## Mémo schéma
+
+**Application / Postman → API Nord / REST → Contrôleur / ONOS → API Sud / OpenFlow → Infrastructure / OVS**
+
+---
+
+# 61. Comparaisons clés
+
+## SDN vs réseau traditionnel
+
+SDN = contrôle centralisé.
+Traditionnel = contrôle distribué.
+
+## Control Plane vs Data Plane
+
+Control Plane = décision.
+Data Plane = transfert.
+
+## API Nord vs API Sud
+
+API Nord = applications vers contrôleur.
+API Sud = contrôleur vers équipements.
+
+## REST API vs OpenFlow
+
+REST API = API applicative.
+OpenFlow = protocole de contrôle des switches.
+
+## Overlay vs Underlay
+
+Overlay = réseau virtuel.
+Underlay = réseau physique/IP.
+
+## VLAN vs VXLAN
+
+VLAN = 4096 segments environ.
+VXLAN = 16 millions environ.
+
+## vCPE vs uCPE
+
+vCPE = fonction virtualisée.
+uCPE = boîtier physique universel.
+
+## EID vs RLOC
+
+EID = identité.
+RLOC = localisation.
+
+## SD-WAN vs WAN traditionnel
+
+SD-WAN = politiques centralisées et choix dynamique.
+WAN traditionnel = configuration manuelle et dépendance aux liens classiques.
+
+---
+
+# 62. Mémo final SDN
+
+SDN = Software Defined Networking.
+SDN = séparation Control Plane / Data Plane.
+Control Plane = décision.
+Data Plane = transfert.
+Contrôleur = cerveau du réseau.
+Réseau traditionnel = chaque équipement décide.
+Réseau SDN = contrôleur décide, équipements appliquent.
+Architecture SDN = Application, Contrôle, Infrastructure.
+API Nord = applications ↔ contrôleur.
+API Sud = contrôleur ↔ équipements.
+REST API = API Nord fréquente.
+JSON = format d’échange.
+GET = récupérer sans modifier.
+Postman = tester les API.
+OpenFlow = API Sud.
+Flow Table = table de règles.
+Flow Rule = match + action + compteur.
+Packet-In = switch vers contrôleur.
+Flow-Mod = contrôleur installe règle.
+OVS = switch virtuel.
+OVSDB = gestion OVS.
+ONOS = contrôleur.
+OpenDaylight = contrôleur open source.
+Ryu = contrôleur Python.
+Overlay = réseau virtuel.
+Underlay = réseau physique/IP.
+VXLAN = L2 sur L3.
+VNI = identifiant réseau VXLAN.
+VTEP = encapsule/décapsule VXLAN.
+MAC-in-UDP = principe VXLAN.
+UDP 4789 = port VXLAN.
+ECMP = plusieurs chemins égaux.
+Jumbo Frames = éviter fragmentation VXLAN.
+VLAN = 4096.
+VXLAN = 16 millions.
+CPE = équipement client.
+vCPE = fonction CPE virtualisée.
+uCPE = boîtier physique universel.
+SD-WAN = SDN appliqué au WAN.
+Application awareness = choix selon application.
+SD-Access = SDN appliqué au campus.
+DNA Center = orchestration SD-Access.
+LISP = séparation identité/localisation.
+EID = identité endpoint.
+RLOC = localisation réseau.
+VRF = tables de routage séparées.
+Migration SDN = Audit, POC, Pilot, Déploiement, Optimisation.
+Ansible/Python/REST/NETCONF = automatisation SDN.
+
+---
+
+# 63. Pièges d’examen SDN
+
+SDN ne supprime pas les switches.
+SDN sépare décision et transfert.
+Control Plane n’est pas Data Plane.
+Contrôleur n’est pas dans le plan de données.
+OVS appartient au Data Plane.
+ONOS appartient au Control Plane.
+Postman appartient au plan application.
+API Nord n’est pas OpenFlow dans le cas classique.
+API Sud est souvent OpenFlow.
+GET récupère des informations, il ne modifie pas.
+JSON n’est pas un protocole réseau, c’est un format de données.
+OpenFlow installe des règles, il ne remplace pas toute l’architecture SDN.
+Flow Table contient des règles match/action.
+Le contrôleur ne traite pas tous les paquets après installation des règles.
+Overlay n’existe pas sans Underlay fonctionnel.
+VXLAN n’est pas juste un VLAN plus grand.
+VXLAN encapsule Ethernet dans UDP/IP.
+VNI ≠ VLAN ID, même si le rôle logique ressemble.
+VTEP encapsule et décapsule.
+VXLAN ajoute de l’overhead, donc attention MTU.
+ECMP aide à répartir le trafic VXLAN.
+vCPE = fonction virtualisée.
+uCPE = boîtier physique qui héberge les fonctions.
+SD-WAN n’est pas seulement un VPN.
+SD-Access n’est pas seulement VLAN automatique.
+LISP sépare identité et localisation.
+EID ne change pas quand l’appareil se déplace.
+RLOC change selon la position.
+VRF segmente mais ne chiffre pas.
+Migration SDN doit être progressive.
+POC = test laboratoire, pas production.
+Pilot = test limité en production réelle.
+Le contrôleur doit être sécurisé et redondé.

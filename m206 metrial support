@@ -1,0 +1,2942 @@
+Version fusionnée en style **“Extraction structurée des notes”**, basée sur le support M205 Cloud/OpenStack, la série EFF Cloud, la banque théorique et les compléments OpenStack/automatisation. Les sources couvrent les concepts NIST, CAPEX/OPEX, IaaS/PaaS/SaaS, cloud public/privé/hybride, virtualisation, conteneurs, fournisseurs cloud, Azure/AWS/GCP, SLA, redondance, sécurité cloud, OpenStack, Heat, Ceilometer, Ansible, Puppet, Kubernetes et YAML/IaC.   
+
+# Cloud M205 — Extraction structurée des notes
+
+## Version fusionnée complète — Administration d’un environnement Cloud OFPPT
+
+# 1. Introduction au Cloud Computing
+
+## Définition
+
+Le Cloud Computing est un modèle informatique qui permet d’accéder via le réseau à un ensemble partagé de ressources informatiques configurables.
+
+## Ressources cloud
+
+Réseaux.
+Serveurs.
+Stockage.
+Applications.
+Services.
+Bases de données.
+Machines virtuelles.
+Conteneurs.
+
+## Idée centrale
+
+**Demander → Provisionner → Utiliser → Mesurer → Adapter → Libérer**
+
+## Définition NIST
+
+Le Cloud Computing permet un accès réseau omniprésent, pratique et à la demande à des ressources informatiques partagées, configurables, rapidement provisionnées et libérées avec un minimum d’effort de gestion ou d’interaction avec le fournisseur. 
+
+## Mots-clés à retenir
+
+À la demande.
+Partagé.
+Configurable.
+Provisionnement rapide.
+Minimum d’intervention humaine.
+Paiement selon usage.
+Accès via réseau.
+Élasticité.
+
+---
+
+# 2. Pourquoi le Cloud existe
+
+## Problème des infrastructures classiques
+
+Les entreprises devaient acheter :
+
+serveurs ;
+racks ;
+routeurs ;
+switches ;
+câblage ;
+climatisation ;
+onduleurs ;
+licences ;
+salles informatiques ;
+sécurité physique.
+
+## Limites des datacenters classiques
+
+Coût initial élevé.
+Maintenance lourde.
+Ressources parfois sous-utilisées.
+Scalabilité lente.
+Achat de matériel long.
+Besoin d’experts.
+Risque de panne locale.
+Difficulté à absorber les pics de charge.
+
+## Réponse du Cloud
+
+Le Cloud permet de louer les ressources nécessaires au lieu de les acheter.
+Les ressources peuvent être créées rapidement.
+Les ressources peuvent être supprimées quand elles ne sont plus nécessaires.
+L’entreprise paie selon la consommation réelle.
+
+---
+
+# 3. Data Center classique
+
+## Définition
+
+Un Data Center est un lieu regroupant des serveurs, équipements réseau, stockage et systèmes de télécommunication.
+
+## Composants physiques
+
+Racks.
+Serveurs.
+Switches.
+Routeurs.
+Câblage.
+Stockage.
+Climatisation.
+Onduleurs UPS.
+Groupes électrogènes.
+Système anti-incendie.
+Contrôle d’accès physique.
+Caméras.
+Plancher technique.
+
+## Allées froides / chaudes
+
+### Allée froide
+
+Zone où l’air froid arrive devant les serveurs.
+
+### Allée chaude
+
+Zone où l’air chaud sort derrière les serveurs.
+
+## Objectif
+
+Éviter la recirculation d’air chaud.
+Maintenir une température correcte.
+Protéger les composants.
+Réduire les pannes.
+
+## Coûts principaux d’un Data Center
+
+Acquisition ou location d’espace.
+Achat des équipements.
+Exploitation quotidienne.
+
+## Coûts d’exploitation
+
+Électricité.
+Climatisation.
+Maintenance.
+Prestataires.
+Télécommunications.
+Sécurité.
+Renouvellement matériel.
+
+---
+
+# 4. CAPEX et OPEX
+
+## CAPEX
+
+Capital Expenditure.
+Dépense d’investissement immobilisée.
+
+## Exemples CAPEX
+
+Achat de serveurs.
+Achat de racks.
+Achat de câbles.
+Achat de licences.
+Achat d’onduleurs.
+Construction d’une salle serveur.
+
+## OPEX
+
+Operational Expenditure.
+Dépense d’exploitation récurrente.
+
+## Exemples OPEX
+
+Abonnement cloud.
+Facturation mensuelle.
+Paiement selon usage.
+Heures de VM.
+Stockage consommé.
+Bande passante utilisée.
+
+## Avantage cloud
+
+Le cloud transforme souvent le CAPEX en OPEX.
+Une PME n’a pas besoin d’investir massivement au départ.
+Elle paie les ressources selon son activité.
+
+## Piège examen
+
+L’avantage économique du cloud n’est pas seulement “moins cher”.
+L’avantage est surtout :
+
+pas d’investissement initial massif ;
+paiement à l’usage ;
+prévisibilité ;
+élasticité ;
+économies d’échelle.
+
+---
+
+# 5. Les 5 caractéristiques NIST du Cloud
+
+## Mémo
+
+**LLMEM**
+
+Libre-service à la demande.
+Large accès réseau.
+Mise en commun des ressources.
+Élasticité rapide.
+Mesure du service.
+
+Ces 5 caractéristiques définissent ce qui fait qu’un service est réellement un cloud. 
+
+---
+
+## 5.1 Libre-service à la demande
+
+L’utilisateur peut créer ou modifier ses ressources lui-même.
+Il n’a pas besoin d’attendre l’intervention humaine du fournisseur.
+
+### Exemple
+
+Créer une VM en quelques clics.
+Augmenter la RAM d’une instance.
+Créer un stockage depuis un portail.
+
+---
+
+## 5.2 Large accès réseau
+
+Les services cloud sont accessibles via le réseau.
+
+### Accès possible depuis
+
+PC.
+Téléphone.
+Tablette.
+Navigateur web.
+Client distant.
+API.
+
+## Idée clé
+
+Le cloud est accessible depuis n’importe quel appareil connecté et autorisé.
+
+---
+
+## 5.3 Mise en commun des ressources
+
+Les ressources physiques sont partagées entre plusieurs clients.
+
+## Principe
+
+Multi-tenant.
+Même infrastructure physique.
+Isolation logique entre clients.
+
+## Exemple
+
+Plusieurs entreprises utilisent les mêmes serveurs physiques AWS/Azure/GCP sans se voir.
+
+---
+
+## 5.4 Élasticité rapide
+
+Les ressources augmentent ou diminuent selon les besoins.
+
+## Exemple
+
+Un site e-commerce ajoute des serveurs pendant Black Friday.
+Après le pic, les serveurs sont supprimés.
+L’entreprise ne paie pas les ressources inutiles.
+
+## Types de scalabilité
+
+### Scalabilité verticale
+
+Augmenter la puissance d’une machine existante.
+Exemple : plus de CPU, plus de RAM.
+
+### Scalabilité horizontale
+
+Ajouter plus de machines.
+Exemple : plusieurs instances derrière un load balancer.
+
+---
+
+## 5.5 Mesure du service
+
+L’utilisation est mesurée, surveillée et facturée.
+
+## Ressources mesurées
+
+Heures de VM.
+CPU.
+RAM.
+Stockage.
+Bande passante.
+Requêtes.
+Snapshots.
+Bases de données.
+
+## Objectif
+
+Facturer selon l’utilisation réelle.
+Donner de la visibilité sur les coûts.
+Optimiser la consommation.
+
+---
+
+# 6. Avantages du Cloud
+
+## Réduction des coûts
+
+Moins d’achat matériel.
+Moins de maintenance physique.
+Paiement à l’usage.
+Économies d’échelle.
+
+## Scalabilité
+
+Possibilité d’augmenter ou diminuer rapidement les ressources.
+
+## Élasticité
+
+Adaptation automatique ou rapide à la charge.
+
+## Mobilité
+
+Accès depuis différents lieux et appareils.
+
+## Haute disponibilité
+
+Fournisseurs cloud utilisent :
+
+datacenters redondants ;
+zones de disponibilité ;
+réplication ;
+mécanismes de basculement.
+
+## Fiabilité
+
+Infrastructure surveillée.
+SLA fournis.
+Maintenance professionnelle.
+
+## Sécurité mutualisée
+
+Les grands fournisseurs investissent dans :
+
+chiffrement ;
+MFA ;
+RBAC ;
+surveillance ;
+certifications ;
+réponse aux incidents.
+
+## Rapidité
+
+Création de ressources en quelques minutes.
+Déploiement rapide.
+Tests plus faciles.
+
+## Innovation
+
+Accès rapide à :
+
+IA ;
+Big Data ;
+Machine Learning ;
+conteneurs ;
+serverless ;
+bases de données managées.
+
+---
+
+# 7. Risques et limites du Cloud
+
+## Dépendance fournisseur
+
+Vendor lock-in.
+Difficile de migrer d’un cloud à un autre.
+
+## Coûts mal contrôlés
+
+Ressources oubliées.
+Surconsommation.
+Snapshots inutiles.
+Bande passante élevée.
+Mauvais dimensionnement.
+
+## Sécurité mal configurée
+
+Stockage public par erreur.
+Clés exposées.
+RBAC trop large.
+MFA non activé.
+Règles réseau permissives.
+
+## Conformité
+
+Données personnelles.
+Localisation des données.
+Règlementation sectorielle.
+Souveraineté numérique.
+
+## Perte de contrôle physique
+
+Le client ne contrôle pas directement les serveurs physiques dans le cloud public.
+
+## Disponibilité dépendante du fournisseur
+
+Panne régionale.
+Panne zone.
+Panne service.
+Erreur fournisseur.
+
+---
+
+# 8. Modèles de service Cloud
+
+## Idée principale
+
+La question clé est :
+
+**Qui gère quoi ?**
+
+Les trois modèles principaux sont IaaS, PaaS et SaaS. Le support M205 insiste sur cette distinction de responsabilité entre fournisseur et client. 
+
+---
+
+# 9. IaaS
+
+## Définition
+
+IaaS signifie Infrastructure as a Service.
+
+## Rôle
+
+Fournir des ressources d’infrastructure virtualisées.
+
+## Le fournisseur gère
+
+Matériel physique.
+Datacenter.
+Réseau physique.
+Stockage physique.
+Virtualisation.
+
+## Le client gère
+
+Système d’exploitation.
+Middleware.
+Applications.
+Données.
+Sécurité OS.
+Mises à jour OS.
+Configuration applicative.
+
+## Exemples
+
+Amazon EC2.
+Azure Virtual Machines.
+Google Compute Engine.
+
+## Usage
+
+Créer des VMs.
+Migrer des serveurs existants.
+Garder un contrôle élevé.
+Héberger une application personnalisée.
+
+## Piège
+
+IaaS ≠ location d’un serveur physique.
+IaaS = ressources virtualisées, flexibles et facturées à l’usage.
+
+---
+
+# 10. PaaS
+
+## Définition
+
+PaaS signifie Platform as a Service.
+
+## Rôle
+
+Fournir une plateforme prête pour développer et déployer des applications.
+
+## Le fournisseur gère
+
+Infrastructure.
+Virtualisation.
+Système d’exploitation.
+Middleware.
+Runtime.
+Frameworks.
+Mises à jour de plateforme.
+
+## Le client gère
+
+Code applicatif.
+Données.
+Paramètres applicatifs.
+
+## Exemples
+
+Azure App Service.
+Google App Engine.
+AWS Elastic Beanstalk.
+Heroku.
+
+## Usage
+
+Développer une application sans gérer les serveurs.
+Déployer rapidement.
+Se concentrer sur le code.
+
+## Piège
+
+PaaS = développeur se concentre sur l’application, pas sur Linux/Windows.
+
+---
+
+# 11. SaaS
+
+## Définition
+
+SaaS signifie Software as a Service.
+
+## Rôle
+
+Fournir une application prête à l’emploi via navigateur ou client.
+
+## Le fournisseur gère
+
+Tout :
+
+infrastructure ;
+OS ;
+middleware ;
+application ;
+mises à jour ;
+sécurité plateforme ;
+disponibilité.
+
+## Le client gère
+
+Utilisation.
+Paramètres de base.
+Comptes et permissions selon l’application.
+Données saisies.
+
+## Exemples
+
+Gmail.
+Microsoft 365.
+Google Workspace.
+Salesforce.
+Netflix.
+Microsoft Teams.
+
+## Usage
+
+Utiliser une application directement sans installation serveur.
+
+## Piège
+
+SaaS = produit fini.
+Le client utilise, il ne construit pas l’infrastructure.
+
+---
+
+# 12. Comparaison IaaS / PaaS / SaaS
+
+## IaaS
+
+Contrôle maximum.
+Complexité élevée.
+Cible : administrateurs système, architectes.
+
+## PaaS
+
+Contrôle moyen.
+Complexité moyenne.
+Cible : développeurs.
+
+## SaaS
+
+Contrôle faible.
+Complexité faible.
+Cible : utilisateurs finaux.
+
+## Mémo
+
+IaaS = tu gères l’OS.
+PaaS = tu gères le code.
+SaaS = tu utilises le logiciel.
+
+---
+
+# 13. Modèles de déploiement Cloud
+
+## Types principaux
+
+Cloud public.
+Cloud privé.
+Cloud hybride.
+
+Le support M205 distingue clairement ces trois modèles selon propriété, partage des ressources, coût, contrôle, sécurité, conformité et scalabilité. 
+
+---
+
+# 14. Cloud public
+
+## Définition
+
+Infrastructure cloud fournie par un fournisseur tiers et partagée entre plusieurs clients via Internet.
+
+## Fournisseurs
+
+AWS.
+Azure.
+GCP.
+OVHcloud.
+Alibaba Cloud.
+IBM Cloud.
+DigitalOcean.
+
+## Caractéristiques
+
+Multi-tenant.
+Infrastructure gérée par le fournisseur.
+Facturation à l’usage.
+Scalabilité très élevée.
+Client sans visibilité directe sur l’infrastructure physique.
+
+## Avantages
+
+Coût faible.
+Pas d’infrastructure à acheter.
+Ressources disponibles rapidement.
+Accès aux technologies avancées.
+Scalabilité quasi illimitée.
+
+## Inconvénients
+
+Contrôle limité.
+Dépendance fournisseur.
+Problèmes possibles de conformité.
+Localisation des données à vérifier.
+Risque de mauvaise configuration.
+
+## Exemple
+
+Une entreprise héberge son site web sur AWS ou Azure.
+
+---
+
+# 15. Cloud privé
+
+## Définition
+
+Infrastructure cloud dédiée exclusivement à une seule organisation.
+
+## Caractéristiques
+
+Single-tenant.
+Ressources non partagées avec d’autres clients.
+Contrôle total.
+Sécurité personnalisable.
+Peut être on-premise ou hébergé chez un fournisseur dédié.
+
+## Technologies possibles
+
+OpenStack.
+Azure Stack.
+VMware Cloud Foundation.
+
+## Avantages
+
+Contrôle maximal.
+Sécurité forte.
+Conformité facilitée.
+Souveraineté des données.
+Personnalisation complète.
+
+## Inconvénients
+
+Coût plus élevé.
+Maintenance à assurer.
+Scalabilité limitée aux ressources physiques.
+Besoin d’expertise interne.
+
+## Piège
+
+Cloud privé ≠ simple serveur d’entreprise.
+Un vrai cloud privé doit aussi avoir les caractéristiques NIST :
+
+libre-service ;
+élasticité ;
+mesure du service ;
+ressources partagées dans l’organisation ;
+provisionnement rapide.
+
+---
+
+# 16. Cloud hybride
+
+## Définition
+
+Combinaison d’un cloud privé et d’un cloud public interconnectés.
+
+## Principe
+
+Les données sensibles restent dans le privé.
+Les charges variables ou temporaires peuvent aller dans le public.
+
+## Connexions possibles
+
+VPN.
+ExpressRoute.
+Direct Connect.
+Cloud Interconnect.
+Liaisons dédiées.
+
+## Cloud bursting
+
+Quand le cloud privé est saturé, le surplus de charge est envoyé vers le cloud public.
+
+## Avantages
+
+Flexibilité.
+Optimisation coût/sécurité.
+Conformité + scalabilité.
+Utilisation du public pour les pics de charge.
+
+## Inconvénients
+
+Complexité d’intégration.
+Sécurité interconnexion.
+Supervision plus difficile.
+Gestion multi-environnements.
+
+## Exemple
+
+Une banque garde les données clients en cloud privé mais lance des analyses marketing sur AWS.
+
+---
+
+# 17. Virtualisation
+
+## Définition
+
+La virtualisation est l’abstraction des ressources physiques par une couche logicielle appelée hyperviseur.
+
+## Principe
+
+Un seul serveur physique peut exécuter plusieurs machines virtuelles indépendantes.
+
+## Chaque VM possède
+
+Son OS.
+Ses applications.
+Sa mémoire virtuelle.
+Ses disques virtuels.
+Ses cartes réseau virtuelles.
+Son isolation.
+
+## Avantages
+
+Meilleure utilisation du matériel.
+Création rapide d’environnements.
+Isolation.
+Migration de VMs.
+Snapshots.
+Réduction du nombre de serveurs physiques.
+
+## Rôle dans le Cloud
+
+La virtualisation est une base du cloud IaaS.
+Elle permet de créer rapidement des VMs à la demande.
+
+---
+
+# 18. Simulation, émulation, virtualisation
+
+## Simulation
+
+Reproduit le comportement d’un système par logiciel.
+
+### Exemple
+
+Simulateur de vol.
+
+## Émulation
+
+Fournit les fonctions d’un composant sans reproduire sa logique interne.
+
+### Exemple
+
+Émulateur Game Boy sur PC.
+
+## Virtualisation
+
+Abstraction permettant l’exécution de plusieurs OS/applications sur le même matériel.
+
+### Exemple
+
+VMware, Hyper-V, KVM.
+
+## Piège
+
+Virtualisation ≠ simulation.
+Virtualisation ≠ émulation.
+Virtualisation = abstraction.
+
+---
+
+# 19. Types de virtualisation
+
+## Virtualisation serveur
+
+Plusieurs VMs sur un serveur physique.
+
+### Exemples
+
+VMware ESXi.
+Hyper-V.
+KVM.
+
+## Virtualisation réseau
+
+Création de réseaux virtuels.
+
+### Exemples
+
+Azure VNet.
+AWS VPC.
+OpenStack Neutron.
+SDN.
+
+## Virtualisation stockage
+
+Regroupe plusieurs supports physiques en volumes logiques.
+
+### Exemples
+
+SAN virtuel.
+Pools de stockage.
+Azure Storage.
+AWS S3.
+
+## Virtualisation données
+
+Abstraction de la couche de données.
+Cache la complexité des formats et sources.
+
+## Virtualisation application
+
+L’application s’exécute dans un environnement isolé.
+
+### Exemples
+
+Citrix.
+Wine.
+
+## Virtualisation desktop
+
+VDI.
+Le bureau utilisateur est hébergé sur serveur central.
+
+### Exemples
+
+Azure Virtual Desktop.
+Citrix VDI.
+
+## Mémo
+
+Serveur.
+Réseau.
+Stockage.
+Données.
+Application.
+Desktop.
+
+---
+
+# 20. Machine virtuelle
+
+## Définition
+
+Une machine virtuelle est un ordinateur logiciel exécuté sur un hyperviseur.
+
+## Contient
+
+OS complet.
+Disque virtuel.
+Carte réseau virtuelle.
+CPU virtuel.
+Mémoire virtuelle.
+
+## Avantages
+
+Isolation forte.
+Support de plusieurs OS.
+Compatible avec applications anciennes.
+Administration proche d’un serveur physique.
+
+## Inconvénients
+
+Image lourde.
+Démarrage plus lent.
+Consomme plus de ressources qu’un conteneur.
+
+---
+
+# 21. Conteneurisation
+
+## Définition
+
+La conteneurisation est une virtualisation légère dans laquelle une application et ses dépendances sont empaquetées dans un conteneur isolé.
+
+## Principe
+
+Les conteneurs partagent le noyau de l’OS hôte.
+Ils isolent les processus, bibliothèques et dépendances.
+
+## Contenu d’un conteneur
+
+Code.
+Bibliothèques.
+Dépendances.
+Configuration.
+Runtime nécessaire.
+
+## Exemples
+
+Docker.
+LXC.
+Kubernetes pour orchestration.
+
+## Avantages
+
+Léger.
+Démarrage rapide.
+Portable.
+Idéal pour microservices.
+Utile pour CI/CD.
+Performance proche du natif.
+
+## Limites
+
+Isolation moins forte qu’une VM.
+Même famille de noyau.
+Nécessite une bonne gestion réseau/sécurité.
+
+---
+
+# 22. VM vs Conteneur
+
+## VM
+
+Inclut un OS complet.
+Image lourde.
+Démarrage en minutes.
+Isolation forte.
+Idéale pour applications legacy.
+Supporte plusieurs OS différents.
+
+## Conteneur
+
+Partage le noyau hôte.
+Image légère.
+Démarrage en secondes.
+Très portable.
+Idéal pour microservices.
+Très utilisé dans CI/CD.
+
+## Mémo
+
+VM = maison individuelle.
+Conteneur = appartement dans un immeuble.
+
+---
+
+# 23. Kubernetes
+
+## Définition
+
+Kubernetes est une plateforme d’orchestration de conteneurs.
+
+## Rôle
+
+Déployer.
+Planifier.
+Redémarrer.
+Scaler.
+Superviser.
+Mettre à jour des conteneurs.
+
+## Usage cloud
+
+Microservices.
+CI/CD.
+Déploiement automatisé.
+Auto-scaling.
+Haute disponibilité.
+
+## Fournisseurs
+
+Amazon EKS.
+Azure AKS.
+Google Kubernetes Engine.
+
+---
+
+# 24. Fournisseurs Cloud
+
+## Hyperscalers principaux
+
+AWS.
+Microsoft Azure.
+Google Cloud Platform.
+
+Le support M205 présente AWS, Azure et GCP comme les trois géants principaux du cloud public, avec des services équivalents en calcul, stockage, réseau, identité, monitoring et serverless. 
+
+---
+
+# 25. AWS
+
+## Définition
+
+AWS signifie Amazon Web Services.
+
+## Historique
+
+Lancé en 2006.
+Pionnier du cloud public.
+Leader mondial.
+
+## Points forts
+
+Catalogue très large.
+Maturité.
+Scalabilité.
+Communauté importante.
+Plus de 200 services.
+
+## Services clés
+
+EC2.
+S3.
+RDS.
+VPC.
+IAM.
+CloudWatch.
+Lambda.
+
+---
+
+# 26. Microsoft Azure
+
+## Définition
+
+Azure est la plateforme cloud de Microsoft.
+
+## Historique
+
+Lancé en 2010.
+
+## Points forts
+
+Intégration avec Microsoft 365.
+Intégration avec Active Directory.
+Bon support entreprise.
+Cloud hybride avec Azure Stack.
+Services PaaS riches.
+
+## Services clés
+
+Azure Virtual Machines.
+Blob Storage.
+Azure SQL Database.
+Azure AD.
+VNet.
+ExpressRoute.
+Azure Monitor.
+Azure Functions.
+
+---
+
+# 27. Google Cloud Platform
+
+## Définition
+
+GCP est la plateforme cloud de Google.
+
+## Historique
+
+App Engine en 2008.
+Compute Engine ensuite.
+Google Cloud Platform en 2013.
+
+## Points forts
+
+Intelligence artificielle.
+Machine Learning.
+Big Data.
+Conteneurs.
+Kubernetes.
+Infrastructure Google.
+
+## Services clés
+
+Compute Engine.
+Google Cloud Storage.
+Cloud SQL.
+Google Kubernetes Engine.
+Google VPC.
+Cloud Monitoring.
+Cloud Functions.
+
+---
+
+# 28. Autres fournisseurs
+
+## Alibaba Cloud
+
+Leader en Asie.
+Fort dans le commerce électronique.
+
+## OVHcloud
+
+Fournisseur français.
+Hébergement et cloud computing.
+Souveraineté européenne.
+
+## IBM Cloud
+
+IaaS + PaaS.
+Fort en cloud hybride d’entreprise.
+
+## DigitalOcean
+
+Cloud simple pour développeurs, startups et PME.
+
+## Salesforce
+
+CRM SaaS.
+Gestion des ventes et clients.
+
+## Atlas Cloud Services
+
+Cloud marocain lié à la souveraineté numérique.
+Partenariat OCP + Université Mohammed VI Polytechnique mentionné dans le support. 
+
+---
+
+# 29. Correspondance AWS / Azure / GCP
+
+## Calcul
+
+AWS : Amazon EC2.
+Azure : Azure Virtual Machines.
+GCP : Google Compute Engine.
+
+## PaaS application
+
+AWS : Elastic Beanstalk.
+Azure : Azure App Service.
+GCP : Google App Engine.
+
+## Conteneurs gérés
+
+AWS : ECS / EKS.
+Azure : AKS.
+GCP : GKE.
+
+## Stockage objet
+
+AWS : S3.
+Azure : Blob Storage.
+GCP : Cloud Storage.
+
+## Archives
+
+AWS : Glacier.
+Azure : Archive Storage.
+GCP : Nearline / Coldline.
+
+## Base relationnelle
+
+AWS : RDS / Aurora.
+Azure : Azure SQL Database.
+GCP : Cloud SQL / AlloyDB.
+
+## Base NoSQL
+
+AWS : DynamoDB.
+Azure : Cosmos DB.
+GCP : Firestore / Bigtable.
+
+## Réseau privé
+
+AWS : VPC.
+Azure : VNet.
+GCP : VPC.
+
+## Connexion dédiée
+
+AWS : Direct Connect.
+Azure : ExpressRoute.
+GCP : Cloud Interconnect.
+
+## Identité
+
+AWS : IAM.
+Azure : Azure AD + RBAC.
+GCP : IAM.
+
+## Monitoring
+
+AWS : CloudWatch.
+Azure : Azure Monitor.
+GCP : Cloud Monitoring.
+
+## Serverless
+
+AWS : Lambda.
+Azure : Functions.
+GCP : Cloud Functions.
+
+---
+
+# 30. Ressources Cloud essentielles
+
+## Machine virtuelle Cloud
+
+Instance de calcul virtualisée.
+Permet d’exécuter un OS et des applications.
+Correspond au modèle IaaS.
+
+## Réseau virtuel
+
+Réseau privé dans le cloud.
+
+### Exemples
+
+Azure VNet.
+AWS VPC.
+Google VPC.
+OpenStack Neutron.
+
+## Stockage cloud
+
+Stockage fourni comme service.
+
+### Types
+
+Stockage bloc.
+Stockage objet.
+Stockage fichier.
+Stockage archive.
+
+## Base de données cloud
+
+Base managée par le fournisseur.
+
+### Avantages
+
+Sauvegarde automatique.
+Haute disponibilité.
+Mise à jour gérée.
+Scalabilité.
+Monitoring.
+
+## App Service
+
+Plateforme PaaS pour déployer des applications sans gérer les serveurs.
+
+---
+
+# 31. Stockage Cloud
+
+## Stockage bloc
+
+Se présente comme un disque attaché à une VM.
+
+### Usage
+
+Disque système.
+Base de données.
+Volume persistant.
+
+### Exemples
+
+Azure Managed Disks.
+AWS EBS.
+OpenStack Cinder.
+
+## Stockage objet
+
+Stocke les données sous forme d’objets.
+
+### Usage
+
+Images.
+Backups.
+Vidéos.
+Logs.
+Archives.
+Fichiers statiques.
+
+### Exemples
+
+Amazon S3.
+Azure Blob Storage.
+Google Cloud Storage.
+OpenStack Swift.
+
+## Stockage fichier
+
+Partage de fichiers via protocoles.
+
+### Exemples
+
+SMB.
+NFS.
+Azure Files.
+AWS EFS.
+
+## Stockage archive
+
+Stockage peu coûteux pour données rarement consultées.
+
+### Exemples
+
+Amazon Glacier.
+Azure Archive Storage.
+Google Coldline.
+
+---
+
+# 32. Redondance des données
+
+## Objectif
+
+Protéger les données contre :
+
+panne disque ;
+panne serveur ;
+panne datacenter ;
+panne région ;
+suppression accidentelle.
+
+## LRS
+
+Locally Redundant Storage.
+Réplication dans le même datacenter ou la même zone locale.
+Coût plus faible.
+Protection limitée.
+
+## ZRS
+
+Zone Redundant Storage.
+Réplication sur plusieurs zones de disponibilité dans la même région.
+Protège contre panne d’une zone.
+
+## GRS
+
+Geo Redundant Storage.
+Réplication vers une autre région géographique.
+Protège contre panne régionale.
+
+## GZRS
+
+Geo Zone Redundant Storage.
+Combine ZRS dans la région principale et réplication géographique.
+Protection la plus forte.
+
+## Piège
+
+LRS = local.
+ZRS = plusieurs zones.
+GRS = autre région.
+GZRS = zones + géo.
+
+---
+
+# 33. SLA
+
+## Définition
+
+SLA signifie Service Level Agreement.
+C’est un contrat définissant le niveau de service garanti par le fournisseur.
+
+## Indicateur fréquent
+
+Disponibilité en pourcentage.
+
+## Exemples
+
+99 %.
+99,9 %.
+99,99 %.
+99,999 %.
+
+## Rôle
+
+Définir la disponibilité attendue.
+Définir les engagements fournisseur.
+Définir les compensations possibles.
+Aider à choisir l’architecture.
+
+## Piège
+
+Un SLA plus élevé nécessite souvent redondance, multi-zones ou multi-régions.
+
+---
+
+# 34. SLA composite
+
+## Définition
+
+SLA composite = disponibilité globale d’une application qui dépend de plusieurs services.
+
+## Calcul
+
+Multiplier les SLA des composants.
+
+## Exemple
+
+Service A = 99,9 %.
+Service B = 99,9 %.
+SLA composite = 0,999 × 0,999 = 0,998001 = 99,8001 %.
+
+## Pourquoi inférieur
+
+Plus il y a de dépendances, plus le risque global augmente.
+Le SLA composite est donc souvent inférieur au plus petit SLA individuel.
+
+## Piège
+
+Ajouter des composants en série diminue le SLA global.
+La redondance bien conçue peut améliorer la disponibilité.
+
+---
+
+# 35. Sécurité Cloud
+
+## Objectifs
+
+Confidentialité.
+Intégrité.
+Disponibilité.
+Authentification.
+Traçabilité.
+Conformité.
+
+## Mécanismes
+
+Chiffrement au repos.
+Chiffrement en transit.
+MFA.
+RBAC.
+IAM.
+Pare-feu cloud.
+NSG / Security Groups.
+Logs.
+Monitoring.
+Sauvegardes.
+DLP.
+Politiques de conformité.
+
+## Responsabilité partagée
+
+Le fournisseur sécurise l’infrastructure.
+Le client sécurise ses configurations, identités, données et applications selon le modèle choisi.
+
+## Piège
+
+Le cloud n’élimine pas la responsabilité sécurité du client.
+
+---
+
+# 36. IAM, RBAC, abonnements
+
+## IAM
+
+Identity and Access Management.
+Gestion des identités et accès.
+
+## Rôle
+
+Créer utilisateurs.
+Créer groupes.
+Attribuer permissions.
+Contrôler accès aux ressources.
+Tracer les actions.
+
+## RBAC
+
+Role-Based Access Control.
+Contrôle d’accès basé sur les rôles.
+
+## Principe
+
+Attribuer un rôle selon le besoin.
+Respecter le moindre privilège.
+
+## Exemples de rôles
+
+Reader.
+Contributor.
+Owner.
+Administrateur.
+Utilisateur.
+
+## Abonnement
+
+Conteneur logique de facturation et de gestion dans Azure.
+
+## Resource Group
+
+Regroupe des ressources liées à une application ou projet.
+Facilite la gestion, les droits, la facturation et la suppression.
+
+---
+
+# 37. Réseau Cloud
+
+## VNet / VPC
+
+Réseau privé virtuel dans le cloud.
+Permet d’organiser les ressources cloud.
+
+## Sous-réseau
+
+Subdivision du réseau virtuel.
+Permet de séparer les rôles.
+
+### Exemples
+
+Subnet web.
+Subnet application.
+Subnet base de données.
+Subnet management.
+
+## NSG / Security Group
+
+Pare-feu virtuel.
+Filtre le trafic entrant et sortant selon :
+
+IP source ;
+IP destination ;
+port ;
+protocole ;
+direction.
+
+## IP publique
+
+Adresse accessible depuis Internet.
+
+## IP privée
+
+Adresse interne au VNet/VPC.
+
+## Load Balancer
+
+Répartit le trafic entre plusieurs instances.
+
+## VPN cloud
+
+Connecte un réseau local au cloud via tunnel chiffré.
+
+## Connexion dédiée
+
+Liaison privée entre entreprise et cloud.
+
+### Exemples
+
+Azure ExpressRoute.
+AWS Direct Connect.
+Google Cloud Interconnect.
+
+---
+
+# 38. Supervision Cloud
+
+## Objectif
+
+Surveiller l’utilisation, la performance, la disponibilité et les coûts.
+
+## Métriques
+
+CPU.
+Mémoire.
+Disque.
+Réseau.
+Latence.
+Erreurs applicatives.
+Nombre de requêtes.
+Coûts.
+Logs.
+
+## Outils
+
+Azure Monitor.
+AWS CloudWatch.
+Google Cloud Monitoring.
+OpenStack Ceilometer.
+
+## Alertes
+
+Déclenchées si un seuil est dépassé.
+
+### Exemples
+
+CPU > 80 %.
+Stockage presque plein.
+Instance arrêtée.
+Coût mensuel dépassé.
+Erreurs HTTP élevées.
+
+## Rôle
+
+Détecter les incidents.
+Optimiser les coûts.
+Prévoir la capacité.
+Aider la continuité.
+
+---
+
+# 39. Optimisation des coûts
+
+## Pourquoi nécessaire
+
+Le cloud facture selon usage.
+Une mauvaise gestion peut coûter cher.
+
+## Actions
+
+Arrêter les VMs inutilisées.
+Supprimer les disques orphelins.
+Supprimer snapshots inutiles.
+Choisir la bonne taille d’instance.
+Utiliser auto-scaling.
+Utiliser réservations si charge stable.
+Mettre budgets et alertes.
+Surveiller stockage et transfert réseau.
+Utiliser tags.
+
+## Tags
+
+Étiquettes appliquées aux ressources.
+
+### Usage
+
+Projet.
+Service.
+Environnement.
+Propriétaire.
+Centre de coût.
+
+## Piège
+
+Une VM arrêtée peut encore coûter si le disque ou l’IP publique reste réservé.
+
+---
+
+# 40. Continuité de service
+
+## Définition
+
+Capacité à maintenir ou rétablir le service après incident.
+
+## Mécanismes
+
+Redondance.
+Sauvegarde.
+Réplication.
+Multi-zone.
+Multi-région.
+Load balancing.
+Plan de reprise d’activité.
+Monitoring.
+
+## RTO
+
+Recovery Time Objective.
+Temps maximal acceptable pour restaurer le service.
+
+## RPO
+
+Recovery Point Objective.
+Quantité maximale de données qu’on accepte de perdre.
+
+## Piège
+
+RTO = temps.
+RPO = données.
+
+---
+
+# 41. OpenStack
+
+## Définition
+
+OpenStack est une plateforme logicielle Open Source permettant de créer et gérer des infrastructures cloud privées et publiques.
+
+## Rôle
+
+Construire un cloud sur ses propres serveurs.
+Créer des VMs.
+Gérer réseaux virtuels.
+Gérer stockage.
+Gérer utilisateurs.
+Gérer images.
+Automatiser le déploiement.
+
+## Origine
+
+Créé en 2010 par la NASA et Rackspace.
+Licence Apache.
+Fonctionne sous Linux.
+Architecture modulaire. 
+
+## Usage
+
+Cloud privé.
+Cloud public.
+Cloud académique.
+Cloud interne d’entreprise.
+Environnements de test.
+
+## Piège
+
+OpenStack ≠ un seul logiciel monolithique.
+OpenStack = ensemble de services indépendants.
+
+---
+
+# 42. Architecture OpenStack
+
+## Undercloud
+
+Destiné aux administrateurs système.
+Gère l’infrastructure physique sous-jacente.
+Installe et contrôle l’Overcloud.
+Gère les nœuds, réseau physique et déploiement.
+
+## Overcloud
+
+Destiné aux utilisateurs du cloud.
+C’est le cloud réellement utilisé.
+Contient VMs, réseaux virtuels, stockage, images et services.
+
+## Piège
+
+Undercloud = administration/déploiement.
+Overcloud = cloud consommé par les utilisateurs.
+
+---
+
+# 43. Services principaux OpenStack
+
+## Mémo
+
+**H-N-K-G-N-C-S**
+
+Horizon.
+Nova.
+Keystone.
+Glance.
+Neutron.
+Cinder.
+Swift.
+
+Le support M205 précise que les 7 composants principaux OpenStack sont la question centrale du CC2. 
+
+---
+
+# 44. Horizon
+
+## Nom
+
+Dashboard.
+
+## Définition
+
+Horizon est le tableau de bord web d’OpenStack.
+
+## Rôle
+
+Interface graphique d’administration.
+Créer des VMs.
+Gérer réseaux.
+Gérer utilisateurs.
+Voir les ressources utilisées.
+Interagir avec le cloud via navigateur.
+
+## Équivalent
+
+Portail Azure.
+Console AWS.
+
+## Piège
+
+Horizon = interface web, pas le moteur de calcul.
+
+---
+
+# 45. Nova
+
+## Nom
+
+Compute Service.
+
+## Définition
+
+Nova est le service de calcul d’OpenStack.
+
+## Rôle
+
+Gérer les instances / VMs.
+
+## Actions
+
+Créer VM.
+Démarrer VM.
+Arrêter VM.
+Suspendre VM.
+Supprimer VM.
+Gérer cycle de vie des instances.
+
+## Hyperviseurs
+
+KVM.
+VMware.
+XenServer.
+
+## Équivalent
+
+Amazon EC2.
+Azure Virtual Machines.
+
+## Piège
+
+Nova ne stocke pas les images.
+Nova demande l’image à Glance.
+
+---
+
+# 46. Keystone
+
+## Nom
+
+Identity Service.
+
+## Définition
+
+Keystone est le service d’identité d’OpenStack.
+
+## Rôle
+
+Authentification.
+Autorisation.
+Gestion des tokens.
+Catalogue de services.
+Gestion des endpoints.
+
+## Fonctionnement
+
+L’utilisateur s’authentifie.
+Keystone délivre un token.
+Les services OpenStack vérifient ce token.
+
+## Équivalent
+
+Azure AD.
+AWS IAM.
+
+## Piège
+
+Tous les services passent par Keystone pour vérifier les permissions.
+
+---
+
+# 47. Glance
+
+## Nom
+
+Image Service.
+
+## Définition
+
+Glance gère les images de machines virtuelles.
+
+## Rôle
+
+Stocker les templates OS.
+Fournir les images à Nova.
+Gérer images publiques ou privées.
+
+## Formats possibles
+
+qcow2.
+vmdk.
+vhd.
+iso.
+raw.
+
+## Équivalent
+
+AWS AMI.
+Azure Marketplace images.
+
+## Piège
+
+Sans Glance, Nova ne peut pas créer une VM à partir d’une image.
+
+---
+
+# 48. Neutron
+
+## Nom
+
+Networking.
+
+## Définition
+
+Neutron gère le réseau dans OpenStack.
+
+## Rôle
+
+Créer réseaux virtuels.
+Créer sous-réseaux.
+Gérer routeurs virtuels.
+Gérer ports.
+Gérer adresses IP.
+Gérer floating IPs.
+Gérer groupes de sécurité.
+
+## Équivalent
+
+AWS VPC.
+Azure VNet.
+
+## Floating IP
+
+IP publique assignée dynamiquement à une instance privée.
+Permet d’accéder à une VM depuis l’extérieur.
+
+## Piège
+
+Neutron = réseau.
+Floating IP = IP publique associée à une instance privée.
+
+---
+
+# 49. Cinder
+
+## Nom
+
+Block Storage.
+
+## Définition
+
+Cinder fournit le stockage en blocs persistant.
+
+## Rôle
+
+Créer volumes.
+Attacher volumes aux VMs.
+Détacher volumes.
+Fournir disque persistant.
+
+## Usage
+
+Disque de données.
+Base de données.
+Volume durable.
+
+## Équivalent
+
+AWS EBS.
+Azure Managed Disks.
+
+## Piège
+
+Cinder = disque bloc persistant.
+Ne pas confondre avec Swift.
+
+---
+
+# 50. Swift
+
+## Nom
+
+Object Storage.
+
+## Définition
+
+Swift fournit le stockage d’objets distribué.
+
+## Rôle
+
+Stocker fichiers/objets via API REST.
+Gérer gros volumes de données non structurées.
+Fournir stockage distribué et scalable.
+
+## Usage
+
+Backups.
+Images.
+Logs.
+Fichiers statiques.
+Archives.
+
+## Équivalent
+
+Amazon S3.
+Azure Blob Storage.
+
+## Piège
+
+Swift = stockage objet.
+Cinder = stockage bloc.
+
+---
+
+# 51. Heat
+
+## Nom
+
+Orchestration.
+
+## Définition
+
+Heat est le service d’orchestration OpenStack.
+
+## Rôle
+
+Automatiser le déploiement de ressources via templates YAML.
+
+## Crée automatiquement
+
+Instances Nova.
+Réseaux Neutron.
+Floating IPs.
+Volumes Cinder.
+Groupes de sécurité.
+Utilisateurs selon template.
+
+## HOT
+
+Heat Orchestration Template.
+Fichier YAML décrivant l’infrastructure.
+
+## Équivalent
+
+AWS CloudFormation.
+Azure Resource Manager Templates.
+
+## Piège
+
+Heat = orchestration / IaC.
+Ce n’est pas le service de monitoring.
+
+---
+
+# 52. Ceilometer
+
+## Nom
+
+Telemetry.
+
+## Définition
+
+Ceilometer est le service de télémétrie OpenStack.
+
+## Rôle
+
+Collecter les métriques.
+Normaliser les données.
+Stocker ou transmettre les mesures.
+Aider la facturation.
+Aider le monitoring.
+Aider l’auto-scaling.
+
+## Métriques possibles
+
+CPU.
+Mémoire.
+Réseau.
+Stockage.
+Utilisation des services.
+
+## Piège
+
+Ceilometer = métriques/télémétrie.
+Heat = orchestration.
+
+---
+
+# 53. OpenStack — résumé composants
+
+## Horizon
+
+Interface web.
+
+## Nova
+
+Calcul / VMs.
+
+## Keystone
+
+Identité / authentification / autorisation.
+
+## Glance
+
+Images de VM.
+
+## Neutron
+
+Réseaux virtuels.
+
+## Cinder
+
+Stockage bloc.
+
+## Swift
+
+Stockage objet.
+
+## Heat
+
+Orchestration YAML.
+
+## Ceilometer
+
+Télémétrie / monitoring.
+
+---
+
+# 54. Installation OpenStack avec Packstack
+
+## Contexte
+
+Packstack permet une installation automatisée d’OpenStack, souvent utilisée en laboratoire.
+
+## Étapes générales
+
+Télécharger CentOS Stream 8.
+Configurer hostname.
+Configurer `/etc/hosts`.
+Désactiver NetworkManager.
+Installer network-scripts.
+Configurer l’adressage IP.
+Activer les dépôts OpenStack.
+Installer Packstack.
+Générer le fichier de réponse.
+Lancer l’installation.
+Vérifier le pont br-ex.
+Accéder à Horizon via navigateur.
+
+Ces étapes sont citées comme procédure d’installation Packstack dans la banque M205. 
+
+## Pourquoi désactiver NetworkManager
+
+OpenStack Neutron gère lui-même les interfaces réseau via OVS.
+NetworkManager peut interférer.
+L’alternative est `network-scripts` avec fichiers `ifcfg-*`.
+
+## Piège
+
+Installation all-in-one = adaptée au test/lab.
+Pas recommandée en production.
+
+---
+
+# 55. Architecture OpenStack production
+
+## All-in-one
+
+Tous les services sur un seul nœud.
+Simple.
+Utile en lab.
+Pas recommandé en production.
+
+## Architecture multi-nœuds
+
+Sépare les rôles.
+
+## Nœud Controller
+
+Services API et gestion.
+
+### Exemples
+
+Keystone.
+Glance.
+Horizon.
+Nova API.
+Neutron API.
+
+## Nœud Compute
+
+Exécute réellement les VMs.
+Contient Nova Compute.
+Utilise hyperviseur KVM souvent.
+
+## Nœud Network
+
+Gère fonctions réseau avancées.
+
+### Exemples
+
+Neutron L3 agent.
+DHCP agent.
+OVS.
+
+## Nœud Storage
+
+Gère stockage.
+
+### Exemples
+
+Cinder.
+Swift.
+
+## Avantages multi-nœuds
+
+Scalabilité.
+Performance.
+Tolérance aux pannes.
+Séparation des rôles.
+Meilleure maintenance.
+
+---
+
+# 56. Automatisation
+
+## Définition
+
+L’automatisation remplace une tâche manuelle par une tâche automatique.
+
+## Exemples
+
+Installer un paquet.
+Créer une VM.
+Configurer un service.
+Appliquer une configuration.
+Créer un utilisateur.
+Sauvegarder une configuration.
+
+## Bénéfices
+
+Réduit les erreurs humaines.
+Accélère les déploiements.
+Standardise les configurations.
+Libère le personnel IT.
+Améliore la fiabilité.
+Permet le provisioning rapide.
+
+---
+
+# 57. Orchestration
+
+## Définition
+
+L’orchestration coordonne plusieurs tâches automatisées dans un workflow complet.
+
+## Exemple
+
+Créer réseau.
+Créer VM.
+Attacher stockage.
+Configurer sécurité.
+Déployer application.
+Activer monitoring.
+
+## Analogie
+
+Automatisation = musicien.
+Orchestration = chef d’orchestre.
+
+## Usages
+
+Provisioning.
+Déploiement d’applications.
+Gestion réseau.
+Création de VMs.
+Affectation de stockage.
+Cloud en libre-service.
+
+---
+
+# 58. Infrastructure as Code
+
+## Définition
+
+IaC signifie Infrastructure as Code.
+L’infrastructure est décrite dans des fichiers de configuration.
+
+## Format courant
+
+YAML.
+JSON.
+HCL selon outils.
+
+## Avantages
+
+Reproductibilité.
+Versioning Git.
+Documentation vivante.
+Réduction des erreurs.
+Déploiement rapide.
+Déploiement parallèle.
+Retour arrière plus facile.
+
+## Exemple OpenStack
+
+Heat utilise des templates YAML pour créer des ressources.
+
+## Piège
+
+IaC ne consiste pas seulement à écrire des commandes.
+IaC décrit l’état souhaité de l’infrastructure.
+
+---
+
+# 59. YAML
+
+## Définition
+
+YAML est un format lisible utilisé pour décrire des configurations.
+
+## Usage
+
+Playbooks Ansible.
+Templates Heat.
+Configurations Kubernetes.
+Pipelines CI/CD.
+
+## Avantages
+
+Lisible.
+Structuré.
+Versionnable.
+Réutilisable.
+
+## Attention
+
+Indentation importante.
+Une erreur d’espace peut casser la configuration.
+
+---
+
+# 60. Ansible
+
+## Définition
+
+Ansible est un outil d’automatisation agentless.
+
+## Langage
+
+Python + YAML.
+
+## Fichiers
+
+Playbooks YAML.
+
+## Architecture
+
+Sans agent.
+Connexion généralement via SSH.
+
+## Méthode
+
+Push.
+Le serveur envoie les tâches vers les nœuds.
+
+## Avantages
+
+Simple à apprendre.
+YAML lisible.
+Pas besoin d’agent.
+Rapide pour automatiser des tâches.
+
+## Limites
+
+Débogage YAML parfois difficile.
+Erreurs visibles à l’exécution.
+
+---
+
+# 61. Puppet
+
+## Définition
+
+Puppet est un outil de gestion de configuration.
+
+## Langage
+
+Ruby + DSL Puppet.
+
+## Architecture
+
+Agent installé sur chaque nœud.
+
+## Méthode
+
+Pull.
+Les agents récupèrent leur configuration depuis le serveur.
+
+## Avantages
+
+Plus structuré.
+Bon pour grands environnements.
+Détection d’erreurs syntaxiques avant exécution.
+Interface possible.
+
+## Limites
+
+Courbe d’apprentissage plus complexe.
+DSL propriétaire.
+
+---
+
+# 62. Ansible vs Puppet
+
+## Ansible
+
+Créé en 2012.
+Red Hat.
+Python + YAML.
+Agentless.
+Push via SSH.
+Plus simple.
+
+## Puppet
+
+Créé en 2005.
+Puppet Labs.
+Ruby + DSL.
+Agent sur chaque nœud.
+Pull depuis serveur.
+Plus complexe mais robuste.
+
+## Piège
+
+Ansible = push sans agent.
+Puppet = pull avec agent.
+
+---
+
+# 63. Solutions d’orchestration
+
+## Apache Airflow
+
+Orchestration de workflows de données.
+
+## Kubernetes
+
+Orchestration de conteneurs.
+
+## Azure Automation
+
+Automatisation de runbooks Azure.
+
+## OpenStack Heat
+
+Orchestration de ressources OpenStack via YAML.
+
+## Terraform
+
+Infrastructure as Code multi-cloud.
+
+## Piège
+
+Kubernetes orchestre des conteneurs.
+Heat orchestre des ressources OpenStack.
+Airflow orchestre des workflows de données.
+
+---
+
+# 64. Serverless
+
+## Définition
+
+Modèle où le fournisseur gère l’infrastructure et l’exécution du code.
+
+## Le client fournit
+
+Fonction.
+Code.
+Déclencheur.
+Variables.
+
+## Le fournisseur gère
+
+Serveurs.
+Scalabilité.
+Exécution.
+Disponibilité.
+Maintenance.
+
+## Exemples
+
+AWS Lambda.
+Azure Functions.
+Google Cloud Functions.
+
+## Avantages
+
+Pas de serveur à gérer.
+Facturation à l’exécution.
+Scalabilité automatique.
+
+## Limites
+
+Cold start.
+Durée d’exécution limitée.
+Vendor lock-in.
+Moins de contrôle.
+
+---
+
+# 65. Big Data et Cloud
+
+## Rôle du Cloud
+
+Stocker de grands volumes de données.
+Traiter rapidement.
+Scaler les ressources.
+Utiliser services managés.
+
+## Sources de données
+
+Smartphones.
+Objets connectés.
+Cartes bancaires.
+Sites web.
+Applications.
+Capteurs.
+Réseaux sociaux.
+Voitures connectées.
+
+## Pourquoi important
+
+Les entreprises produisent beaucoup de données.
+La mauvaise gestion peut réduire la compétitivité.
+Les données doivent être disponibles, sécurisées et exploitables.
+
+---
+
+# 66. Haute disponibilité Cloud
+
+## Définition
+
+Capacité d’un service à rester accessible malgré les pannes.
+
+## Mécanismes
+
+Multi-instance.
+Load balancing.
+Zones de disponibilité.
+Réplication.
+Auto-healing.
+Monitoring.
+Sauvegarde.
+Basculement.
+
+## Zone de disponibilité
+
+Datacenter ou groupe de datacenters isolé dans une région.
+
+## Région
+
+Zone géographique contenant plusieurs datacenters ou zones.
+
+## Multi-zone
+
+Ressources réparties sur plusieurs zones.
+
+## Multi-région
+
+Ressources réparties sur plusieurs régions.
+
+## Piège
+
+Multi-zone protège contre panne de zone.
+Multi-région protège mieux contre panne régionale.
+
+---
+
+# 67. Sauvegarde Cloud
+
+## Objectif
+
+Protéger les données contre perte, corruption ou suppression.
+
+## Types
+
+Snapshot.
+Backup complet.
+Backup incrémental.
+Backup différentiel.
+Réplication.
+Archive.
+
+## Bonnes pratiques
+
+Automatiser les sauvegardes.
+Tester la restauration.
+Séparer sauvegarde et production.
+Chiffrer les backups.
+Définir rétention.
+Respecter RPO/RTO.
+
+## Piège
+
+Snapshot ≠ vraie stratégie de sauvegarde complète.
+Une sauvegarde non testée n’est pas fiable.
+
+---
+
+# 68. Migration vers le Cloud
+
+## Types
+
+Lift and shift.
+Replatform.
+Refactor.
+Rebuild.
+Replace.
+
+## Lift and shift
+
+Déplacer une application presque telle quelle vers le cloud.
+
+## Replatform
+
+Adapter légèrement l’application à des services cloud.
+
+## Refactor
+
+Modifier profondément l’architecture pour exploiter le cloud.
+
+## Rebuild
+
+Réécrire l’application.
+
+## Replace
+
+Remplacer par un SaaS.
+
+## Piège
+
+La migration la plus rapide n’est pas toujours la plus optimisée.
+
+---
+
+# 69. Modèle de responsabilité partagée
+
+## Principe
+
+La sécurité est partagée entre fournisseur et client.
+
+## Fournisseur gère généralement
+
+Datacenter.
+Matériel.
+Réseau physique.
+Virtualisation.
+Disponibilité de la plateforme.
+
+## Client gère généralement
+
+Données.
+Identités.
+Accès.
+Configuration.
+OS en IaaS.
+Applications.
+Règles réseau.
+Chiffrement côté client si requis.
+
+## Selon le modèle
+
+IaaS : client gère beaucoup.
+PaaS : client gère code et données.
+SaaS : client gère usage, identités, données et paramètres.
+
+## Piège
+
+Plus on va vers SaaS, plus le fournisseur gère.
+Plus on va vers IaaS, plus le client gère.
+
+---
+
+# 70. Cloud et conformité
+
+## Objectif
+
+Respecter les lois, normes et exigences métier.
+
+## Points à vérifier
+
+Localisation des données.
+Chiffrement.
+Contrôle d’accès.
+Traçabilité.
+Conservation.
+Suppression.
+Sauvegardes.
+Certifications fournisseur.
+
+## Risques
+
+Données dans mauvaise région.
+Accès trop large.
+Manque de logs.
+Non-respect des règles de confidentialité.
+
+## Bonne pratique
+
+Choisir région adaptée.
+Activer logs.
+Limiter accès.
+Chiffrer données.
+Mettre politique de rétention.
+
+---
+
+# 71. Cloud privé avec OpenStack
+
+## Objectif
+
+Avoir les avantages du cloud tout en gardant le contrôle de l’infrastructure.
+
+## Avantages
+
+Souveraineté.
+Contrôle.
+Personnalisation.
+Sécurité interne.
+Conformité.
+Liberté open source.
+
+## Inconvénients
+
+Complexité.
+Maintenance.
+Coût initial.
+Besoin d’expertise.
+Scalabilité limitée aux ressources internes.
+
+## Usage OFPPT possible
+
+Créer des VMs pour les apprenants.
+Isoler les environnements TP.
+Créer et supprimer des labs à la demande.
+Réduire le besoin en machines physiques.
+
+---
+
+# 72. Cloud hybride avec OpenStack
+
+## Principe
+
+OpenStack interne + cloud public.
+
+## Exemple
+
+Données sensibles sur OpenStack privé.
+Calcul temporaire sur AWS/Azure.
+Sauvegarde distante vers cloud public.
+Bursting en cas de pic.
+
+## Technologies de connexion
+
+VPN.
+Liaison dédiée.
+Routage sécurisé.
+Fédération d’identité.
+Synchronisation des données.
+
+## Piège
+
+Le cloud hybride est puissant mais plus complexe à sécuriser et superviser.
+
+---
+
+# 73. Mots techniques incontournables
+
+## NIST
+
+Organisme de normalisation ayant donné la définition officielle du Cloud Computing.
+
+## Multi-tenant
+
+Plusieurs clients partagent la même infrastructure physique avec isolation logique.
+
+## Single-tenant
+
+Infrastructure dédiée à un seul client.
+
+## SLA
+
+Contrat de niveau de service.
+
+## CAPEX
+
+Investissement matériel initial.
+
+## OPEX
+
+Charge d’exploitation récurrente.
+
+## RBAC
+
+Contrôle d’accès basé sur les rôles.
+
+## IAM
+
+Gestion des identités et accès.
+
+## NSG
+
+Pare-feu virtuel Azure.
+
+## VNet
+
+Réseau privé virtuel Azure.
+
+## VPC
+
+Réseau privé virtuel AWS/GCP.
+
+## Floating IP
+
+IP publique assignée à une instance privée dans OpenStack.
+
+## IaC
+
+Infrastructure as Code.
+
+---
+
+# 74. Récapitulatif OpenStack ultra-court
+
+Horizon = tableau de bord web.
+Nova = calcul / VMs.
+Keystone = identité / tokens / permissions.
+Glance = images de VM.
+Neutron = réseau virtuel.
+Cinder = stockage bloc.
+Swift = stockage objet.
+Heat = orchestration YAML.
+Ceilometer = télémétrie / métriques.
+
+---
+
+# 75. Mémo final Cloud M205
+
+Cloud = accès réseau à des ressources partagées.
+NIST = définition officielle.
+LLMEM = Libre-service, Large accès, Mise en commun, Élasticité, Mesure.
+CAPEX = achat matériel.
+OPEX = paiement usage.
+IaaS = infrastructure, client gère OS.
+PaaS = plateforme, client gère code.
+SaaS = logiciel prêt à utiliser.
+Cloud public = fournisseur tiers, multi-tenant.
+Cloud privé = dédié à une organisation, single-tenant.
+Cloud hybride = public + privé.
+Virtualisation = abstraction matériel.
+VM = OS complet.
+Conteneur = partage kernel.
+Docker = conteneurisation.
+Kubernetes = orchestration conteneurs.
+AWS = EC2, S3, RDS, VPC, IAM.
+Azure = VM, Blob, SQL, VNet, Azure AD.
+GCP = Compute Engine, Cloud Storage, Cloud SQL, GKE.
+SLA = disponibilité garantie.
+SLA composite = multiplication des SLA.
+LRS = redondance locale.
+ZRS = redondance par zones.
+GRS = redondance géographique.
+GZRS = zones + géographie.
+IAM/RBAC = accès selon rôle.
+NSG/Security Group = pare-feu virtuel.
+OpenStack = cloud open source.
+Undercloud = gestion infra.
+Overcloud = cloud consommé.
+Nova = VMs.
+Neutron = réseau.
+Cinder = bloc.
+Swift = objet.
+Glance = images.
+Keystone = identité.
+Horizon = dashboard.
+Heat = orchestration.
+Ceilometer = métriques.
+Ansible = push, agentless, YAML.
+Puppet = pull, agent, DSL.
+IaC = infrastructure décrite en code.
+YAML = format lisible mais indentation critique.
+
+---
+
+# 76. Pièges d’examen Cloud
+
+Cloud privé ≠ simple serveur local.
+Un vrai cloud privé doit respecter les caractéristiques NIST.
+IaaS ≠ serveur physique loué.
+IaaS = VM flexible et facturée à l’usage.
+PaaS ≠ SaaS.
+PaaS = plateforme pour développer.
+SaaS = logiciel fini.
+Élasticité ≠ simple scalabilité manuelle.
+Élasticité = adaptation rapide selon charge.
+CAPEX ≠ OPEX.
+Cloud public = multi-tenant.
+Cloud privé = single-tenant.
+Cloud hybride = public + privé connectés.
+VM ≠ conteneur.
+VM inclut un OS complet.
+Conteneur partage le kernel.
+Docker ≠ Kubernetes.
+Docker crée/exécute conteneurs.
+Kubernetes orchestre conteneurs.
+SLA composite est souvent inférieur aux SLA individuels.
+Snapshot ≠ stratégie complète de sauvegarde.
+Arrêter une VM ne supprime pas toujours les coûts.
+Un disque orphelin peut continuer à coûter.
+IAM mal configuré = risque majeur.
+RBAC doit suivre le moindre privilège.
+OpenStack fonctionne sous Linux.
+Horizon n’est pas le service de calcul.
+Nova ne gère pas les images.
+Glance gère les images.
+Neutron gère réseaux, sous-réseaux, routeurs et IP flottantes.
+Cinder = stockage bloc.
+Swift = stockage objet.
+Heat = orchestration, pas monitoring.
+Ceilometer = télémétrie, pas orchestration.
+All-in-one OpenStack = lab, pas production.
+Ansible = push sans agent.
+Puppet = pull avec agent.
+YAML dépend fortement de l’indentation.

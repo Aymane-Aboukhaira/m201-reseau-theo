@@ -71,5 +71,11 @@ function S(num, id, title, searchText, html) {
 
 window.M201_SECTIONS = [];
 window.M205_SECTIONS = [];
+window.M202_SECTIONS = [];
+window.M206_SECTIONS = [];
+window.M203_SECTIONS = [];
 function addSections(arr) { window.M201_SECTIONS.push(...arr); }
 function addM205Sections(arr) { window.M205_SECTIONS.push(...arr); }
+function addM202Sections(arr) { window.M202_SECTIONS.push(...arr); }
+function addM206Sections(arr) { window.M206_SECTIONS.push(...arr); }
+function addM203Sections(arr) { window.M203_SECTIONS.push(...arr); }

@@ -21,19 +21,37 @@ createApp({
     const m201Collapsed = ref(JSON.parse(localStorage.getItem('m201-collapsed') || '{}'));
     const m205Checked = ref(JSON.parse(localStorage.getItem('m205-checked') || '{}'));
     const m205Collapsed = ref(JSON.parse(localStorage.getItem('m205-collapsed') || '{}'));
+    const m202Checked = ref(JSON.parse(localStorage.getItem('m202-checked') || '{}'));
+    const m202Collapsed = ref(JSON.parse(localStorage.getItem('m202-collapsed') || '{}'));
+    const m206Checked = ref(JSON.parse(localStorage.getItem('m206-checked') || '{}'));
+    const m206Collapsed = ref(JSON.parse(localStorage.getItem('m206-collapsed') || '{}'));
+    const m203Checked = ref(JSON.parse(localStorage.getItem('m203-checked') || '{}'));
+    const m203Collapsed = ref(JSON.parse(localStorage.getItem('m203-collapsed') || '{}'));
 
     const revealEls = ref({});
 
     // ─── Computed ───
-    const allSections = computed(() =>
-      activeModule.value === 'M201' ? (window.M201_SECTIONS || []) : (window.M205_SECTIONS || [])
-    );
-    const checked = computed(() =>
-      activeModule.value === 'M201' ? m201Checked.value : m205Checked.value
-    );
-    const collapsed = computed(() =>
-      activeModule.value === 'M201' ? m201Collapsed.value : m205Collapsed.value
-    );
+    const allSections = computed(() => {
+      if (activeModule.value === 'M201') return window.M201_SECTIONS || [];
+      if (activeModule.value === 'M202') return window.M202_SECTIONS || [];
+      if (activeModule.value === 'M206') return window.M206_SECTIONS || [];
+      if (activeModule.value === 'M203') return window.M203_SECTIONS || [];
+      return window.M205_SECTIONS || [];
+    });
+    const checked = computed(() => {
+      if (activeModule.value === 'M201') return m201Checked.value;
+      if (activeModule.value === 'M202') return m202Checked.value;
+      if (activeModule.value === 'M206') return m206Checked.value;
+      if (activeModule.value === 'M203') return m203Checked.value;
+      return m205Checked.value;
+    });
+    const collapsed = computed(() => {
+      if (activeModule.value === 'M201') return m201Collapsed.value;
+      if (activeModule.value === 'M202') return m202Collapsed.value;
+      if (activeModule.value === 'M206') return m206Collapsed.value;
+      if (activeModule.value === 'M203') return m203Collapsed.value;
+      return m205Collapsed.value;
+    });
     const totalSections = computed(() => allSections.value.length);
     const completedSections = computed(() =>
       Object.values(checked.value).filter(Boolean).length
@@ -84,12 +102,12 @@ createApp({
     // ─── Actions ───
     function toggleCheck(id) {
       checked.value[id] = !checked.value[id];
-      const key = activeModule.value === 'M201' ? 'm201-checked' : 'm205-checked';
+      const key = activeModule.value === 'M201' ? 'm201-checked' : activeModule.value === 'M202' ? 'm202-checked' : activeModule.value === 'M206' ? 'm206-checked' : activeModule.value === 'M203' ? 'm203-checked' : 'm205-checked';
       localStorage.setItem(key, JSON.stringify(checked.value));
     }
     function toggleSection(id) {
       collapsed.value[id] = !collapsed.value[id];
-      const key = activeModule.value === 'M201' ? 'm201-collapsed' : 'm205-collapsed';
+      const key = activeModule.value === 'M201' ? 'm201-collapsed' : activeModule.value === 'M202' ? 'm202-collapsed' : activeModule.value === 'M206' ? 'm206-collapsed' : activeModule.value === 'M203' ? 'm203-collapsed' : 'm205-collapsed';
       localStorage.setItem(key, JSON.stringify(collapsed.value));
     }
     function scrollToTop() {
@@ -184,7 +202,7 @@ createApp({
       nextTick(() => {
         revealObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
+            if (entry.isIntersecting) entry.target.dataset.visible = 'true';
           });
         }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
         setTimeout(() => {
@@ -212,7 +230,7 @@ createApp({
 
     return {
       activeModule, lightMode, menuOpen, searchQuery, showBackToTop, scrollProgress,
-      openSection, panelBody,
+      openSection, panelBody, m202Checked, m202Collapsed, m206Checked, m206Collapsed, m203Checked, m203Collapsed,
       checked, collapsed, revealEls,
       allSections, filteredSections, totalSections, completedSections, progressPercent,
       canGoPrev, canGoNext,
